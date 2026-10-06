@@ -1,0 +1,14 @@
+/* Reset, typography, form controls, buttons */
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.app{max-width:640px;margin:0 auto;padding:16px 16px 120px}
+h1{font-size:34px;letter-spacing:-.02em;margin:8px 0 14px;font-weight:700}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);margin:22px 4px 8px;font-weight:600}
+.card{background:var(--card);border-radius:20px;padding:16px;border:1px solid var(--line)}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+select,input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;width:100%;min-height:44px}
+select{appearance:none;font-weight:600}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+button{font:inherit;cursor:pointer;min-height:44px;border-radius:14px;border:0;padding:0 18px;font-weight:600;color:var(--ink);background:var(--bg)}
+button.pri{background:var(--acc);color:var(--acc-ink)}
+button.ghost{border:1px solid var(--line);background:transparent}

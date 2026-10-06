@@ -1,0 +1,47 @@
+/* Components: gauge, cards, rows, tab bar, sheets, charts, log */
+.gauge{text-align:center;padding:20px 12px 18px}
+.gauge svg{width:min(300px,80%);display:block;margin:0 auto}
+.big{font-size:64px;font-weight:700;letter-spacing:-.03em;line-height:1;margin-top:-62px}
+.unit{color:var(--mute);font-size:15px;margin-top:6px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.stat .v{font-size:24px;font-weight:700}.stat .l{font-size:13px;color:var(--mute)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}.row .t{font-weight:600}.row .s{font-size:14px;color:var(--mute)}
+.pill{font-size:13px;font-weight:700;padding:4px 10px;border-radius:99px;background:var(--bg);color:var(--ok)}
+.pill.na{color:var(--mute)}
+.tabs{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px))}
+.tabs nav{display:flex;width:100%;max-width:520px;background:var(--glass);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);border:1px solid var(--line);border-radius:26px;padding:4px}
+.tabs button{flex:1;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;padding:6px 0;color:var(--mute)}
+.tabs button[aria-selected=true]{color:var(--acc-ink);background:var(--acc)}
+.tabs svg{width:22px;height:22px}
+.fab{position:fixed;right:20px;bottom:calc(92px + env(safe-area-inset-bottom,0px));height:56px;padding:0 22px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:flex-end;justify-content:center;z-index:9}
+.sheet-bg.on{display:flex}
+.sheet{background:var(--card);width:100%;max-width:560px;border-radius:26px 26px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px));animation:up .28s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}.arc{transition:none!important}}
+label{display:block;font-size:13px;color:var(--mute);margin:12px 0 4px;font-weight:600}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sw{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+.sw input{width:52px;height:30px;appearance:none;border-radius:99px;background:var(--line);position:relative;padding:0;min-height:0;border:0}
+.sw input:checked{background:var(--ok)}
+.sw input::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.sw input:checked::after{left:25px}
+.err{color:#e03131;font-size:14px;min-height:20px;margin-top:8px}
+.bars{display:flex;align-items:flex-end;gap:6px;height:110px;overflow-x:auto;padding-top:8px}
+.bar{flex:1;min-width:22px;background:var(--acc);border-radius:6px 6px 2px 2px;opacity:.85;position:relative}
+.bar span{position:absolute;top:-17px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--mute)}
+.empty{text-align:center;color:var(--mute);padding:28px 10px}
+.arch{display:grid;gap:8px;font-size:14px}
+.node{border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--bg)}
+.node b{display:block}.arrow{text-align:center;color:var(--mute);line-height:1}
+.svcs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.log{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;max-height:220px;overflow:auto;color:var(--mute)}
+.log div{padding:3px 0;border-bottom:1px dashed var(--line)}.log b{color:var(--acc)}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+@media (min-width:700px){.app{padding-top:32px}}
+
+.login{text-align:center;padding:36px 4px}
+.login p{color:var(--mute);margin:10px 0 18px}
+.login .note{font-size:13px;margin:14px 0 0}.login .note.err{color:#e03131}.login a{color:var(--acc)}
+.lnk{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:14px;font-weight:600;text-decoration:none;background:var(--acc);color:var(--acc-ink)}

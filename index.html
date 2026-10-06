@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Petrol Log</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<!-- Libraries: Google sign-in, Excel + PDF export -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div class="tabs"><nav role="tablist" id="tabs"></nav></div>
+<div class="sheet-bg" id="sheet" role="dialog" aria-modal="true"><div class="sheet" id="sheetBody"></div></div>
+
+<!-- App code: plain scripts, loaded in order (works by double-click, no build step) -->
+<script src="js/config.js"></script>
+<script src="js/core/storage.js"></script>
+<script src="js/core/auth.js"></script>
+<script src="js/core/sheets-api.js"></script>
+<script src="js/services/vehicle.service.js"></script>
+<script src="js/services/fuel-log.service.js"></script>
+<script src="js/services/sync.service.js"></script>
+<script src="js/services/analytics.service.js"></script>
+<script src="js/services/report.service.js"></script>
+<script src="js/gateway.js"></script>
+<script src="js/ui/state.js"></script>
+<script src="js/ui/components.js"></script>
+<script src="js/ui/views/home.js"></script>
+<script src="js/ui/views/log.js"></script>
+<script src="js/ui/views/reports.js"></script>
+<script src="js/ui/views/vehicles.js"></script>
+<script src="js/ui/views/account.js"></script>
+<script src="js/ui/views/login.js"></script>
+<script src="js/ui/render.js"></script>
+<script src="js/ui/forms.js"></script>
+<script src="js/ui/events.js"></script>
+<script src="js/reports/export.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

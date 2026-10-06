@@ -1,0 +1,4 @@
+/* Design tokens: colours, light + dark theme */
+:root{--bg:#f2f1ee;--card:#fff;--ink:#16181d;--mute:#6b6f78;--line:#e4e2dd;--acc:#e8590c;--acc-ink:#fff;--ok:#2b8a3e;--glass:rgba(255,255,255,.72);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0f12;--card:#1a1c21;--ink:#f3f3f1;--mute:#9a9ea8;--line:#2a2d34;--acc:#ff8a3d;--acc-ink:#1a0c00;--ok:#69db7c;--glass:rgba(26,28,33,.72)}}
+:root[data-theme="dark"]{--bg:#0e0f12;--card:#1a1c21;--ink:#f3f3f1;--mute:#9a9ea8;--line:#2a2d34;--acc:#ff8a3d;--acc-ink:#1a0c00;--ok:#69db7c;--glass:rgba(26,28,33,.72)}
