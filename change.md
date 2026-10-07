@@ -2,6 +2,14 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [1.5.0] - 2026-10-07
+### Added
+- `terms.html` (Terms of Service) and a rewritten `privacy.html`, both with a "Back to Petrol Log" link and light/dark support.
+- App footer on every screen with links to the Privacy Policy and Terms of Service (needed for Google's public consent screen).
+### Changed
+- Removed the separate "Privacy" link from the login screen; the footer replaces it.
+- Before publishing: fill in the contact email (both pages) and the governing law (terms.html). These pages are templates, not legal advice.
+
 ## [1.4.0] - 2026-10-07
 ### Added
 - Fill-up form: **"Government subsidy applied?"** switch. Off by default; the fill-up is logged with no subsidy.
