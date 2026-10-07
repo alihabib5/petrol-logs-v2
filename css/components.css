@@ -45,3 +45,9 @@ label{display:block;font-size:13px;color:var(--mute);margin:12px 0 4px;font-weig
 .login p{color:var(--mute);margin:10px 0 18px}
 .login .note{font-size:13px;margin:14px 0 0}.login .note.err{color:#e03131}.login a{color:var(--acc)}
 .lnk{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:14px;font-weight:600;text-decoration:none;background:var(--acc);color:var(--acc-ink)}
+
+.seg{display:flex;background:var(--bg);border-radius:12px;padding:3px;gap:3px}
+.seg button{flex:1;min-height:40px;border-radius:10px;background:transparent;color:var(--mute)}
+.seg button[aria-pressed=true]{background:var(--acc);color:var(--acc-ink)}
+
+.hint{font-size:13px;color:var(--mute);margin-top:6px}

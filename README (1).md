@@ -28,6 +28,19 @@ Push the folder to GitHub -> Vercel -> Add New Project -> import it. Framework: 
 Add the final Vercel URL (and any custom domain) to the OAuth client's Authorised JavaScript origins.
 Note: Vercel preview URLs are different origins and must be added too if you want to sign in on them.
 
+## Architecture
+```
+Client (mobile-first web UI, hosted on Vercel)
+   |
+API Gateway   /vehicles  /logs  /analytics  /reports
+   |
+Services      VehicleService | FuelLogService | AnalyticsService | ReportService | SyncService
+   |
+Google Sign-In + Sheets API   (OAuth, drive.file scope)
+   |
+Customer's own Google Drive   Sheet "Petrol Log", one tab per plate number
+```
+
 ## Project structure
 ```
 index.html            markup only
@@ -35,16 +48,30 @@ vercel.json           headers (needed for Google's sign-in popup)
 privacy.html          privacy policy page (required by Google consent screen)
 css/                  tokens.css | base.css | components.css
 js/config.js          YOUR Google client ID
-js/core/              storage.js (local cache) | auth.js (Google sign-in) | sheets-api.js (Sheets/Drive calls)
+js/core/              prefs.js (theme + currency) | storage.js (local cache) | auth.js (Google sign-in) | sheets-api.js (Sheets/Drive calls)
 js/services/          vehicle | fuel-log | sync | analytics (km/L) | report
 js/gateway.js         routes /vehicles /logs /analytics /reports to services
-js/ui/                state, components, render, forms, events
+js/ui/                state, components, render, forms, fuel-fallback (litres auto-fill), events
 js/ui/views/          home | log | reports | vehicles | account | login
 js/reports/export.js  Excel / CSV / PDF monthly reports
 js/main.js            startup
 ```
 
+## Fill-up form: litres auto-calculation
+Enter **price per litre** and **total amount** and leave **Litres** empty: litres = total / price (2 decimals) is filled in automatically.
+It updates while you change price or total, but the moment you type your own litres value it is never overwritten.
+Clear the litres field and leave it to get the calculated value back. Logic: `js/ui/fuel-fallback.js`.
+The total is the amount before subsidy.
+
+## Subsidy switch
+The fill-up form has a **Government subsidy applied?** switch. Off (default): no subsidy, just log the fuel.
+On: a Subsidy amount field appears and the amount is deducted from the total in "Net payable" and in all cost totals and reports.
+
 ## Notes
 - Sign-in lasts about an hour per Google token; the app renews it quietly and asks to sign in again if it cannot.
+- Account tab: Theme (System / Light / Dark) and Currency (display label only, no conversion); saved on the device.
 - "Continue without sign-in" keeps data in the browser only (demo / offline).
 - Formulas: km/L = km between full fills / litres added since the previous full fill. Cost = litres x price - subsidy.
+
+## Version history
+See `change.md` for what changed in each version.
