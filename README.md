@@ -52,27 +52,33 @@ js/config.js          YOUR Google client ID
 js/core/              prefs.js (theme + currency) | storage.js (local cache) | auth.js (Google sign-in) | sheets-api.js (Sheets/Drive calls)
 js/services/          vehicle | fuel-log | sync | analytics (km/L) | report
 js/gateway.js         routes /vehicles /logs /analytics /reports to services
-js/ui/                state, components, render, forms, fuel-fallback (litres auto-fill), events
+js/ui/                state, components, render, forms, fuel-fallback (price/litres/total linking), events
 js/ui/views/          home | log | reports | vehicles | account | login
 js/reports/export.js  Excel / CSV / PDF monthly reports
 js/main.js            startup
 ```
 
-## Fill-up form: litres auto-calculation
-Enter **price per litre** and **total amount** and leave **Litres** empty: litres = total / price (2 decimals) is filled in automatically.
-It updates while you change price or total, but the moment you type your own litres value it is never overwritten.
-Clear the litres field and leave it to get the calculated value back. Logic: `js/ui/fuel-fallback.js`.
-The total is the amount before subsidy.
+## Fill-up form: price, litres and total are linked
+Price per litre x litres = total. Enter any two and the third is calculated: price + total gives litres, litres + total gives price, litres + price gives total (2 decimals).
+The two fields you touched most recently are kept; the remaining one is recalculated, and a hint says which. Clear a field and it stays empty while you type, then refills when you leave it.
+The total is the amount before subsidy. Logic: `js/ui/fuel-fallback.js` (`bindFillLinks`).
+
+## Editing and deleting entries
+Log tab: the pencil on each row reopens the fill-up form with that entry's values; Save updates it in place (and the same row in your Google Sheet). The cross deletes it. Edits follow the same rules as new entries.
 
 ## Subsidy switch
 The fill-up form has a **Government subsidy applied?** switch. Off (default): no subsidy, just log the fuel.
 On: a Subsidy amount field appears and the amount is deducted from the total in "Net payable" and in all cost totals and reports.
 
+## Average km/L
+Exact: km between full-tank fills / litres added since the previous full fill. Needs two full-tank fills.
+Until then an **estimate** from odometer readings is shown with a "~": (new odometer - previous odometer) / litres of the previous refill; overall (last - first odometer) / litres of every refill except the last. The tank level is unknown for partial fills, so treat it as a guide. Exact figures replace it automatically.
+
 ## Notes
 - Sign-in lasts about an hour per Google token; the app renews it quietly and asks to sign in again if it cannot.
 - Account tab: Theme (System / Light / Dark) and Currency (display label only, no conversion); saved on the device.
 - "Continue without sign-in" keeps data in the browser only (demo / offline).
-- Formulas: km/L = km between full fills / litres added since the previous full fill. Cost = litres x price - subsidy.
+- Cost = litres x price - subsidy. Cost per km needs an exact km/L.
 
 ## Version history
 See `change.md` for what changed in each version.

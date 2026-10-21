@@ -4,7 +4,11 @@ All notable changes to Petrol Log. Newest first.
 
 ## [1.6.0] - 2026-10-22
 ### Added
-- Edit a fill-up: a pencil button on each Log row opens the fill-up form pre-filled. Saving updates the entry in place (same ID, same sheet row in Google Sheets). Same validation as a new entry; the entry being edited is ignored in the odometer-order check.
+- **Edit a fill-up.** A pencil button on each Log row opens the fill-up form pre-filled; Save updates the entry in place (same ID, same row in Google Sheets). Same validation as a new entry, and the entry being edited is ignored in the odometer-order check. New `PUT /logs/<id>` route, `FuelLogService.update`, `Gs.updateLog`.
+- **Estimated km/L from odometer readings**, shown only when there is no exact figure yet (no two full-tank fills). Per fill: (new odometer - previous odometer) / litres of the previous refill. Overall: (last odometer - first odometer) / litres of every refill except the last. Always marked with "~" on Home, Log rows, Reports, Excel, CSV and PDF; Home explains how to get the exact average. Exact full-tank figures are unchanged and always take priority.
+### Changed
+- **Fill-up form: price x litres = total are linked.** Enter any two and the third is calculated (litres = total / price, price = total / litres, total = litres x price). The two fields you touched most recently are kept and the remaining one is recalculated; a hint says which. Clearing a field leaves it empty while you type and refills it when you leave it. The total is before subsidy. Replaces the one-way litres fallback from 1.3.0 (`bindLitersFallback` is now `bindFillLinks`).
+- On edit, price and litres are kept and the total is calculated and shown.
 
 ## [1.5.1] - 2026-10-22
 ### Fixed

@@ -2,7 +2,7 @@
 const S={tab:"home",vid:null,vehicles:[],data:null,month:new Date().toISOString().slice(0,7),rv:"*",report:null,sync:"",busy:false};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const f1=n=>n===null||n===undefined?"–":n.toFixed(1);
+const f1=(n,approx)=>n===null||n===undefined?"–":(approx?"~":"")+n.toFixed(1);
 const money=n=>"Rs "+Math.round(n).toLocaleString();
 const IC={home:'<path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>',
  log:'<path d="M5 4h14v16H5zM9 9h6M9 13h6M9 17h3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
