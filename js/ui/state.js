@@ -1,5 +1,5 @@
 /* UI state, helpers, icons, tab list */
-const S={tab:"home",vid:null,vehicles:[],data:null,month:new Date().toISOString().slice(0,7),rv:"*",report:null,sync:""};
+const S={tab:"home",vid:null,vehicles:[],data:null,month:new Date().toISOString().slice(0,7),rv:"*",report:null,sync:"",busy:false};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const f1=n=>n===null||n===undefined?"–":n.toFixed(1);

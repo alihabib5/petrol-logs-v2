@@ -26,9 +26,10 @@ document.addEventListener("change",e=>{
   if(i==="rv"){S.rv=e.target.value;refresh()}
 });
 async function doSignIn(){
-  try{S.sync="Signing in...";render();await Auth.signIn(false);DB.load();await SyncService.pull();S.sync="";S.vid=null}
+  S.busy=true;S.sync="";render();
+  try{await Auth.signIn(false);DB.load();await SyncService.pull();S.vid=null}
   catch(err){Auth.mode=null;S.sync=err.message}
-  refresh();
+  S.busy=false;refresh();
 }
 async function doSync(){
   try{await SyncService.pull();S.sync="Synced with Google Drive ✓"}catch(err){S.sync="Sync failed: "+err.message}

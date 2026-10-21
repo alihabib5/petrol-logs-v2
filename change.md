@@ -6,6 +6,7 @@ All notable changes to Petrol Log. Newest first.
 ### Fixed
 - The app footer (Privacy Policy and Terms of Service links) now exists on every screen; 1.5.0 documented it but it was never added. Removed the leftover login-screen "Privacy" link.
 - Privacy policy contact email filled in.
+- Sign-in now shows an animated spinner on the button (both buttons disabled while signing in) instead of red "Signing in..." text.
 ### Removed
 - Unused CSS (architecture panel and traffic log styles) and the gateway traffic log nothing displayed.
 
