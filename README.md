@@ -10,7 +10,7 @@ Customers sign in with Google. Their data is saved in a sheet called "Petrol Log
 3. Google Auth Platform (OAuth consent screen) -> Get started:
    - App name, support email; Audience: **External**; contact email.
    - Data access -> Add scopes: `.../auth/drive.file`, `openid`, `email`, `profile`.
-   - Branding: set the privacy policy link to `https://YOUR-APP.vercel.app/privacy.html` and the terms of service link to `https://YOUR-APP.vercel.app/terms.html`. Edit the contact line (and governing law in terms.html) first.
+   - Branding: set the privacy policy link to `https://YOUR-APP.vercel.app/privacy.html` and the terms of service link to `https://YOUR-APP.vercel.app/terms.html`. Check the contact email and governing law in both pages first.
 4. Clients -> Create client -> **Web application**:
    - Authorised JavaScript origins: `http://localhost:8000` (testing) and `https://YOUR-APP.vercel.app`
    - No redirect URI is needed.

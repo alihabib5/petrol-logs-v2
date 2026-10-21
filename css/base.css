@@ -1,7 +1,7 @@
 /* Reset, typography, form controls, buttons */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-.app{max-width:640px;margin:0 auto;padding:16px 16px 120px}
+.app{max-width:640px;margin:0 auto;padding:16px 16px 0}
 h1{font-size:34px;letter-spacing:-.02em;margin:8px 0 14px;font-weight:700}
 h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);margin:22px 4px 8px;font-weight:600}
 .card{background:var(--card);border-radius:20px;padding:16px;border:1px solid var(--line)}

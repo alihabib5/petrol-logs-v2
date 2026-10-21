@@ -32,12 +32,6 @@ label{display:block;font-size:13px;color:var(--mute);margin:12px 0 4px;font-weig
 .bar{flex:1;min-width:22px;background:var(--acc);border-radius:6px 6px 2px 2px;opacity:.85;position:relative}
 .bar span{position:absolute;top:-17px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--mute)}
 .empty{text-align:center;color:var(--mute);padding:28px 10px}
-.arch{display:grid;gap:8px;font-size:14px}
-.node{border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--bg)}
-.node b{display:block}.arrow{text-align:center;color:var(--mute);line-height:1}
-.svcs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.log{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;max-height:220px;overflow:auto;color:var(--mute)}
-.log div{padding:3px 0;border-bottom:1px dashed var(--line)}.log b{color:var(--acc)}
 .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 @media (min-width:700px){.app{padding-top:32px}}
 
@@ -51,3 +45,6 @@ label{display:block;font-size:13px;color:var(--mute);margin:12px 0 4px;font-weig
 .seg button[aria-pressed=true]{background:var(--acc);color:var(--acc-ink)}
 
 .hint{font-size:13px;color:var(--mute);margin-top:6px}
+
+.foot{max-width:640px;margin:0 auto;padding:24px 16px calc(96px + env(safe-area-inset-bottom,0px));text-align:center;font-size:13px;color:var(--mute)}
+.foot a{color:var(--mute)}

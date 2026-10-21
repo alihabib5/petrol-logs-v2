@@ -2,13 +2,20 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [1.5.1] - 2026-10-22
+### Fixed
+- The app footer (Privacy Policy and Terms of Service links) now exists on every screen; 1.5.0 documented it but it was never added. Removed the leftover login-screen "Privacy" link.
+- Privacy policy contact email filled in.
+### Removed
+- Unused CSS (architecture panel and traffic log styles) and the gateway traffic log nothing displayed.
+
 ## [1.5.0] - 2026-10-07
 ### Added
 - `terms.html` (Terms of Service) and a rewritten `privacy.html`, both with a "Back to Petrol Log" link and light/dark support.
-- App footer on every screen with links to the Privacy Policy and Terms of Service (needed for Google's public consent screen).
+- App footer on every screen with links to the Privacy Policy and Terms of Service (needed for Google's public consent screen). Actually added in 1.5.1.
 ### Changed
 - Removed the separate "Privacy" link from the login screen; the footer replaces it.
-- Before publishing: fill in the contact email (both pages) and the governing law (terms.html). These pages are templates, not legal advice.
+- Before publishing: check the contact email (both pages) and the governing law (terms.html). These pages are templates, not legal advice.
 
 ## [1.4.0] - 2026-10-07
 ### Added

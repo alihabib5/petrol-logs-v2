@@ -7,5 +7,5 @@ function viewLogin(){
   <button class="pri" style="width:100%" data-act="signin" ${ok?"":"disabled"}>Sign in with Google</button>
   <button class="ghost" style="width:100%;margin-top:10px" data-act="local">Continue without sign-in</button>
   <p class="note">${ok?"The app can only see the Petrol Log sheet it creates, not your other files.":"Setup needed: add your Google client ID in js/config.js (see README)."}</p>
-  <p class="note err">${esc(S.sync||"")}</p><p class="note"><a href="privacy.html">Privacy</a></p></div>`;
+  <p class="note err">${esc(S.sync||"")}</p></div>`;
 }
