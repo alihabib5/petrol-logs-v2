@@ -2,6 +2,10 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [1.6.0] - 2026-10-22
+### Added
+- Edit a fill-up: a pencil button on each Log row opens the fill-up form pre-filled. Saving updates the entry in place (same ID, same sheet row in Google Sheets). Same validation as a new entry; the entry being edited is ignored in the odometer-order check.
+
 ## [1.5.1] - 2026-10-22
 ### Fixed
 - The app footer (Privacy Policy and Terms of Service links) now exists on every screen; 1.5.0 documented it but it was never added. Removed the leftover login-screen "Privacy" link.
