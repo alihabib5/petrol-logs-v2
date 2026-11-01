@@ -18,11 +18,12 @@ function render(){
   tabs.querySelectorAll("button").forEach(b=>b.setAttribute("aria-selected",b.dataset.t===S.tab)); /* same buttons stay in the DOM, so the highlight can transition */
   const views={home:viewHome,log:viewLog,rep:viewReports,cars:viewVehicles,srv:viewAccount};
   app.innerHTML=views[S.tab]();
+  if(S.tab==="log"&&$("#dtBody"))drawLog(); /* sets the select-all checkbox state */
   app.classList[S.entering?"add":"remove"]("enter");
   if(S.entering)[...app.children].forEach((c,i)=>c.style.setProperty("--d",Math.min(i,8)*.06+"s"));
   settle(app);
 }
 /* Elements that carry data-to start at an "empty" value (gauge arc, chart bars); one frame later they move to the real value so the CSS transition runs */
 function settle(app){
-  requestAnimationFrame(()=>requestAnimationFrame(()=>app.querySelectorAll("[data-to]").forEach(e=>{e.style[e.dataset.prop]=e.dataset.to})));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>app.querySelectorAll("[data-to]").forEach(e=>{e.style.setProperty(e.dataset.prop,e.dataset.to)})));
 }
