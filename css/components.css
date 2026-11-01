@@ -129,17 +129,21 @@ button.cal-cap:hover{background:var(--bg)}
 @media (max-height:480px){.cal{padding:8px}.cal-d{height:34px}}
 
 /* Log table: cards on phones, columns from 680px */
-.dt{padding:0;overflow:hidden}
-.dt-ftog{width:calc(100% - 24px);margin:12px;justify-content:center}
-.dt-fil{display:none;gap:12px;padding:0 12px 12px;grid-template-columns:1fr 1fr;border-bottom:1px dashed var(--line)}
-.dt-fil.open{display:grid}
-.dt-f label{margin-top:0}.dt-f-q{grid-column:1/-1}
+.dt{padding:0;overflow:visible;position:relative}
+#dtBody .dt-r:last-child{border-radius:0 0 19px 19px}
+.dt-fil{display:none;position:absolute;z-index:6;top:calc(100% + 4px);left:12px;right:12px;padding:14px;grid-template-columns:1fr 1fr;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 14px 40px rgba(0,0,0,.3);color:var(--ink);font-size:16px}
+.dt-fil.open{display:grid;animation:in .2s cubic-bezier(.2,.8,.2,1) both}
+.dt-ff{grid-column:1/-1;display:flex;justify-content:space-between;gap:8px;padding-top:2px}
+.dt-bt{display:flex;align-items:center;gap:8px}
+.dt-ftog{min-height:44px;padding:10px 14px;font-size:14px;display:inline-flex;align-items:center;gap:6px}
+.dt-ftog svg{transition:transform .2s}.dt-ftog[aria-expanded="true"] svg{transform:rotate(180deg)}
+.dt-f label{margin-top:0}.dt-f-q,.dt-f-w{grid-column:1/-1}
 .dt-sw{position:relative}.dt-sw input{padding-left:38px}
 .dt-lens{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--mute);pointer-events:none}
 .pair{display:flex}.pair input{min-width:0}
 .pair input:first-child{border-radius:12px 0 0 12px}.pair input+input{margin-left:-1px;border-radius:0 12px 12px 0}
-.dt-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 14px;font-size:13px;color:var(--mute)}
-.dt-clr{min-height:44px;padding:10px 14px;font-size:13px}
+.dt-bar{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px 8px 14px;font-size:13px;color:var(--mute)}
+.dt-clr{min-height:44px;padding:10px 14px;font-size:14px}.dt-clr[hidden]{display:none}
 .dt-sel{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 12px 8px;padding:8px 12px;border-radius:14px;background:var(--bg);font-size:14px}
 .dt-sel[hidden]{display:none}
 .dt-selb{display:flex;gap:8px}
@@ -163,7 +167,7 @@ button.cal-cap:hover{background:var(--bg)}
 .badge{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;white-space:nowrap}
 .badge.full{background:var(--ok-soft);color:var(--ok)}.badge.part{background:var(--warn-soft);color:var(--warn)}
 @media (min-width:680px){
-  .dt-fil,.dt-fil.open{display:grid;grid-template-columns:repeat(4,1fr)}.dt-f{grid-column:span 2}.dt-f-q{grid-column:span 2}.dt-ftog{display:none}
+  .dt-fil{left:auto;width:440px}
   .dt-r{grid-template-columns:40px minmax(0,1fr) 84px 88px 62px 90px;gap:8px;padding:6px 12px 6px 4px}
   .dt-m .t{font-size:15px;white-space:nowrap}
   .dt-h{min-height:44px}.dt-h .dt-c{grid-column:auto}.dt-h>:not(.dt-c){display:block}.dt-sa{display:none}

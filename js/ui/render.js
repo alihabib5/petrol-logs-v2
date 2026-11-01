@@ -9,7 +9,7 @@ async function refresh(){
 
 function render(){
   const app=$("#app"),view=Auth.mode?S.tab:"login";
-  S.entering=view!==S.view;S.view=view; /* a view change animates in; re-rendering the same view does not replay it */
+  S.entering=view!==S.view;S.view=view;if(S.entering)S.lfOpen=false; /* the filter dropdown starts closed on every visit */ /* a view change animates in; re-rendering the same view does not replay it */
   document.querySelector(".tabs").style.display=Auth.mode?"":"none";
   app.classList[Auth.mode?"remove":"add"]("landing");
   if(!Auth.mode){$("#tabs").innerHTML="";app.classList.remove("enter");app.innerHTML=viewLogin();return settle(app)}
