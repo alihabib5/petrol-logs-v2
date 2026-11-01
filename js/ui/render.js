@@ -17,7 +17,7 @@ function render(){
   if(!tabs.children.length)tabs.innerHTML=TABS.map(([k,l])=>`<button role="tab" data-t="${k}"><svg viewBox="0 0 24 24">${IC[k==="cars"?"car":k]}</svg>${l}</button>`).join("");
   tabs.querySelectorAll("button").forEach(b=>b.setAttribute("aria-selected",b.dataset.t===S.tab)); /* same buttons stay in the DOM, so the highlight can transition */
   const views={home:viewHome,log:viewLog,rep:viewReports,cars:viewVehicles,srv:viewAccount};
-  app.innerHTML=views[S.tab]();
+  app.innerHTML=reconnectBanner()+views[S.tab]();
   if(S.tab==="log"&&$("#dtBody"))drawLog(); /* sets the select-all checkbox state */
   app.classList[S.entering?"add":"remove"]("enter");
   if(S.entering)[...app.children].forEach((c,i)=>c.style.setProperty("--d",Math.min(i,8)*.06+"s"));

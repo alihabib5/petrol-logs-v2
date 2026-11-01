@@ -176,3 +176,8 @@ button.cal-cap:hover{background:var(--bg)}
   .dt-n{display:inline}.sm{display:none}
   .dt-a{justify-content:flex-end}
 }
+
+/* Reconnect banner */
+.recon{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;margin:0 0 14px;border:1px solid var(--line);border-radius:16px;background:var(--warn-soft)}
+.recon b{display:block;font-size:15px}.recon small{display:block;color:var(--ink);font-size:13px;margin-top:2px;overflow-wrap:anywhere}
+.recon button{flex:none}

@@ -1,5 +1,5 @@
 /* UI state, helpers, icons, tab list */
-const S={tab:"home",vid:null,vehicles:[],data:null,month:(d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"))(new Date()),rv:"*",report:null,sync:"",busy:false,syncing:false,entering:true,view:null,gaugeOff:null,lf:{q:"",tmin:"",tmax:"",type:"all",kmin:"",kmax:""},lfOpen:false,sel:new Set(),deleting:false};
+const S={tab:"home",vid:null,vehicles:[],data:null,month:(d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"))(new Date()),rv:"*",report:null,sync:"",busy:false,syncing:false,entering:true,view:null,gaugeOff:null,lf:{q:"",tmin:"",tmax:"",type:"all",kmin:"",kmax:""},lfOpen:false,sel:new Set(),deleting:false,reconnecting:false};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const f1=(n,approx)=>n===null||n===undefined?"–":(approx?"~":"")+n.toFixed(1);
