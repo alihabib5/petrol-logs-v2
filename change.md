@@ -2,6 +2,28 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [1.9.0] - 2026-11-01
+### Added
+- **Dynamic motion.** Screens are rebuilt from HTML on every update, which used to cancel CSS transitions (the gauge arc and chart bars never actually animated). Now:
+  - a **view change** (switching tab, signing in or out) fades the page's blocks in one after another; re-rendering the *same* view (picking a vehicle, saving, syncing, the sign-in spinner) never replays it;
+  - the **gauge arc** sweeps from its previous value (or from empty on a new view) to the new average, and the **efficiency bars** grow in with a stagger;
+  - the **tab bar** is built once so the active tab highlight transitions instead of snapping; buttons ease and press down; the bottom sheet's backdrop fades;
+  - the sign-in hero animates every time it appears (including after sign-out), not only on the first load;
+  - everything is switched off for users with reduced-motion enabled.
+### Changed
+- **Responsive polish.** Audited at 320, 360, 390, 768, 1024 and 1440 px on every tab and form (no horizontal overflow). Fixes: on wide screens the "+ Fill-up" button now sits beside the content column instead of at the far screen edge or on top of rows; stat figures scale down on narrow phones so "Rs 30,579" stays on one line; the edit and delete buttons use proper SVG icons instead of text glyphs.
+
+## [1.8.0] - 2026-11-01
+### Changed
+- **New sign-in screen, ported from the Hero 37 layout** in plain HTML/CSS (no React, no framer-motion): full-width hero with a brand bar and "Sign in" link, a two-line headline ("Every litre, every kilometre."), subtitle, **Sign in with Google** (with arrow and the spinner) and **Continue without sign-in**, two small facts bottom-left and a tagline bottom-right. It stacks on phones.
+- Uses the app's own look: theme tokens (light / dark / system), the orange accent as a CSS gradient glow (new `--glow` token) instead of the template's hosted background image, and the gauge as the logo. The entrance animation (blur + rise, staggered) plays once, not on every re-render, and is disabled for reduced-motion users.
+### Removed
+- The old centred login styles.
+
+## [1.7.1] - 2026-11-01
+### Changed
+- **Account tab: "Sync now" is now an inline action row** (Google Sheet icon, label, status text and a button). While syncing the button shows a spinner and is disabled, the status reads "Syncing with your Drive...", then "Synced with Google Drive ✓" (or a red "Sync failed: ..." message and the button returns). Extra clicks are ignored while a sync is running, and the spinner stays at least 0.6 s so it is visible. Adapted from an InlineAction component pattern, in plain HTML/CSS (no React).
+
 ## [1.7.0] - 2026-11-01
 ### Changed
 - **PDF report redesigned.** Four headline figures at the top: **total money** (net after subsidy), **distance travelled**, **average fuel (km/L)** and **fuel filled (litres)**, with a gross - subsidy = net line and the fill-up count below. Each vehicle repeats the same summary above its table and ends with a **Total** row (distance, litres, subsidy, net, average km/L). A "~" still marks estimated km/L.
