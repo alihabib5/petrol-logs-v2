@@ -1,5 +1,6 @@
 /* Click / change handlers, sync */
 document.addEventListener("click",async e=>{
+  if(S.lfOpen&&!e.target.closest("#lfPanel,[data-act=lfopen]"))lfToggle(false);
   const t=e.target.closest("button,.sheet-bg");if(!t)return;
   if(t.id==="sheet"&&e.target===t)return closeSheet();
   if(t.dataset.t){S.tab=t.dataset.t;return render()}
@@ -7,8 +8,9 @@ document.addEventListener("click",async e=>{
   if(t.dataset.del){try{await api("DELETE","/logs/"+t.dataset.del)}catch(e){alert(e.message)}return refresh()}
   if(t.dataset.rmcar){if(confirm("Remove this vehicle and all its entries?")){try{await api("DELETE","/vehicles/"+encodeURIComponent(t.dataset.rmcar))}catch(e){alert(e.message)}refresh()}return}
   if(t.dataset.cal)return Cal.open(t);
-  if(t.dataset.act==="lfopen"){S.lfOpen=!S.lfOpen;t.setAttribute("aria-expanded",S.lfOpen);$("#lfPanel").classList.toggle("open",S.lfOpen);return}
-  if(t.dataset.act==="lfclear"){S.lf={...LF0};render();return}
+  if(t.dataset.act==="lfopen"){lfToggle(!S.lfOpen);if(S.lfOpen)setTimeout(()=>$("#lf_q")?.focus(),30);return}
+  if(t.dataset.act==="lfclose"){lfToggle(false);document.querySelector("[data-act=lfopen]")?.focus();return}
+  if(t.dataset.act==="lfclear"){S.lf={...LF0};$("#lf_q").value="";["tmin","tmax","kmin","kmax"].forEach(k=>$("#lf_"+k).value="");$("#lf_type").value="all";drawLog();return}
   if(t.dataset.act==="lfsel0"){S.sel.clear();document.querySelectorAll("#dtBody .dt-ck").forEach(c=>{c.checked=false;c.closest(".dt-r").classList.remove("on")});drawSel();return}
   if(t.dataset.act==="lfdel"){
     const ids=[...S.sel];if(!ids.length||S.deleting)return;
@@ -54,3 +56,11 @@ async function doSync(){
   try{await Promise.all([SyncService.pull(),new Promise(r=>setTimeout(r,600))]);S.sync="Synced with Google Drive ✓"}catch(err){S.sync="Sync failed: "+err.message}
   S.syncing=false;refresh();
 }
+
+function lfToggle(open){
+  S.lfOpen=open;const p=$("#lfPanel");if(!p)return;
+  p.classList.toggle("open",open);document.querySelector("[data-act=lfopen]")?.setAttribute("aria-expanded",open);
+}
+document.addEventListener("keydown",ev=>{
+  if(ev.key==="Escape"&&S.lfOpen&&!$("#cal").classList.contains("on")){lfToggle(false);document.querySelector("[data-act=lfopen]")?.focus()}
+});

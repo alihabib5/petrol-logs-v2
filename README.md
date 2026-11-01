@@ -54,7 +54,8 @@ js/services/          vehicle | fuel-log | sync | analytics (km/L) | report
 js/gateway.js         routes /vehicles /logs /analytics /reports to services
 js/ui/                state, calendar (date + month picker), components, render, forms, fuel-fallback (price/litres/total linking), events
 js/ui/views/          home | log | reports | vehicles | account | login (hero sign-in screen)
-js/reports/export.js  Excel / CSV / PDF monthly reports
+js/reports/export.js  Excel / CSV monthly reports (and the PDF entry point)
+js/reports/pdf.js     designed PDF report
 js/main.js            startup
 ```
 
@@ -67,10 +68,10 @@ The total is the amount before subsidy. Logic: `js/ui/fuel-fallback.js` (`bindFi
 Log tab: the pencil on each row reopens the fill-up form with that entry's values; Save updates it in place (and the same row in your Google Sheet). The cross deletes it. Edits follow the same rules as new entries.
 
 ## PDF report
-Headline figures first: total money (net after subsidy), distance travelled, average fuel (km/L) and litres filled; then one table per vehicle with a Total row. Distance = sum of the km between consecutive odometer readings in the month. A "~" marks an estimated km/L.
+One designed report per vehicle: net spend (with the subsidy share and cost per km), fuel bought, average efficiency, distance, a km/L chart per fill, the price-per-litre trend, three plain-language insights, and the full fills table. Tiny top-ups are drawn dashed and marked † because their km/L is unreliable; "~" marks an estimate from odometer readings. Code: `js/reports/pdf.js`.
 
 ## Fuel Log table
-The Log tab lists your fill-ups as a table you can filter by date/odometer text, total cost, full or partial, and km/L, with a count of what is shown. Tick rows (or select all shown rows) to delete several at once. On phones it is a list of cards with a Filters button; on wide screens it is a table with columns. Code: `js/ui/views/log.js`, styles `Log table` in `css/components.css`.
+The Log tab lists your fill-ups as a table. The **Filters** dropdown narrows it by date/odometer text, full or partial, total cost and km/L, with a count of what is shown. Tick rows (or select all shown rows) to delete several at once. On phones it is a list of cards with a Filters button; on wide screens it is a table with columns. Code: `js/ui/views/log.js`, styles `Log table` in `css/components.css`.
 
 ## Calendar
 The fill-up date and the Reports month use the app's own calendar (rounded card, orange selected day). Arrow keys move between days, PageUp/PageDown change month, Enter picks, Esc closes. "Today" always means your local date. Code: `js/ui/calendar.js`.

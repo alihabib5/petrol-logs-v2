@@ -2,6 +2,16 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [2.3.0] - 2026-11-01
+### Changed
+- **PDF report redesigned from the supplied "Petrol Report" sample** (new `js/reports/pdf.js`). One designed report per vehicle: header with month and plate chip; a large **Net spend** card with a paid-versus-subsidy bar and cost per km; four stat cards (Fuel bought, Avg efficiency, Distance with odometer range, Subsidy saved); an **Efficiency per fill** bar chart with the average as a dashed line and dashed bars for tiny top-ups whose km/L is unreliable; a **Price per litre** trend line with % change; three **insight cards** written from the month's own data (price trend, subsidy share, top-ups, best fill, cost per km); and an **All fills** table with Trip km, thousands-separated totals and km/L chips (orange when above the average, † for small fills). Long months continue the table on further pages with the header repeated.
+- Everything is vector (sharp, selectable text). Estimated km/L keeps its "~" marker. A fill counts as a small top-up at 2 L or less; it is flagged unreliable when its km/L is more than 50% away from the month average.
+- Excel and CSV exports are unchanged.
+
+## [2.2.1] - 2026-11-01
+### Changed
+- **Log filters now live in a dropdown** on every screen size. A **Filters** button (with the number of active filters) sits next to the "8 fill-ups" count; it opens a panel over the table (rows do not move) with Search, Type, Total and km/L. It closes with **Done**, **Esc** (focus returns to the button) or a click outside, and starts closed each time you visit the tab. **Clear** appears beside the button while any filter is active; **Clear filters** inside the dropdown resets everything without closing it.
+
 ## [2.2.0] - 2026-11-01
 ### Added
 - **Fuel Log is now a filterable table** (adapted from a data-table design). Filters: **Search** (date or odometer), **Total (Rs)** min/max, **Type** (All / Full tank / Partial) and **km/L** min/max, with a live "Showing 3 of 9" count and **Clear filters**. A filter on km/L skips entries that have no km/L yet. Typing in a filter never loses focus (only the rows redraw).

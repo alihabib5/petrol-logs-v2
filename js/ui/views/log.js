@@ -44,7 +44,7 @@ function drawLog(){
   $("#dtBody").innerHTML=logRowsHTML(list);
   $("#dtCount").textContent=logCountText(list.length,all.length);
   drawSel();
-  const c=lfActive();$("#lfN").textContent=c?` · ${c}`:"";
+  const c=lfActive();$("#lfN").textContent=c?` · ${c}`:"";$("#lfClr").hidden=!c;
 }
 /* selection changes update in place (no row redraw), so keyboard focus stays on the checkbox */
 function drawSel(){
@@ -61,14 +61,15 @@ function viewLog(){
   else{
     const vis=list.map(x=>x.id),n=vis.filter(id=>S.sel.has(id)).length,c=lfActive();
     h+=`<div class="card dt" style="margin-top:14px">
-    <button class="ghost dt-ftog" data-act="lfopen" aria-expanded="${S.lfOpen}" aria-controls="lfPanel">Filters<span id="lfN">${c?` · ${c}`:""}</span></button>
-    <div class="dt-fil ${S.lfOpen?"open":""}" id="lfPanel">
+    <div class="dt-bar"><span id="dtCount" role="status">${logCountText(list.length,all.length)}</span>
+      <span class="dt-bt"><button class="ghost dt-clr" id="lfClr" data-act="lfclear" ${c?"":"hidden"}>Clear</button><button class="ghost dt-ftog" data-act="lfopen" aria-haspopup="true" aria-expanded="${S.lfOpen}" aria-controls="lfPanel">Filters<span id="lfN">${c?` · ${c}`:""}</span><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span>
+      <div class="dt-fil ${S.lfOpen?"open":""}" id="lfPanel" role="group" aria-label="Filters">
       <div class="dt-f dt-f-q"><label for="lf_q">Search</label><div class="dt-sw">${LENS}<input id="lf_q" type="search" inputmode="search" placeholder="Date or km" value="${esc(f.q)}" autocomplete="off"></div></div>
+      <div class="dt-f dt-f-w"><label for="lf_type">Type</label><select id="lf_type"><option value="all" ${f.type==="all"?"selected":""}>All</option><option value="full" ${f.type==="full"?"selected":""}>Full tank</option><option value="partial" ${f.type==="partial"?"selected":""}>Partial</option></select></div>
       <div class="dt-f"><label for="lf_tmin">Total (Rs)</label><div class="pair"><input id="lf_tmin" type="number" inputmode="decimal" min="0" placeholder="Min" value="${esc(f.tmin)}" aria-label="Minimum total"><input id="lf_tmax" type="number" inputmode="decimal" min="0" placeholder="Max" value="${esc(f.tmax)}" aria-label="Maximum total"></div></div>
-      <div class="dt-f"><label for="lf_type">Type</label><select id="lf_type"><option value="all" ${f.type==="all"?"selected":""}>All</option><option value="full" ${f.type==="full"?"selected":""}>Full tank</option><option value="partial" ${f.type==="partial"?"selected":""}>Partial</option></select></div>
       <div class="dt-f"><label for="lf_kmin">km/L</label><div class="pair"><input id="lf_kmin" type="number" inputmode="decimal" min="0" step="0.1" placeholder="Min" value="${esc(f.kmin)}" aria-label="Minimum km per litre"><input id="lf_kmax" type="number" inputmode="decimal" min="0" step="0.1" placeholder="Max" value="${esc(f.kmax)}" aria-label="Maximum km per litre"></div></div>
-    </div>
-    <div class="dt-bar"><span id="dtCount" role="status">${logCountText(list.length,all.length)}</span><button class="ghost dt-clr" data-act="lfclear">Clear filters</button></div>
+        <div class="dt-ff"><button class="ghost" data-act="lfclear">Clear filters</button><button class="pri" data-act="lfclose">Done</button></div>
+      </div></div>
     <div class="dt-sel" id="dtSel" role="status" ${S.sel.size?"":"hidden"}>${logSelHTML()}</div>
     <div class="dt-tbl" role="table" aria-label="Fill-ups">
       <div class="dt-r dt-h" role="row"><label class="dt-c"><input type="checkbox" class="dt-ck" id="dt_all" aria-label="Select all shown fill-ups" ${vis.length&&n===vis.length?"checked":""} ${vis.length?"":"disabled"}><span class="dt-sa">Select all</span></label><span class="dt-hm" role="columnheader">Fill-up</span><span class="dt-ht" role="columnheader">Total</span><span class="dt-hb" role="columnheader">Type</span><span class="dt-hk" role="columnheader">km/L</span><span class="dt-ha"></span></div>
