@@ -91,7 +91,7 @@ Screens animate in when you change view (tab, sign-in, sign-out), not when the s
 Tested: Chrome (desktop and phone/tablet emulation with touch, portrait and landscape, 320 to 3840 px) and WebKit (Safari's engine). Not tested: Firefox, real iPhone/Android hardware. Modern features (`color-mix`, `svh`, `<input type=month>`) have fallbacks. Fonts are fixed px, so OS-level "larger text" is not followed (browser zoom is).
 
 ## Notes
-- Sign-in lasts about an hour per Google token; the app renews it quietly and asks to sign in again if it cannot.
+- Staying signed in: your Google profile and token are remembered in this browser, so reopening the app goes straight to your data. Google's token lasts about an hour; after that the app keeps working on your saved data and shows a **Reconnect** button (one tap). **Sign out** clears everything stored on the device.
 - Account tab: a Google Sheet row with a **Sync now** button (spinner while syncing, then a status line); Theme (System / Light / Dark) and Currency (display label only, no conversion); saved on the device.
 - "Continue without sign-in" keeps data in the browser only (demo / offline).
 - Cost = litres x price - subsidy. Cost per km needs an exact km/L.

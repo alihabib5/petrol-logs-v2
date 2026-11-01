@@ -9,6 +9,14 @@ All notable changes to Petrol Log. Newest first.
 - The PDF file is named and titled **Petrol Report — October 2026** (file name and document title).
 - Excel and CSV exports are unchanged.
 
+## [2.4.0] - 2026-11-01
+### Fixed
+- **No more signing in on every visit.** The app used to keep your Google session only in memory and tried a silent background sign-in on each load; browsers block that popup (it is not triggered by a click), so you landed on the sign-in screen every time. Now your Google profile and access token are remembered in this browser (`localStorage`), so reopening the app goes straight to your data.
+- **An expired token no longer signs you out.** Google gives browser-only apps a token that lasts about an hour and cannot be renewed without a click. When it runs out the app keeps working on your saved data and shows a **Reconnect** banner; one tap renews it and syncs. Saving or "Sync now" also renews it. A token that Google rejects mid-use (401) does the same instead of logging out.
+- Only an explicit **Sign out** returns to the sign-in screen, and it clears the saved profile, token and cached data. Sessions saved by older versions fall back safely to the sign-in screen (shown immediately, no blank wait).
+### Security note
+- The 1-hour access token is stored in `localStorage` (cookies would be pointless: the app has no server). Scope is `drive.file` (only the Petrol Log sheet) and it expires within the hour; Sign out also revokes it. A script running on the page could read it, so only trusted scripts are loaded (Google sign-in, SheetJS, jsPDF).
+
 ## [2.3.1] - 2026-11-01
 ### Changed
 - **PDF now matches the reference as ONE tall page** (595 x 967 pt, the 960 x 1560 ratio) instead of A4 pages; each vehicle's report is sized to fit all of its content (up to 1500 pt, then the table continues on further reference-size pages). Checked by rendering at the reference's pixel size and comparing side by side: layout, spacing, card heights (140 / 160), chart scale, insight cards and table rhythm line up.

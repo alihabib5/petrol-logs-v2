@@ -29,6 +29,7 @@ document.addEventListener("click",async e=>{
   if(a==="local"){Auth.mode="local";localStorage.setItem("petrol-mode","local");S.sync="";DB.load();refresh()}
   if(a==="signout"){Auth.signOut();S.sync="";S.vid=null;refresh()}
   if(a==="pull")doSync();
+  if(a==="reconnect")doReconnect();
   if(["xlsx","pdf","csv"].includes(a))exportReport(a);
 });
 document.addEventListener("input",e=>{
@@ -64,3 +65,12 @@ function lfToggle(open){
 document.addEventListener("keydown",ev=>{
   if(ev.key==="Escape"&&S.lfOpen&&!$("#cal").classList.contains("on")){lfToggle(false);document.querySelector("[data-act=lfopen]")?.focus()}
 });
+
+/* One tap renews the Google token (a tap lets the browser open Google's small window), then syncs. */
+async function doReconnect(){
+  if(S.reconnecting)return;
+  S.reconnecting=true;S.sync="";render();
+  try{await Auth.request(false);await SyncService.pull();S.sync="Synced with Google Drive ✓"}
+  catch(err){Auth.needsReconnect=true;S.sync="Could not reconnect: "+err.message}
+  S.reconnecting=false;refresh();
+}

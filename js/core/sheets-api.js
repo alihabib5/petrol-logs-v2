@@ -8,7 +8,7 @@ const Gs={
   async call(url,body,method){
     const t=await Auth.bearer();
     const r=await fetch(url,{method:method||(body?"POST":"GET"),headers:{Authorization:"Bearer "+t,"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined});
-    if(r.status===401){Auth.exp=0;throw new Error("Session expired. Please sign in again.")}
+    if(r.status===401){Auth.expire();throw new Error("Google needs you to reconnect. Tap Reconnect and try again.")}
     const j=await r.json().catch(()=>({}));
     if(!r.ok)throw new Error((j.error&&j.error.message)||"Google error "+r.status);
     return j;
