@@ -10,7 +10,7 @@ function viewHome(){
       <div class="card stat"><div class="v num">${d.costKm?"Rs "+d.costKm.toFixed(1):"–"}</div><div class="l">Cost per km</div></div>
       <div class="card stat"><div class="v num">${money(d.spend)}</div><div class="l">Total spent (after subsidy)</div></div></div>`;
       const e=d.rows.filter(x=>x.eff!==null).slice(-10),mx=Math.max(...e.map(x=>x.eff),1);
-      h+=`<h2>Efficiency by fill</h2><div class="card">${e.length?`<div class="bars">${e.map((x,i)=>`<div class="bar" style="height:0;transition-delay:${i*.05}s" data-prop="height" data-to="${x.eff/mx*100}%" title="${x.date}"><span class="num">${x.eff.toFixed(1)}</span></div>`).join("")}</div>`:`<div class="empty">Log two full-tank fills to see efficiency.</div>`}</div>`;
+      h+=`<h2>Efficiency by fill</h2><div class="card">${e.length?`<div class="bars">${e.map((x,i)=>`<div class="bar" style="height:${x.eff/mx*100}%;--td:${i*.05}s" data-prop="--s" data-to="1" title="${x.date}"><span class="num">${x.eff.toFixed(1)}</span></div>`).join("")}</div>`:`<div class="empty">Log two full-tank fills to see efficiency.</div>`}</div>`;
     }
   return h;
 }

@@ -45,14 +45,14 @@ Customer's own Google Drive   Sheet "Petrol Log", one tab per plate number
 ```
 index.html            markup only
 vercel.json           headers (needed for Google's sign-in popup)
-privacy.html          privacy policy page (required by Google consent screen)
-terms.html            terms of service page (linked from the consent screen and the app footer)
+privacy.html          privacy policy page (required by Google consent screen; linked from the sign-in screen and the Account tab)
+terms.html            terms of service page (linked from the consent screen, the sign-in screen and the Account tab)
 css/                  tokens.css | base.css | components.css
 js/config.js          YOUR Google client ID
 js/core/              prefs.js (theme + currency) | storage.js (local cache) | auth.js (Google sign-in) | sheets-api.js (Sheets/Drive calls)
 js/services/          vehicle | fuel-log | sync | analytics (km/L) | report
 js/gateway.js         routes /vehicles /logs /analytics /reports to services
-js/ui/                state, components, render, forms, fuel-fallback (price/litres/total linking), events
+js/ui/                state, calendar (date + month picker), components, render, forms, fuel-fallback (price/litres/total linking), events
 js/ui/views/          home | log | reports | vehicles | account | login (hero sign-in screen)
 js/reports/export.js  Excel / CSV / PDF monthly reports
 js/main.js            startup
@@ -69,6 +69,12 @@ Log tab: the pencil on each row reopens the fill-up form with that entry's value
 ## PDF report
 Headline figures first: total money (net after subsidy), distance travelled, average fuel (km/L) and litres filled; then one table per vehicle with a Total row. Distance = sum of the km between consecutive odometer readings in the month. A "~" marks an estimated km/L.
 
+## Fuel Log table
+The Log tab lists your fill-ups as a table you can filter by date/odometer text, total cost, full or partial, and km/L, with a count of what is shown. Tick rows (or select all shown rows) to delete several at once. On phones it is a list of cards with a Filters button; on wide screens it is a table with columns. Code: `js/ui/views/log.js`, styles `Log table` in `css/components.css`.
+
+## Calendar
+The fill-up date and the Reports month use the app's own calendar (rounded card, orange selected day). Arrow keys move between days, PageUp/PageDown change month, Enter picks, Esc closes. "Today" always means your local date. Code: `js/ui/calendar.js`.
+
 ## Subsidy switch
 The fill-up form has a **Government subsidy applied?** switch. Off (default): no subsidy, just log the fuel.
 On: a Subsidy amount field appears and the amount is deducted from the total in "Net payable" and in all cost totals and reports.
@@ -79,6 +85,9 @@ Until then an **estimate** from odometer readings is shown with a "~": (new odom
 
 ## Motion and layout
 Screens animate in when you change view (tab, sign-in, sign-out), not when the same screen refreshes. The gauge arc and chart bars move from their previous value to the new one. All animation is off when the device asks for reduced motion. The layout is mobile first and checked from 320 to 1440 px wide. See `render()` / `settle()` in `js/ui/render.js` and the "Motion" block at the end of `css/components.css`.
+
+## Browser and device support
+Tested: Chrome (desktop and phone/tablet emulation with touch, portrait and landscape, 320 to 3840 px) and WebKit (Safari's engine). Not tested: Firefox, real iPhone/Android hardware. Modern features (`color-mix`, `svh`, `<input type=month>`) have fallbacks. Fonts are fixed px, so OS-level "larger text" is not followed (browser zoom is).
 
 ## Notes
 - Sign-in lasts about an hour per Google token; the app renews it quietly and asks to sign in again if it cannot.

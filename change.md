@@ -2,6 +2,43 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [2.2.0] - 2026-11-01
+### Added
+- **Fuel Log is now a filterable table** (adapted from a data-table design). Filters: **Search** (date or odometer), **Total (Rs)** min/max, **Type** (All / Full tank / Partial) and **km/L** min/max, with a live "Showing 3 of 9" count and **Clear filters**. A filter on km/L skips entries that have no km/L yet. Typing in a filter never loses focus (only the rows redraw).
+- **Row selection and bulk delete.** Tick rows or use select-all (it selects only the rows currently shown, with a half-ticked state); a bar shows "N selected" with **Clear** and **Delete selected** (asks for confirmation). Selecting keeps keyboard focus on the checkbox. Switching vehicle clears the selection.
+- Full-tank / Partial **badges** (green / amber, theme-aware colours that pass contrast) and a row number (#1 = oldest).
+### Changed
+- **Layout adapts to the screen:** on phones each entry stays a compact card (checkbox + date/odometer + litres line + km/L + edit/delete) with the filters in a collapsible **Filters** panel; from 680 px up it becomes a real table with Fill-up / Total / Type / km/L columns, a header row and the filters always visible. Edit and delete per row still work.
+
+## [2.1.0] - 2026-11-01
+### Added
+- **New calendar picker** (`js/ui/calendar.js`) for the fill-up date and the Reports month. Rounded card, round day buttons, orange selected day, soft grey "today", muted days from neighbouring months, previous/next buttons, tap the month name to jump through a month grid, and Today / Close buttons. Replaces the browser's native pickers, so it looks the same everywhere and desktop Safari/Firefox (no native month picker) now get a proper one. Follows light and dark themes.
+- Keyboard and screen reader support: arrow keys move by day/week (and across months), PageUp/PageDown change month, Enter picks, Esc closes and returns focus, Tab stays inside the dialog; days have full-date labels, `aria-selected` and `aria-current="date"`. A visible focus ring is kept.
+### Fixed
+- **"Today" was taken from UTC**, so before 5 am in Pakistan the new fill-up form defaulted to yesterday (22 Oct 01:28 showed 21 Oct). The form default, the calendar's "today" and the Reports month now use the local date.
+
+## [2.0.1] - 2026-11-01
+### Fixed
+- **Design-quality issues flagged by the Impeccable browser extension, fixed everywhere (not just on the sign-in screen):**
+  - *Layout property animation:* the chart bars animated `height`, which forces layout. They now animate `transform: scaleY` on a pseudo-element (GPU-friendly), and the gauge/bars share one `settle()` step using `setProperty`.
+  - *Cramped padding:* every text button had 0 px vertical padding and relied on `min-height`. All buttons now have at least 10 px (rule: >= 0.3em).
+  - *Low contrast text:* error red (3.8 to 4.3:1) is now a theme token `--err` (#c92a2a light, #ff6b6b dark). Light theme: muted grey #6b6f78 to #62666f (4.5 to 5.1:1), accent #e8590c to #c8440c so white button text passes (3.6 to 4.9:1), green #2b8a3e to #237a35. Text on the hero's orange glow uses a stronger `--hero-mute` token (measured on the real rendered pixels: lowest 4.72:1). `privacy.html` and `terms.html` got the same light-theme colours.
+  - Small text raised: tab labels and chart values 10-11 px to 12 px.
+- Every text/background pair on every screen, in light and dark, at phone and desktop width, now measures at least 4.5:1 (3:1 for large text).
+
+## [2.0.0] - 2026-11-01
+### Changed
+- **Privacy Policy and Terms of Service moved out of the footer.** The footer is gone. The links now appear (1) on the sign-in screen as "By continuing you agree to the Terms of Service and Privacy Policy" under the sign-in buttons, which keeps them visible on the app's home page for Google's consent screen, and (2) in a new **About** card in the Account tab.
+### Fixed
+- **Compatibility and adaptivity gaps found in review:**
+  - The hero glow now has a plain gradient that works everywhere; the theme-aware `color-mix` version is applied only where supported. Viewport heights fall back from `svh` to `vh`.
+  - Report month field: browsers without a month picker (desktop Safari and Firefox show a text box) now get a "YYYY-MM" format hint, and the value is validated before it is used.
+  - Bottom sheets scroll on short screens (phone landscape) instead of being cut off; sign-in screen respects notch / safe-area insets.
+  - Touch: the subsidy and full-tank switches have a 44 px tap area and their labels are tappable; the Light / Dark / System buttons are 44 px tall and shrink instead of overflowing at high zoom.
+  - Text size adjustment locked to 100% so phones do not inflate text in landscape.
+### Known limits
+- Font sizes are fixed px, so an OS-level "larger text" setting is not followed (browser zoom works, tested to 150% on a phone width). Firefox was not tested (see README).
+
 ## [1.9.0] - 2026-11-01
 ### Added
 - **Dynamic motion.** Screens are rebuilt from HTML on every update, which used to cancel CSS transitions (the gauge arc and chart bars never actually animated). Now:

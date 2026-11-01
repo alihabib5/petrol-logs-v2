@@ -14,6 +14,7 @@ function viewLogin(){
       <button class="pri" data-act="signin" ${off} ${busy?'aria-busy="true"':""}>${busy?'<span class="spin" aria-hidden="true"></span>Signing in…':"Sign in with Google"+arrow}</button>
       <button class="ghost" data-act="local" ${busy?"disabled":""}>Continue without sign-in</button></div>
     <p class="hero-note a" ${d(1.3)}>${ok?"The app can only see the Petrol Log sheet it creates, not your other files.":"Setup needed: add your Google client ID in js/config.js (see README)."}</p>
+    <p class="hero-note a" ${d(1.36)}>By continuing you agree to the <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>.</p>
     <p class="hero-note err" role="status">${esc(S.sync||"")}</p>
   </div>
   <div class="hero-foot"><div class="stats">
