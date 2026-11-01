@@ -2,6 +2,11 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [1.7.0] - 2026-11-01
+### Changed
+- **PDF report redesigned.** Four headline figures at the top: **total money** (net after subsidy), **distance travelled**, **average fuel (km/L)** and **fuel filled (litres)**, with a gross - subsidy = net line and the fill-up count below. Each vehicle repeats the same summary above its table and ends with a **Total** row (distance, litres, subsidy, net, average km/L). A "~" still marks estimated km/L.
+- Distance for a month is the sum of the km between consecutive odometer readings, including the drive from the previous month's last reading to the first fill. New `dist` figure in `ReportService` (per vehicle and overall).
+
 ## [1.6.0] - 2026-10-22
 ### Added
 - **Edit a fill-up.** A pencil button on each Log row opens the fill-up form pre-filled; Save updates the entry in place (same ID, same row in Google Sheets). Same validation as a new entry, and the entry being edited is ignored in the odometer-order check. New `PUT /logs/<id>` route, `FuelLogService.update`, `Gs.updateLog`.

@@ -66,6 +66,9 @@ The total is the amount before subsidy. Logic: `js/ui/fuel-fallback.js` (`bindFi
 ## Editing and deleting entries
 Log tab: the pencil on each row reopens the fill-up form with that entry's values; Save updates it in place (and the same row in your Google Sheet). The cross deletes it. Edits follow the same rules as new entries.
 
+## PDF report
+Headline figures first: total money (net after subsidy), distance travelled, average fuel (km/L) and litres filled; then one table per vehicle with a Total row. Distance = sum of the km between consecutive odometer readings in the month. A "~" marks an estimated km/L.
+
 ## Subsidy switch
 The fill-up form has a **Government subsidy applied?** switch. Off (default): no subsidy, just log the fuel.
 On: a Subsidy amount field appears and the amount is deducted from the total in "Net payable" and in all cost totals and reports.

@@ -18,15 +18,25 @@ function exportReport(fmt){
     dl(fn+".csv",new Blob(["\ufeff"+L.map(r=>r.map(q).join(",")).join("\n")],{type:"text/csv"}));
   }
   if(fmt==="pdf"){
-    const {jsPDF}=window.jspdf,d=new jsPDF({unit:"pt",format:"a4"}),H=d.internal.pageSize.getHeight(),X=[40,105,175,235,300,370,455];let y=54;
-    const need=n=>{if(y+n>H-40){d.addPage();y=54}},T=(s,x,b)=>{d.setFont("helvetica",b?"bold":"normal");d.text(String(s),x,y)},t=R.t;
-    d.setFontSize(20);T("Petrol Report - "+m,40,1);y+=22;d.setFontSize(10);
-    T(`All vehicles: ${t.fills} fills, ${t.litres.toFixed(1)} L, avg ${f1(t.avg,t.approx)} km/L, gross Rs ${Math.round(t.gross)}, subsidy Rs ${Math.round(t.subsidy)}, net Rs ${Math.round(t.net)}`,40);y+=26;
+    const {jsPDF}=window.jspdf,d=new jsPDF({unit:"pt",format:"a4"}),H=d.internal.pageSize.getHeight(),X=[40,105,175,235,300,370,455],t=R.t;let y=54;
+    const need=n=>{if(y+n>H-40){d.addPage();y=54}},T=(s,x,b)=>{d.setFont("helvetica",b?"bold":"normal");d.text(String(s),x,y)};
+    const rs=n=>"Rs "+Math.round(n).toLocaleString("en-US"),km=n=>Math.round(n).toLocaleString("en-US")+" km",avg=s=>s.avg?f1(s.avg,s.approx)+" km/L":"-";
+    d.setFontSize(20);T("Petrol Report - "+m,40,1);y+=24;
+    /* four headline figures */
+    [["TOTAL MONEY",rs(t.net)],["DISTANCE",km(t.dist)],["AVERAGE FUEL",avg(t)],["FUEL FILLED",t.litres.toFixed(1)+" L"]].forEach(([l,v],k)=>{
+      const x=40+k*131.5;d.setFillColor(243,242,238);d.roundedRect(x,y,121,52,6,6,"F");
+      d.setFontSize(7);d.setTextColor(110);d.setFont("helvetica","bold");d.text(l,x+10,y+16);
+      d.setFontSize(15);d.setTextColor(20);d.text(v,x+10,y+38);
+    });
+    d.setTextColor(0);y+=72;d.setFontSize(9);
+    T(`Gross ${rs(t.gross)} - subsidy ${rs(t.subsidy)} = net ${rs(t.net)}  |  ${t.fills} fill-ups${t.approx?"  |  ~ = estimated from odometer readings":""}`,40);y+=26;
     R.items.forEach(i=>{
-      if(!i.rows.length)return;need(70);d.setFontSize(13);T(`${i.v.plate} - ${i.v.name}`,40,1);y+=16;d.setFontSize(9);
-      T(`${i.s.fills} fills | ${i.s.litres.toFixed(1)} L | avg ${f1(i.s.avg,i.s.approx)} km/L | net Rs ${Math.round(i.s.net)}`,40);y+=16;
+      if(!i.rows.length)return;need(90);d.setFontSize(13);T(`${i.v.plate} - ${i.v.name}`,40,1);y+=16;d.setFontSize(9);
+      T(`${i.s.fills} fills | ${km(i.s.dist)} | ${i.s.litres.toFixed(1)} L | avg ${avg(i.s)} | net ${rs(i.s.net)}`,40);y+=16;
       RH.forEach((h,k)=>T(h,X[k],1));y+=4;d.line(40,y,555,y);y+=12;
-      i.rows.forEach(r=>{need(16);RL(r).forEach((c,k)=>T(c,X[k]));y+=14});y+=18;
+      i.rows.forEach(r=>{need(16);RL(r).forEach((c,k)=>T(c,X[k]));y+=14});
+      need(24);d.line(40,y-4,555,y-4);y+=8;
+      T("Total",X[0],1);T(i.s.dist?"+"+Math.round(i.s.dist)+" km":"",X[1],1);T(+i.s.litres.toFixed(2),X[2],1);T(+i.s.subsidy.toFixed(2),X[4],1);T(+i.s.net.toFixed(2),X[5],1);T(i.s.avg?(i.s.approx?"~":"")+i.s.avg.toFixed(2):"",X[6],1);y+=30;
     });
     d.save(fn+".pdf");
   }
