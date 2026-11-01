@@ -8,10 +8,21 @@ async function refresh(){
 }
 
 function render(){
-  const d=S.data,app=$("#app");
+  const app=$("#app"),view=Auth.mode?S.tab:"login";
+  S.entering=view!==S.view;S.view=view; /* a view change animates in; re-rendering the same view does not replay it */
   document.querySelector(".tabs").style.display=Auth.mode?"":"none";
-  if(!Auth.mode){$("#tabs").innerHTML="";app.innerHTML=viewLogin();return}
-  $("#tabs").innerHTML=TABS.map(([k,l])=>`<button role="tab" aria-selected="${S.tab===k}" data-t="${k}"><svg viewBox="0 0 24 24">${IC[k==="cars"?"car":k]}</svg>${l}</button>`).join("");
+  app.classList[Auth.mode?"remove":"add"]("landing");
+  if(!Auth.mode){$("#tabs").innerHTML="";app.classList.remove("enter");app.innerHTML=viewLogin();return settle(app)}
+  const tabs=$("#tabs");
+  if(!tabs.children.length)tabs.innerHTML=TABS.map(([k,l])=>`<button role="tab" data-t="${k}"><svg viewBox="0 0 24 24">${IC[k==="cars"?"car":k]}</svg>${l}</button>`).join("");
+  tabs.querySelectorAll("button").forEach(b=>b.setAttribute("aria-selected",b.dataset.t===S.tab)); /* same buttons stay in the DOM, so the highlight can transition */
   const views={home:viewHome,log:viewLog,rep:viewReports,cars:viewVehicles,srv:viewAccount};
   app.innerHTML=views[S.tab]();
+  app.classList[S.entering?"add":"remove"]("enter");
+  if(S.entering)[...app.children].forEach((c,i)=>c.style.setProperty("--d",Math.min(i,8)*.06+"s"));
+  settle(app);
+}
+/* Elements that carry data-to start at an "empty" value (gauge arc, chart bars); one frame later they move to the real value so the CSS transition runs */
+function settle(app){
+  requestAnimationFrame(()=>requestAnimationFrame(()=>app.querySelectorAll("[data-to]").forEach(e=>{e.style[e.dataset.prop]=e.dataset.to})));
 }

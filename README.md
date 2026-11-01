@@ -53,7 +53,7 @@ js/core/              prefs.js (theme + currency) | storage.js (local cache) | a
 js/services/          vehicle | fuel-log | sync | analytics (km/L) | report
 js/gateway.js         routes /vehicles /logs /analytics /reports to services
 js/ui/                state, components, render, forms, fuel-fallback (price/litres/total linking), events
-js/ui/views/          home | log | reports | vehicles | account | login
+js/ui/views/          home | log | reports | vehicles | account | login (hero sign-in screen)
 js/reports/export.js  Excel / CSV / PDF monthly reports
 js/main.js            startup
 ```
@@ -77,9 +77,12 @@ On: a Subsidy amount field appears and the amount is deducted from the total in 
 Exact: km between full-tank fills / litres added since the previous full fill. Needs two full-tank fills.
 Until then an **estimate** from odometer readings is shown with a "~": (new odometer - previous odometer) / litres of the previous refill; overall (last - first odometer) / litres of every refill except the last. The tank level is unknown for partial fills, so treat it as a guide. Exact figures replace it automatically.
 
+## Motion and layout
+Screens animate in when you change view (tab, sign-in, sign-out), not when the same screen refreshes. The gauge arc and chart bars move from their previous value to the new one. All animation is off when the device asks for reduced motion. The layout is mobile first and checked from 320 to 1440 px wide. See `render()` / `settle()` in `js/ui/render.js` and the "Motion" block at the end of `css/components.css`.
+
 ## Notes
 - Sign-in lasts about an hour per Google token; the app renews it quietly and asks to sign in again if it cannot.
-- Account tab: Theme (System / Light / Dark) and Currency (display label only, no conversion); saved on the device.
+- Account tab: a Google Sheet row with a **Sync now** button (spinner while syncing, then a status line); Theme (System / Light / Dark) and Currency (display label only, no conversion); saved on the device.
 - "Continue without sign-in" keeps data in the browser only (demo / offline).
 - Cost = litres x price - subsidy. Cost per km needs an exact km/L.
 

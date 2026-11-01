@@ -33,6 +33,8 @@ async function doSignIn(){
   S.busy=false;refresh();
 }
 async function doSync(){
-  try{await SyncService.pull();S.sync="Synced with Google Drive ✓"}catch(err){S.sync="Sync failed: "+err.message}
-  refresh();
+  if(S.syncing)return;
+  S.syncing=true;S.sync="";render();
+  try{await Promise.all([SyncService.pull(),new Promise(r=>setTimeout(r,600))]);S.sync="Synced with Google Drive ✓"}catch(err){S.sync="Sync failed: "+err.message}
+  S.syncing=false;refresh();
 }
