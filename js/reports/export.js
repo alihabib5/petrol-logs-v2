@@ -1,7 +1,7 @@
 /* Monthly report export: XLSX / CSV / PDF */
 /* ===== MONTHLY REPORTS: XLSX / PDF / CSV ===== */
 const RH=["Date","Odometer (km)","Litres","Price/L (Rs)","Subsidy (Rs)","Net total (Rs)","km/L"];
-const RL=x=>[x.date,x.odometer,x.liters,x.price,x.subsidy||0,+(x.liters*x.price-(x.subsidy||0)).toFixed(2),x.eff!==null?+x.eff.toFixed(2):x.est?"~"+x.est.toFixed(2):""];
+const RL=x=>[x.date,x.odometer!=null?x.odometer:"",x.liters,x.price,x.subsidy||0,+(x.liters*x.price-(x.subsidy||0)).toFixed(2),x.eff!==null?+x.eff.toFixed(2):x.est?"~"+x.est.toFixed(2):""];
 function dl(name,blob){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
 function exportReport(fmt){
   const R=S.report,m=R.month,fn="petrol-report-"+m;

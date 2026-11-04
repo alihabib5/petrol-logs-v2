@@ -38,7 +38,8 @@ function pdfDraw(d,it,month,PH,PW){
   const approx=(x,top,size,col)=>{T("~",x,top-u(size)*.2,{s:size,c:col});T("~",x,top+u(size)*.2,{s:size,c:col});return x+tw("~",size)+u(5)};
 
   const rows=it.rows,s=it.s,v=it.v,avg=s.avg,ap=s.approx;
-  const km=s.dist>0?s.dist:0,start=rows[0].odometer-rows[0].dk,end=rows[rows.length-1].odometer;
+  const odoRows=rows.filter(r=>r.odometer!=null),hasOdo=odoRows.length>0;                       /* the odometer is optional */
+  const km=s.dist>0?s.dist:0,start=hasOdo?odoRows[0].odometer-odoRows[0].dk:0,end=hasOdo?odoRows[odoRows.length-1].odometer:0;
   const small=x=>x.liters<=2,unrel=x=>{const k=kv(x);return small(x)&&k!=null&&avg&&Math.abs(k-avg)/avg>.5};
   bg();
 
@@ -73,7 +74,7 @@ function pdfDraw(d,it,month,PH,PW){
   const subN=rows.filter(r=>r.subsidy>0).length;
   stat(sx,y,u(140),"Fuel bought",n1(s.litres),"L","across "+s.fills+" fill"+(s.fills>1?"s":""));
   stat(sx+u(196),y,u(140),"Avg efficiency",avg?n1(avg):DASH,"km/L",avg?(ap?"estimated from odometer":"month average"):"needs two fills",C.acc);
-  stat(sx,y+u(156),u(160),"Distance",k0(km),"km",["odometer "+k0(start),k0(end)]);
+  stat(sx,y+u(156),u(160),"Distance",hasOdo?k0(km):DASH,hasOdo?"km":"",hasOdo?["odometer "+k0(start),k0(end)]:"");
   stat(sx+u(196),y+u(156),u(160),"Subsidy saved",s.gross>0?n1(100*s.subsidy/s.gross):"0","%",subN?rs(s.subsidy)+" on "+subN+" fill"+(subN>1?"s":""):"no subsidy used");
   y+=hh+u(24);
 
@@ -150,7 +151,7 @@ function pdfDraw(d,it,month,PH,PW){
     for(let k=0;k<take;k++,i++){const r=rows[i],ry=y+HEAD+k*RHt,kk=kv(r),rt=ry+RHt/2-u(7);
       if(k>0){line(C.row);d.setLineWidth(.8);d.line(cx0,ry,M+W-u(24),ry)}
       T(sd(r.date),ax(0),rt,{s:14,b:1});
-      T(k0(r.odometer),ax(190),rt,{s:14,a:"right"});T(r.dk>0?k0(r.dk):DASH,ax(300),rt,{s:14,a:"right"});
+      T(r.odometer!=null?k0(r.odometer):DASH,ax(190),rt,{s:14,a:"right"});T(r.dk>0?k0(r.dk):DASH,ax(300),rt,{s:14,a:"right"});
       T(n2(r.liters),ax(402),rt,{s:14,a:"right"});T(n2(r.price),ax(510),rt,{s:14,a:"right"});T(k0(r.subsidy||0),ax(614),rt,{s:14,a:"right"});
       T(m2(r.liters*r.price-(r.subsidy||0)),ax(740),rt,{s:14,b:1,a:"right"});
       if(kk!=null){const t=n1(kk)+(unrel(r)?" †":""),w=tw(t,13,1)+u(22),beat=avg&&kk>avg,xx=ax(816)-w,cyy=ry+RHt/2-u(13);

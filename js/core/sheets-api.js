@@ -40,7 +40,7 @@ const Gs={
       const v=(b.valueRanges[i]&&b.valueRanges[i].values)||[];
       if(!v[0]||v[0][0]!=="Plate")return;
       vehicles.push({id:t,plate:t,name:v[0][3]||""});
-      logs[t]=v.slice(2).filter(r=>r[0]).map(r=>({id:String(r[0]),vehicleId:t,date:day(r[1]),odometer:+r[2],liters:+r[3],price:+r[4],subsidy:+r[5]||0,full:r[6]==="Yes"?1:0}));
+      logs[t]=v.slice(2).filter(r=>r[0]).map(r=>({id:String(r[0]),vehicleId:t,date:day(r[1]),odometer:r[2]===""||r[2]==null||!Number.isFinite(+r[2])?null:+r[2],liters:+r[3],price:+r[4],subsidy:+r[5]||0,full:r[6]==="Yes"?1:0}));
     });
     return{vehicles,logs};
   },
@@ -61,7 +61,7 @@ const Gs={
   async addLog({plate,log:l}){
     await this.ensure();
     await this.call(`${SHEETS}/${this.id}/values/${enc(A1(plate)+"!A3")}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
-      {values:[[l.id,"'"+l.date,l.odometer,l.liters,l.price,l.subsidy||0,l.full?"Yes":"No",+(l.liters*l.price-(l.subsidy||0)).toFixed(2)]]});
+      {values:[[l.id,"'"+l.date,l.odometer==null?"":l.odometer,l.liters,l.price,l.subsidy||0,l.full?"Yes":"No",+(l.liters*l.price-(l.subsidy||0)).toFixed(2)]]});
   },
   async rowOf(plate,id){
     const c=await this.call(`${SHEETS}/${this.id}/values/${enc(A1(plate)+"!A:A")}`);
@@ -72,7 +72,7 @@ const Gs={
     const i=await this.rowOf(plate,l.id);
     if(i<0)throw new Error("Entry not found in your sheet. Tap Sync now and try again.");
     await this.call(`${SHEETS}/${this.id}/values/${enc(A1(plate)+"!A"+(i+1)+":H"+(i+1))}?valueInputOption=USER_ENTERED`,
-      {values:[[l.id,"'"+l.date,l.odometer,l.liters,l.price,l.subsidy||0,l.full?"Yes":"No",+(l.liters*l.price-(l.subsidy||0)).toFixed(2)]]},"PUT");
+      {values:[[l.id,"'"+l.date,l.odometer==null?"":l.odometer,l.liters,l.price,l.subsidy||0,l.full?"Yes":"No",+(l.liters*l.price-(l.subsidy||0)).toFixed(2)]]},"PUT");
   },
   async deleteLog({plate,id}){
     await this.ensure();const sid=await this.sheetId(plate);

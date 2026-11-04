@@ -10,7 +10,7 @@ function logAll(){return S.data?S.data.rows.map((x,i)=>({...x,n:i+1})).reverse()
 function logFiltered(){
   const f=S.lf,q=f.q.trim().toLowerCase().replace(/,/g,""),tmin=numOrNull(f.tmin),tmax=numOrNull(f.tmax),kmin=numOrNull(f.kmin),kmax=numOrNull(f.kmax);
   return logAll().filter(x=>{
-    if(q&&!(x.date+" "+x.odometer).toLowerCase().includes(q))return false;
+    if(q&&!(x.date+" "+(x.odometer??"")).toLowerCase().includes(q))return false;
     if(f.type==="full"&&!x.full||f.type==="partial"&&x.full)return false;
     const t=rowTotal(x),k=rowKmL(x);
     if(tmin!==null&&t<tmin||tmax!==null&&t>tmax)return false;
@@ -23,9 +23,9 @@ const lfActive=()=>Object.keys(LF0).filter(k=>String(S.lf[k])!==String(LF0[k])).
 
 function logRowHTML(x){
   const on=S.sel.has(x.id),total=money(rowTotal(x));
-  const label=`${x.date}, ${x.odometer.toLocaleString()} km`;
+  const odo=x.odometer!=null?x.odometer.toLocaleString()+" km":"",label=x.date+(odo?", "+odo:"");
   return `<div class="dt-r ${on?"on":""}" role="row"><label class="dt-c"><input type="checkbox" class="dt-ck" data-row="${esc(x.id)}" aria-label="Select ${label}" ${on?"checked":""}></label>
-  <div class="dt-m" role="cell"><div class="t num">${x.date} · ${x.odometer.toLocaleString()} km</div><div class="s num"><span class="dt-n">#${x.n} · </span>${x.liters} L × Rs ${x.price}${x.subsidy?` − Rs ${x.subsidy} subsidy`:""}<span class="sm"> = ${total}${x.full?"":" · partial"}</span></div></div>
+  <div class="dt-m" role="cell"><div class="t num">${x.date}${odo?" · "+odo:""}</div><div class="s num"><span class="dt-n">#${x.n} · </span>${x.liters} L × Rs ${x.price}${x.subsidy?` − Rs ${x.subsidy} subsidy`:""}<span class="sm"> = ${total}${x.full?"":" · partial"}</span></div></div>
   <span class="dt-t num" role="cell">${total}</span>
   <span class="dt-b" role="cell"><span class="badge ${x.full?"full":"part"}">${x.full?"Full tank":"Partial"}</span></span>
   <span class="dt-k" role="cell"><span class="pill num ${x.eff===null?"na":""}" ${x.eff===null&&x.est?`title="Estimate from odometer readings"`:""}>${x.eff!==null?x.eff.toFixed(1):x.est?"~"+x.est.toFixed(1):"–"}</span></span>

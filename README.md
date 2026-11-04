@@ -59,6 +59,9 @@ js/reports/pdf.js     designed PDF report
 js/main.js            startup
 ```
 
+## Odometer is optional
+Leave the odometer empty and the fill-up still counts for litres, cost and the reports; add it when you want distance and km/L. Fill-ups without an odometer give no distance of their own.
+
 ## Fill-up form: price, litres and total are linked
 Price per litre x litres = total. Enter any two and the third is calculated: price + total gives litres, litres + total gives price, litres + price gives total (2 decimals).
 The two fields you touched most recently are kept; the remaining one is recalculated, and a hint says which. Clear a field and it stays empty while you type, then refills when you leave it.
