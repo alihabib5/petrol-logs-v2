@@ -2,9 +2,9 @@
 function sheet(html){$("#sheetBody").innerHTML=html;$("#sheet").classList.add("on");setTimeout(()=>$("#sheetBody input:not([type=hidden])")?.focus(),50)}
 function closeSheet(){$("#sheet").classList.remove("on")}
 function logForm(e){
-  const last=S.data?.rows.at(-1);
+  const last=S.data?.rows.at(-1),lastOdo=S.data?.rows.filter(r=>r.odometer!=null).at(-1);
   sheet(`<h1 style="font-size:24px;margin:0 0 4px">${e?"Edit fill-up":"New fill-up"}</h1><label for="f_d_b">Date</label>${dateField("f_d",e?e.date:todayISO())}
-  <label>Odometer (km)</label><input id="f_o" type="number" inputmode="numeric" placeholder="${last?last.odometer:"0"}" value="${e?e.odometer:""}">
+  <label for="f_o">Odometer (km) <span style="font-weight:500">(optional)</span></label><input id="f_o" type="number" inputmode="numeric" min="0" placeholder="${lastOdo?lastOdo.odometer:"Optional"}" value="${e&&e.odometer!=null?e.odometer:""}">
   <div class="two"><div><label>Price per litre (${Prefs.sym()})</label><input id="f_p" type="number" inputmode="decimal" step="0.01" min="0" value="${e?e.price:last?last.price:""}"></div><div><label>Total amount (${Prefs.sym()})</label><input id="f_a" type="number" inputmode="decimal" step="0.01" min="0"></div></div>
   <label>Litres</label><input id="f_l" type="number" inputmode="decimal" step="0.01" min="0" value="${e?e.liters:""}">
   <div class="hint" id="f_h" aria-live="polite" hidden></div>
