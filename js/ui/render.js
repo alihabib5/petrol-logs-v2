@@ -3,6 +3,7 @@ async function refresh(){
   S.vehicles=await api("GET","/vehicles");
   if(!S.vehicles.find(v=>v.id===S.vid))S.vid=S.vehicles[0]?.id||null;
   S.data=S.vid?await api("GET","/analytics?vehicle="+encodeURIComponent(S.vid)):null;
+  S.svc=S.vid?await api("GET","/services?vehicle="+encodeURIComponent(S.vid)):[];
   S.report=await api("GET","/reports?month="+S.month+"&vehicle="+encodeURIComponent(S.rv));
   render();
 }

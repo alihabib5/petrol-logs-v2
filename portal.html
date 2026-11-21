@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Petrol Log Portal</title>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/portal.css">
+<!-- Google sign-in (to renew the token when saving; signing in itself happens in the app) -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="portal">
+<div class="pt" id="pt">
+  <aside class="pt-side" aria-label="Portal navigation">
+    <div class="pt-brand"><span class="pt-logo" aria-hidden="true"></span><b class="pt-name">Petrol Log</b>
+      <button class="pt-col" data-pa="collapse" aria-label="Collapse sidebar" aria-expanded="true"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 4v16M18 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+    <nav class="pt-nav" id="ptNav"></nav>
+    <div class="pt-user" id="ptUser"></div>
+  </aside>
+  <div class="pt-main">
+    <header class="pt-top" id="ptTop"></header>
+    <main class="pt-view" id="ptView"></main>
+  </div>
+</div>
+<div class="cal-bg" id="cal"><div class="cal" id="calBody" role="dialog" aria-modal="true" aria-label="Choose date"></div></div>
+
+<!-- Same data layer as the app: one Google Sheet in the user's own Drive (or this browser in offline mode) -->
+<script src="js/config.js"></script>
+<script src="js/core/prefs.js"></script>
+<script src="js/core/storage.js"></script>
+<script src="js/core/auth.js"></script>
+<script src="js/core/sheets-api.js"></script>
+<script src="js/services/vehicle.service.js"></script>
+<script src="js/services/fuel-log.service.js"></script>
+<script src="js/services/service-log.service.js"></script>
+<script src="js/services/sync.service.js"></script>
+<script src="js/services/analytics.service.js"></script>
+<script src="js/services/report.service.js"></script>
+<script src="js/gateway.js"></script>
+<script src="js/ui/state.js"></script>
+<script src="js/ui/calendar.js"></script>
+<script src="js/ui/components.js"></script>
+<script src="js/ui/service-form.js"></script>
+<script src="js/ui/views/log.js"></script>
+<script src="js/portal/portal.js"></script>
+</body>
+</html>

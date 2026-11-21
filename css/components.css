@@ -181,3 +181,35 @@ button.cal-cap:hover{background:var(--bg)}
 .recon{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;margin:0 0 14px;border:1px solid var(--line);border-radius:16px;background:var(--warn-soft)}
 .recon b{display:block;font-size:15px}.recon small{display:block;color:var(--ink);font-size:13px;margin-top:2px;overflow-wrap:anywhere}
 .recon button{flex:none}
+/* Service section on Home: due lines stack; overdue is shown in the error colour */
+.svc-due{display:flex;flex-direction:column;gap:2px}.svc-due .bad{color:var(--err)}
+/* Service form: products bought outside the workshop, one row each (name, qty, unit price, amount, remove), then the totals */
+.si{margin-top:16px}
+.si-h{display:flex;flex-direction:column;gap:2px;margin:0 4px 8px}.si-h span{font-size:14px;color:var(--mute)}
+.si-cols{display:none}
+.si-r{display:grid;grid-template-columns:1fr 64px 96px 40px;grid-template-areas:"n n n x" "q p t t" "e e e e";gap:8px;padding:10px;border:1px solid var(--line);border-radius:14px;margin-bottom:8px;align-items:center}
+.si-n{grid-area:n}.si-q{grid-area:q}.si-p{grid-area:p}.si-t{grid-area:t;text-align:right;font-weight:600}.si-x{grid-area:x;padding:0;min-width:40px;display:grid;place-items:center}
+.si-add{width:100%;border-style:dashed}
+.si-sum{margin-top:12px;display:grid;gap:6px}.si-sum>div{display:flex;justify-content:space-between;color:var(--mute)}
+.si-sum .si-tot{color:var(--ink);font-size:20px;padding-top:8px;margin-top:2px;border-top:1px solid var(--line)}
+@media (min-width:560px){
+  .si-cols{display:grid;grid-template-columns:1fr 72px 110px 96px 40px;gap:8px;padding:0 4px 4px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+  .si-cols span:nth-child(n+2):nth-child(-n+4){text-align:right}
+  .si-r{grid-template-columns:1fr 72px 110px 96px 40px;grid-template-areas:"n q p t x" "e e e e e";border:0;padding:0 0 8px;margin:0}
+  .si-q,.si-p{text-align:right}
+}
+/* "Replace every N km or N months" under each product */
+.si-e{grid-area:e;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font-size:14px;color:var(--mute)}
+.si-e input{width:96px;min-height:36px;padding:6px 10px;text-align:right}
+.si-eh{flex-basis:100%;font-size:13px}.si-eh:empty{display:none}
+/* Parts due (service intervals) */
+.pd-r{padding:12px 0;border-bottom:1px solid var(--line)}.pd-r:first-child{padding-top:0}.pd-r:last-child{border-bottom:0;padding-bottom:0}
+.pd-h{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pd-st{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 10px;border-radius:99px}
+.pd-st.bad{background:color-mix(in srgb,var(--err) 14%,transparent);color:var(--err)}.pd-st.soon{background:var(--warn-soft);color:var(--warn)}.pd-st.good{background:var(--ok-soft);color:var(--ok)}
+.pd-m{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 14px;font-size:14px;color:var(--mute);margin-top:4px}
+.pd-m .bad{color:var(--err)}
+.pd-bar{height:6px;border-radius:99px;background:var(--line);margin-top:8px;overflow:hidden}.pd-bar i{display:block;height:100%;border-radius:inherit;background:var(--ok)}
+.pd-bar.soon i{background:var(--warn)}.pd-bar.bad i{background:var(--err)}
+.pd-more{font-size:14px;color:var(--mute);padding-top:10px}
+@media (min-width:560px){.si-r{border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:12px}}
