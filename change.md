@@ -2,6 +2,15 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [2.7.0] - 2026-11-22
+### Changed
+- **The app is now a dashboard on computers.** On screens 900px and wider (when signed in) the app opens with a sidebar: Home, Log, Service, Reports, Vehicles and Users, a collapse button at the top (remembered), and the signed-in name and email at the bottom. Content uses the wider space (the Service, Log and Users pages up to 1160px). Phones keep the bottom tab bar, which gains a **Service** tab.
+- **Service is its own page** (it was a section at the bottom of Home): stat cards (last service, next service, spent on service, products bought), Parts due, the service history table with totals, and the New/Edit service form inside the page with a confirmation of the total after saving.
+- **Users** (Account on phones) also lists each vehicle with its fill-ups, services, last service and service spend.
+- `portal.html` now redirects to the app's Service page, so old links keep working. `js/portal/portal.js` became `js/ui/views/service.js` and `css/portal.css` became `css/dashboard.css`.
+### Removed
+- `.claude/launch.json` (a local preview setting committed by mistake); `.claude/` is now ignored.
+
 ## [2.6.0] - 2026-11-22
 ### Added
 - **Service log.** Record each workshop visit for a vehicle: the service date, odometer, what was done, the workshop's service charge, and the **products bought outside the workshop** for it (name, quantity, unit price; suggestions such as Engine oil, Oil filter, Air filter). The form adds each product's amount and the **total (service charge + products)** as you type, and the total is saved with the visit. An optional **reminder** stores when the next service is due, by date (three months ahead by default) and/or at an odometer reading.

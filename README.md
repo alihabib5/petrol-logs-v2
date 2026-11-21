@@ -44,33 +44,32 @@ Customer's own Google Drive   Sheet "Petrol Log", one tab per plate number
 ## Project structure
 ```
 index.html            markup only
-portal.html           desktop portal (sidebar dashboard: Users, Service)
+portal.html           redirect to the Service page (old portal link)
 vercel.json           headers (needed for Google's sign-in popup)
 privacy.html          privacy policy page (required by Google consent screen; linked from the sign-in screen and the Account tab)
 terms.html            terms of service page (linked from the consent screen, the sign-in screen and the Account tab)
-css/                  tokens.css | base.css | components.css | portal.css
+css/                  tokens.css | base.css | components.css | dashboard.css (sidebar layout, Service page)
 js/config.js          YOUR Google client ID
 js/core/              prefs.js (theme + currency) | storage.js (local cache) | auth.js (Google sign-in) | sheets-api.js (Sheets/Drive calls)
 js/services/          vehicle | fuel-log | service-log (workshop visits) | sync | analytics (km/L) | report
 js/gateway.js         routes /vehicles /logs /services /analytics /reports to services
 js/ui/                state, calendar (date + month picker), components, render, forms, fuel-fallback (price/litres/total linking), events
-js/ui/views/          home | log | reports | vehicles | account | login (hero sign-in screen)
+js/ui/views/          home | log | service (+ sidebar) | reports | vehicles | account (Users) | login (hero sign-in screen)
 js/reports/export.js  Excel / CSV monthly reports (and the PDF entry point)
 js/reports/pdf.js     designed PDF report
-js/portal/portal.js   portal views and events
 js/main.js            startup
 ```
 
 ## Odometer is optional
 Leave the odometer empty and the fill-up still counts for litres, cost and the reports; add it when you want distance and km/L. Fill-ups without an odometer give no distance of their own.
 
-## Service log and portal
+## Service log and dashboard layout
 Record each workshop visit: date, odometer, work done, the workshop's service charge, and the products you bought outside the workshop (name, qty, unit price). The total (service charge + products) is added up as you type and saved with the visit. An optional reminder stores the next service date and/or km.
 Each product can also have **Replace every N km / N months** (filled in from your last purchase of that part, or a usual interval for common parts). The **Parts due** panel shows when each part is next due, with OK / Due soon / Overdue; buying the part again restarts its count. Logic: `ServiceLogService.parts()` and `interval()`.
-- **Phone app:** Home -> Service card (last and next service) and Service history, with Add service.
-- **Portal:** open `portal.html` (e.g. http://localhost:8000/portal.html) for a desktop dashboard with a collapsible sidebar: **Service** (stat cards, a table of visits with products and totals, new/edit/delete) and **Users** (the signed-in profile and each vehicle's counts). It uses the session from the app in the same browser, so sign in in the app first.
+- **Layout:** on a computer the app is a sidebar dashboard (Home, Log, Service, Reports, Vehicles, Users; collapsible; your name and email at the bottom). On phones it keeps the bottom tabs, including **Service**.
+- **Service page:** stat cards, Parts due, the history table with totals, and New/Edit/Delete. `portal.html` redirects here (`index.html?tab=svc`).
 - **Google Sheet:** the **Service log** tab, one row per visit (column B = plate; readable products in column G; columns A and L hidden). Service costs are kept apart from fuel totals and reports.
-Code: `js/services/service-log.service.js`, `js/ui/service-form.js` (shared form), `serviceSection()` in `js/ui/views/home.js`, `portal.html` + `js/portal/portal.js` + `css/portal.css`.
+Code: `js/services/service-log.service.js`, `js/ui/service-form.js` (form and Parts due panel), `js/ui/views/service.js` (Service page and sidebar), `css/dashboard.css`.
 
 ## Fill-up form: price, litres and total are linked
 Price per litre x litres = total. Enter any two and the third is calculated: price + total gives litres, litres + total gives price, litres + price gives total (2 decimals).

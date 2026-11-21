@@ -1,4 +1,5 @@
 /* Bootstrap: resume the previous session. A remembered Google user goes straight to their saved data; syncing happens afterwards. */
+{const t=new URLSearchParams(location.search).get("tab");if(TABS.some(x=>x[0]===t))S.tab=t}  /* ?tab=svc opens a tab directly (old portal.html links) */
 (async()=>{
   const m=localStorage.getItem("petrol-mode");
   if(m==="local"){Auth.mode="local";DB.load();await refresh()}

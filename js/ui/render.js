@@ -13,12 +13,20 @@ function render(){
   S.entering=view!==S.view;S.view=view;if(S.entering)S.lfOpen=false; /* the filter dropdown starts closed on every visit */ /* a view change animates in; re-rendering the same view does not replay it */
   document.querySelector(".tabs").style.display=Auth.mode?"":"none";
   app.classList[Auth.mode?"remove":"add"]("landing");
-  if(!Auth.mode){$("#tabs").innerHTML="";app.classList.remove("enter");app.innerHTML=viewLogin();return settle(app)}
+  if(!Auth.mode){renderSide();$("#tabs").innerHTML="";app.classList.remove("enter");app.innerHTML=viewLogin();return settle(app)}
   const tabs=$("#tabs");
   if(!tabs.children.length)tabs.innerHTML=TABS.map(([k,l])=>`<button role="tab" data-t="${k}"><svg viewBox="0 0 24 24">${IC[k==="cars"?"car":k]}</svg>${l}</button>`).join("");
   tabs.querySelectorAll("button").forEach(b=>b.setAttribute("aria-selected",b.dataset.t===S.tab)); /* same buttons stay in the DOM, so the highlight can transition */
-  const views={home:viewHome,log:viewLog,rep:viewReports,cars:viewVehicles,srv:viewAccount};
+  renderSide();app.dataset.view=S.tab;
+  if(S.tab==="svc"&&S.svcForm&&app.querySelector(".pt-form")){        /* a service form being filled stays as typed; only the reconnect banner updates */
+    const old=app.querySelector(".recon"),b=reconnectBanner();
+    if(old)old.outerHTML=b;else if(b)app.insertAdjacentHTML("afterbegin",b);
+    return;
+  }
+  const views={home:viewHome,log:viewLog,svc:viewService,rep:viewReports,cars:viewVehicles,srv:viewAccount};
   app.innerHTML=reconnectBanner()+views[S.tab]();
+  if(S.tab==="svc"&&S.svcForm){bindSvcForm(app);if(S.entering||!app.dataset.formOpen)setTimeout(()=>$("#s_o")?.focus(),30)}
+  app.dataset.formOpen=S.tab==="svc"&&S.svcForm?"1":"";
   if(S.tab==="log"&&$("#dtBody"))drawLog(); /* sets the select-all checkbox state */
   app.classList[S.entering?"add":"remove"]("enter");
   if(S.entering)[...app.children].forEach((c,i)=>c.style.setProperty("--d",Math.min(i,8)*.06+"s"));
