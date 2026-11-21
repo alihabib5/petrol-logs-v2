@@ -1,6 +1,7 @@
 /* Google Sheets / Drive REST calls. One spreadsheet "Petrol Log" in the customer's Drive; one tab per plate number. */
 const SHEETS="https://sheets.googleapis.com/v4/spreadsheets",DRIVE="https://www.googleapis.com/drive/v3/files";
 const HEAD=["ID","Date","Odometer (km)","Litres","Price per litre (Rs)","Subsidy (Rs)","Full tank","Net total (Rs)"];
+const HEAD_EV=["ID","Date","Odometer (km)","kWh","Price per kWh (Rs)","Subsidy (Rs)","Full charge","Net total (Rs)"];
 /* Service log tab, columns A-L. A (ID) and L (the products as data, read back by the app) are hidden; G is the same list for people to read. */
 const SVC_HEAD=["ID","Plate","Date","Odometer (km)","Work done","Service charge (Rs)","Products bought","Products total (Rs)","Total (Rs)","Next service date","Next service at (km)","Items (app data)"];
 const svcRow=s=>[s.id,s.vehicleId,"'"+s.date,s.odometer==null?"":s.odometer,"'"+s.work,s.charge||0,"'"+s.items.map(x=>x.name+" x"+x.qty+" @ "+x.price+svcEvery(x)).join("; "),svcItemsTotal(s.items),s.total,
@@ -51,19 +52,20 @@ const Gs={
         return;
       }
       if(!v[0]||v[0][0]!=="Plate")return;
-      vehicles.push({id:t,plate:t,name:v[0][3]||""});
+      const ty=v[0][4]==="Type"?String(v[0][5]||"").toLowerCase():"";      /* E1:F1 = Type | Petrol/Diesel/Electric; older tabs have none = petrol */
+      vehicles.push({id:t,plate:t,name:v[0][3]||"",type:VTYPES.some(x=>x[0]===ty)?ty:"petrol"});
       logs[t]=v.slice(2).filter(r=>r[0]).map(r=>({id:String(r[0]),vehicleId:t,date:day(r[1]),odometer:r[2]===""||r[2]==null||!Number.isFinite(+r[2])?null:+r[2],liters:+r[3],price:+r[4],subsidy:+r[5]||0,full:r[6]==="Yes"?1:0}));
     });
     return{vehicles,logs,services};
   },
   async sheetId(plate){if(!this.tabs[plate])await this.all();if(!this.tabs[plate])throw new Error("Vehicle tab not found in your sheet");return this.tabs[plate]},
-  async addVehicle({plate,name}){
+  async addVehicle({plate,name,type}){
     await this.ensure();const sid=Math.floor(Math.random()*2e9);
     await this.call(`${SHEETS}/${this.id}:batchUpdate`,{requests:[
       {addSheet:{properties:{sheetId:sid,title:plate,gridProperties:{frozenRowCount:2}}}},
       {repeatCell:{range:{sheetId:sid,startRowIndex:1,endRowIndex:2},cell:{userEnteredFormat:{backgroundColor:{red:.91,green:.35,blue:.05},textFormat:{bold:true,foregroundColor:{red:1,green:1,blue:1}}}},fields:"userEnteredFormat(backgroundColor,textFormat)"}},
       {updateDimensionProperties:{range:{sheetId:sid,dimension:"COLUMNS",startIndex:0,endIndex:1},properties:{hiddenByUser:true},fields:"hiddenByUser"}}]});
-    await this.call(`${SHEETS}/${this.id}/values/${enc(A1(plate)+"!A1:H2")}?valueInputOption=RAW`,{values:[["Plate",plate,"Vehicle",name],HEAD]},"PUT");
+    await this.call(`${SHEETS}/${this.id}/values/${enc(A1(plate)+"!A1:H2")}?valueInputOption=RAW`,{values:[["Plate",plate,"Vehicle",name,"Type",vTypeName({type})],type==="electric"?HEAD_EV:HEAD]},"PUT");
     this.tabs[plate]=sid;
   },
   async deleteVehicle({plate}){

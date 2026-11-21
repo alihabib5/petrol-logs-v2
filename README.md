@@ -63,6 +63,9 @@ js/main.js            startup
 ## Odometer is optional
 Leave the odometer empty and the fill-up still counts for litres, cost and the reports; add it when you want distance and km/L. Fill-ups without an odometer give no distance of their own.
 
+## Vehicle types: petrol, diesel, electric
+Choose the type when adding a vehicle. Electric vehicles log charges in kWh (price per kWh, charged to full) and show km per kWh; petrol and diesel log litres and km per litre. All screens, exports and the PDF use the vehicle's own units, and "All vehicles" reports keep litres and kWh apart. The type is stored in row 1 of the vehicle's sheet tab (`Type | Electric`); older tabs without it count as Petrol. Labels: `UNITS` / `UL(vehicle)` in `js/services/vehicle.service.js`.
+
 ## Service log and dashboard layout
 Record each workshop visit: date, odometer, work done, the workshop's service charge, and the products you bought outside the workshop (name, qty, unit price). The total (service charge + products) is added up as you type and saved with the visit. An optional reminder stores the next service date and/or km.
 Each product can also have **Replace every N km / N months** (filled in from your last purchase of that part, or a usual interval for common parts). The **Parts due** panel shows when each part is next due, with OK / Due soon / Overdue; buying the part again restarts its count. Logic: `ServiceLogService.parts()` and `interval()`.

@@ -14,7 +14,7 @@ document.addEventListener("click",async e=>{
   if(t.dataset.act==="lfsel0"){S.sel.clear();document.querySelectorAll("#dtBody .dt-ck").forEach(c=>{c.checked=false;c.closest(".dt-r").classList.remove("on")});drawSel();return}
   if(t.dataset.act==="lfdel"){
     const ids=[...S.sel];if(!ids.length||S.deleting)return;
-    if(!confirm("Delete "+ids.length+" fill-up"+(ids.length>1?"s":"")+"? This cannot be undone."))return;
+    if(!confirm("Delete "+ids.length+" "+(ids.length>1?UL(curV()).fills:UL(curV()).fill)+"? This cannot be undone."))return;
     S.deleting=true;drawLog();
     for(const id of ids){try{await api("DELETE","/logs/"+id);S.sel.delete(id)}catch(err){alert(err.message);break}}
     S.deleting=false;refresh();return}
@@ -36,7 +36,7 @@ document.addEventListener("click",async e=>{
     catch(err){t.disabled=false;$("#ferr").textContent=err.message}
     return}
   if(a==="savelog")guard(async()=>{const sub=$("#f_sub").checked;if(sub&&!(+$("#f_s").value>0))throw new Error("Enter the subsidy amount, or switch the subsidy off");const id=t.dataset.id;await api(id?"PUT":"POST",id?"/logs/"+id:"/logs",{vehicleId:S.vid,date:$("#f_d").value,odometer:$("#f_o").value,liters:$("#f_l").value,price:$("#f_p").value,subsidy:sub?$("#f_s").value:0,full:$("#f_f").checked});closeSheet();refresh()});
-  if(a==="savecar")guard(async()=>{const v=await api("POST","/vehicles",{name:$("#c_n").value.trim(),plate:$("#c_p").value.trim()});S.vid=v.id;closeSheet();refresh()});
+  if(a==="savecar")guard(async()=>{const v=await api("POST","/vehicles",{name:$("#c_n").value.trim(),plate:$("#c_p").value.trim(),type:$("#c_t").value});S.vid=v.id;closeSheet();refresh()});
   if(a==="signin")doSignIn();
   if(a==="local"){Auth.mode="local";localStorage.setItem("petrol-mode","local");S.sync="";DB.load();refresh()}
   if(a==="signout"){Auth.signOut();S.sync="";S.vid=null;refresh()}

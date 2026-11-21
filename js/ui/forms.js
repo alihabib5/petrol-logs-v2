@@ -2,23 +2,25 @@
 function sheet(html){$("#sheetBody").innerHTML=html;$("#sheet").classList.add("on");setTimeout(()=>$("#sheetBody input:not([type=hidden])")?.focus(),50)}
 function closeSheet(){$("#sheet").classList.remove("on")}
 function logForm(e){
-  const last=S.data?.rows.at(-1),lastOdo=S.data?.rows.filter(r=>r.odometer!=null).at(-1);
-  sheet(`<h1 style="font-size:24px;margin:0 0 4px">${e?"Edit fill-up":"New fill-up"}</h1><label for="f_d_b">Date</label>${dateField("f_d",e?e.date:todayISO())}
+  const last=S.data?.rows.at(-1),lastOdo=S.data?.rows.filter(r=>r.odometer!=null).at(-1),L=UL(curV()),ev=isEV(curV()); /* labels follow the vehicle type */
+  sheet(`<h1 style="font-size:24px;margin:0 0 4px">${e?"Edit "+L.fill:"New "+L.fill}</h1><label for="f_d_b">Date</label>${dateField("f_d",e?e.date:todayISO())}
   <label for="f_o">Odometer (km) <span style="font-weight:500">(optional)</span></label><input id="f_o" type="number" inputmode="numeric" min="0" placeholder="${lastOdo?lastOdo.odometer:"Optional"}" value="${e&&e.odometer!=null?e.odometer:""}">
-  <div class="two"><div><label>Price per litre (${Prefs.sym()})</label><input id="f_p" type="number" inputmode="decimal" step="0.01" min="0" value="${e?e.price:last?last.price:""}"></div><div><label>Total amount (${Prefs.sym()})</label><input id="f_a" type="number" inputmode="decimal" step="0.01" min="0"></div></div>
-  <label>Litres</label><input id="f_l" type="number" inputmode="decimal" step="0.01" min="0" value="${e?e.liters:""}">
+  <div class="two"><div><label>Price per ${L.per} (${Prefs.sym()})</label><input id="f_p" type="number" inputmode="decimal" step="0.01" min="0" value="${e?e.price:last?last.price:""}"></div><div><label>Total amount (${Prefs.sym()})</label><input id="f_a" type="number" inputmode="decimal" step="0.01" min="0"></div></div>
+  <label>${L.amount}${ev?" charged":""}</label><input id="f_l" type="number" inputmode="decimal" step="0.01" min="0" value="${e?e.liters:""}">
   <div class="hint" id="f_h" aria-live="polite" hidden></div>
-  <div class="sw"><label id="f_subl" for="f_sub">Government subsidy applied?</label><input id="f_sub" type="checkbox" role="switch" aria-labelledby="f_subl" ${e&&e.subsidy?"checked":""}></div>
+  <div class="sw" ${ev&&!(e&&e.subsidy)?"hidden":""}><label id="f_subl" for="f_sub">Government subsidy applied?</label><input id="f_sub" type="checkbox" role="switch" aria-labelledby="f_subl" ${e&&e.subsidy?"checked":""}></div>
   <div id="f_sw" ${e&&e.subsidy?"":"hidden"}><label for="f_s">Subsidy amount (${Prefs.sym()}, deducted from total)</label><input id="f_s" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0" oninput="tot()" value="${e&&e.subsidy?e.subsidy:""}"></div>
   <div class="card" style="margin-top:12px;display:flex;justify-content:space-between"><span style="color:var(--mute)">Net payable</span><b class="num" id="f_t">${money(0)}</b></div>
-  <div class="sw"><label for="f_f">Filled to full tank</label><input id="f_f" type="checkbox" role="switch" ${!e||e.full?"checked":""}></div><div class="err" id="ferr"></div>
+  <div class="sw"><label for="f_f">${L.fullQ}</label><input id="f_f" type="checkbox" role="switch" ${!e||e.full?"checked":""}></div><div class="err" id="ferr"></div>
   <div class="two" style="margin-top:8px"><button data-act="close">Cancel</button><button class="pri" data-act="savelog" ${e?`data-id="${esc(e.id)}"`:""}>Save</button></div>`);
   $("#f_sub").addEventListener("change",e=>{const on=e.target.checked;$("#f_sw").hidden=!on;if(on)$("#f_s").focus();else $("#f_s").value="";tot()});
-  bindFillLinks({price:$("#f_p"),total:$("#f_a"),liters:$("#f_l"),hint:$("#f_h"),onChange:tot,touched:e?["price","liters"]:["price"]});
+  bindFillLinks({price:$("#f_p"),total:$("#f_a"),liters:$("#f_l"),hint:$("#f_h"),onChange:tot,unit:L,touched:e?["price","liters"]:["price"]});
 }
 function tot(){const n=(+$("#f_l").value||0)*(+$("#f_p").value||0)-($("#f_sub").checked?+$("#f_s").value||0:0);$("#f_t").textContent=money(Math.max(n,0))}
 function carForm(){
-  sheet(`<h1 style="font-size:24px;margin:0 0 4px">New vehicle</h1><label>Plate number (required, used as the sheet tab name)</label><input id="c_p" placeholder="e.g. LEA-1234" autocapitalize="characters" autocomplete="off"><label>Vehicle name</label><input id="c_n" placeholder="e.g. Suzuki Alto"><div class="err" id="ferr"></div>
+  sheet(`<h1 style="font-size:24px;margin:0 0 4px">New vehicle</h1><label>Plate number (required, used as the sheet tab name)</label><input id="c_p" placeholder="e.g. LEA-1234" autocapitalize="characters" autocomplete="off"><label>Vehicle name</label><input id="c_n" placeholder="e.g. Suzuki Alto">
+  <label for="c_t">Type</label><select id="c_t">${VTYPES.map(([k,l])=>`<option value="${k}">${l}</option>`).join("")}</select>
+  <div class="hint" style="margin-top:6px">Electric vehicles log charging in kWh and show km per kWh.</div><div class="err" id="ferr"></div>
   <div class="two" style="margin-top:8px"><button data-act="close">Cancel</button><button class="pri" data-act="savecar">Save</button></div>`);
 }
 async function guard(fn){try{await fn()}catch(e){const el=$("#ferr");if(el)el.textContent=e.message;else alert(e.message)}}

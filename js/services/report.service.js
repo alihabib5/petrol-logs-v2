@@ -9,5 +9,10 @@ const ReportService={build(m,rv){
   });
   const t={fills:0,litres:0,gross:0,subsidy:0,net:0,km:0,lt:0,ek:0,el:0,dist:0};
   items.forEach(i=>{for(const k in t)t[k]+=i.s[k]});t.avg=t.lt?t.km/t.lt:t.el?t.ek/t.el:null;t.approx=!t.lt&&t.el>0;
+  /* litres and kWh never add up: with petrol/diesel and electric vehicles together, the amounts are kept apart and there is no overall average */
+  const kinds=new Set(items.filter(i=>i.rows.length).map(i=>isEV(i.v)?"ev":"fuel"));
+  t.mixed=kinds.size>1;t.unit=kinds.has("ev")&&!t.mixed?UNITS.ev:UNITS.fuel;
+  t.kwh=sum(items.filter(i=>isEV(i.v)),i=>i.s.litres);t.litres-=t.kwh;
+  if(t.mixed){t.avg=null;t.approx=false}
   return{month:m,items,t};
 }};

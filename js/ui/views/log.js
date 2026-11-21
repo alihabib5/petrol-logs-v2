@@ -25,17 +25,17 @@ function logRowHTML(x){
   const on=S.sel.has(x.id),total=money(rowTotal(x));
   const odo=x.odometer!=null?x.odometer.toLocaleString()+" km":"",label=x.date+(odo?", "+odo:"");
   return `<div class="dt-r ${on?"on":""}" role="row"><label class="dt-c"><input type="checkbox" class="dt-ck" data-row="${esc(x.id)}" aria-label="Select ${label}" ${on?"checked":""}></label>
-  <div class="dt-m" role="cell"><div class="t num">${x.date}${odo?" · "+odo:""}</div><div class="s num"><span class="dt-n">#${x.n} · </span>${x.liters} L × Rs ${x.price}${x.subsidy?` − Rs ${x.subsidy} subsidy`:""}<span class="sm"> = ${total}${x.full?"":" · partial"}</span></div></div>
+  <div class="dt-m" role="cell"><div class="t num">${x.date}${odo?" · "+odo:""}</div><div class="s num"><span class="dt-n">#${x.n} · </span>${x.liters} ${UL(curV()).u} × Rs ${x.price}${x.subsidy?` − Rs ${x.subsidy} subsidy`:""}<span class="sm"> = ${total}${x.full?"":" · partial"}</span></div></div>
   <span class="dt-t num" role="cell">${total}</span>
-  <span class="dt-b" role="cell"><span class="badge ${x.full?"full":"part"}">${x.full?"Full tank":"Partial"}</span></span>
+  <span class="dt-b" role="cell"><span class="badge ${x.full?"full":"part"}">${x.full?UL(curV()).full:"Partial"}</span></span>
   <span class="dt-k" role="cell"><span class="pill num ${x.eff===null?"na":""}" ${x.eff===null&&x.est?`title="Estimate from odometer readings"`:""}>${x.eff!==null?x.eff.toFixed(1):x.est?"~"+x.est.toFixed(1):"–"}</span></span>
   <div class="dt-a" role="cell"><button class="ghost" style="padding:0 12px" aria-label="Edit entry" data-edit="${esc(x.id)}">${PEN}</button><button class="ghost" style="padding:0 12px" aria-label="Delete entry" data-del="${esc(x.id)}">${CROSS}</button></div></div>`;
 }
 function logRowsHTML(list){
-  return list.length?list.map(logRowHTML).join(""):`<div class="empty">No fill-ups match these filters.<br><br><button class="ghost" data-act="lfclear">Clear filters</button></div>`;
+  return list.length?list.map(logRowHTML).join(""):`<div class="empty">No ${UL(curV()).fills} match these filters.<br><br><button class="ghost" data-act="lfclear">Clear filters</button></div>`;
 }
 const logSelHTML=()=>S.sel.size?`<span><b>${S.sel.size}</b> selected</span><span class="dt-selb"><button class="ghost" data-act="lfsel0">Clear</button><button class="ghost danger" data-act="lfdel" ${S.deleting?"disabled aria-busy=\"true\"":""}>${S.deleting?"Deleting…":"Delete selected"}</button></span>`:"";
-const logCountText=(n,all)=>n===all?`${all} fill-up${all===1?"":"s"}`:`Showing ${n} of ${all}`;
+const logCountText=(n,all)=>n===all?`${all} ${all===1?UL(curV()).fill:UL(curV()).fills}`:`Showing ${n} of ${all}`;
 
 /* redraw only the rows, count, select-all and bulk bar, so typing in a filter never loses focus */
 function drawLog(){
@@ -56,7 +56,7 @@ function drawSel(){
 function viewLog(){
   const f=S.lf,all=logAll(),list=logFiltered(),ids=new Set(all.map(x=>x.id));
   S.sel=new Set([...S.sel].filter(id=>ids.has(id)));
-  let h=`<h1>Fuel Log</h1>${picker()}`;
+  let h=`<h1>${UL(curV()).log}</h1>${picker()}`;
   if(!all.length)h+=`<div class="card" style="margin-top:14px"><div class="empty">No entries yet.</div></div>`;
   else{
     const vis=list.map(x=>x.id),n=vis.filter(id=>S.sel.has(id)).length,c=lfActive();
@@ -65,17 +65,17 @@ function viewLog(){
       <span class="dt-bt"><button class="ghost dt-clr" id="lfClr" data-act="lfclear" ${c?"":"hidden"}>Clear</button><button class="ghost dt-ftog" data-act="lfopen" aria-haspopup="true" aria-expanded="${S.lfOpen}" aria-controls="lfPanel">Filters<span id="lfN">${c?` · ${c}`:""}</span><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></span>
       <div class="dt-fil ${S.lfOpen?"open":""}" id="lfPanel" role="group" aria-label="Filters">
       <div class="dt-f dt-f-q"><label for="lf_q">Search</label><div class="dt-sw">${LENS}<input id="lf_q" type="search" inputmode="search" placeholder="Date or km" value="${esc(f.q)}" autocomplete="off"></div></div>
-      <div class="dt-f dt-f-w"><label for="lf_type">Type</label><select id="lf_type"><option value="all" ${f.type==="all"?"selected":""}>All</option><option value="full" ${f.type==="full"?"selected":""}>Full tank</option><option value="partial" ${f.type==="partial"?"selected":""}>Partial</option></select></div>
+      <div class="dt-f dt-f-w"><label for="lf_type">Type</label><select id="lf_type"><option value="all" ${f.type==="all"?"selected":""}>All</option><option value="full" ${f.type==="full"?"selected":""}>${UL(curV()).full}</option><option value="partial" ${f.type==="partial"?"selected":""}>Partial</option></select></div>
       <div class="dt-f"><label for="lf_tmin">Total (Rs)</label><div class="pair"><input id="lf_tmin" type="number" inputmode="decimal" min="0" placeholder="Min" value="${esc(f.tmin)}" aria-label="Minimum total"><input id="lf_tmax" type="number" inputmode="decimal" min="0" placeholder="Max" value="${esc(f.tmax)}" aria-label="Maximum total"></div></div>
-      <div class="dt-f"><label for="lf_kmin">km/L</label><div class="pair"><input id="lf_kmin" type="number" inputmode="decimal" min="0" step="0.1" placeholder="Min" value="${esc(f.kmin)}" aria-label="Minimum km per litre"><input id="lf_kmax" type="number" inputmode="decimal" min="0" step="0.1" placeholder="Max" value="${esc(f.kmax)}" aria-label="Maximum km per litre"></div></div>
+      <div class="dt-f"><label for="lf_kmin">${UL(curV()).eff}</label><div class="pair"><input id="lf_kmin" type="number" inputmode="decimal" min="0" step="0.1" placeholder="Min" value="${esc(f.kmin)}" aria-label="Minimum ${UL(curV()).eff}"><input id="lf_kmax" type="number" inputmode="decimal" min="0" step="0.1" placeholder="Max" value="${esc(f.kmax)}" aria-label="Maximum ${UL(curV()).eff}"></div></div>
         <div class="dt-ff"><button class="ghost" data-act="lfclear">Clear filters</button><button class="pri" data-act="lfclose">Done</button></div>
       </div></div>
     <div class="dt-sel" id="dtSel" role="status" ${S.sel.size?"":"hidden"}>${logSelHTML()}</div>
-    <div class="dt-tbl" role="table" aria-label="Fill-ups">
-      <div class="dt-r dt-h" role="row"><label class="dt-c"><input type="checkbox" class="dt-ck" id="dt_all" aria-label="Select all shown fill-ups" ${vis.length&&n===vis.length?"checked":""} ${vis.length?"":"disabled"}><span class="dt-sa">Select all</span></label><span class="dt-hm" role="columnheader">Fill-up</span><span class="dt-ht" role="columnheader">Total</span><span class="dt-hb" role="columnheader">Type</span><span class="dt-hk" role="columnheader">km/L</span><span class="dt-ha"></span></div>
+    <div class="dt-tbl" role="table" aria-label="${UL(curV()).Fill}s">
+      <div class="dt-r dt-h" role="row"><label class="dt-c"><input type="checkbox" class="dt-ck" id="dt_all" aria-label="Select all shown ${UL(curV()).fills}" ${vis.length&&n===vis.length?"checked":""} ${vis.length?"":"disabled"}><span class="dt-sa">Select all</span></label><span class="dt-hm" role="columnheader">${UL(curV()).Fill}</span><span class="dt-ht" role="columnheader">Total</span><span class="dt-hb" role="columnheader">Type</span><span class="dt-hk" role="columnheader">${UL(curV()).eff}</span><span class="dt-ha"></span></div>
       <div id="dtBody" role="rowgroup">${logRowsHTML(list)}</div>
     </div></div>`;
   }
-  if(S.vid)h+=`<button class="pri fab" data-act="addlog">+ Fill-up</button>`;
+  if(S.vid)h+=`<button class="pri fab" data-act="addlog">+ ${UL(curV()).Fill}</button>`;
   return h;
 }
