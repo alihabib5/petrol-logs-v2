@@ -1,7 +1,7 @@
 /* home view */
 function viewHome(){
   const d=S.data,L=UL(curV());let h="";
-    h=`<h1>Petrol Log</h1>${picker()}`;
+    h=`<h1>Sawari</h1>${picker()}`;
     if(!S.vid)h+=`<div class="card empty" style="margin-top:14px">Add a vehicle to start tracking.<br><br><button class="pri" data-act="addcar">Add vehicle</button></div>`;
     else{
       h+=`<div class="card gauge" style="margin-top:14px">${gauge(d.avg,true,L.gauge)}<div class="big num">${f1(d.avg,d.approx)}</div><div class="unit">${d.approx?"estimated":"average"} ${L.effLong}</div>${d.approx?`<div class="hint">Estimated from odometer readings. ${L.twoFull}</div>`:""}</div>

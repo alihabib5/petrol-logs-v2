@@ -2,6 +2,13 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [2.9.0] - 2026-11-22
+### Changed
+- **The app is now called Sawari** (it was Petrol Log), ready for electric vehicles now and public transport and ride-hailing later. The new name is on the browser tab, the sign-in screen (new headline "Every ride, every kilometre."), the sidebar, Home, the PDF ("Sawari Report — November 2026"), export file names (`sawari-report-2026-11`), and the Privacy Policy and Terms (updated 22 November 2026, which also now mention EV charging and services).
+- **Google Sheet:** new users get a sheet called "Sawari". An existing "Petrol Log" sheet is found as before and **renamed to "Sawari" in place** the next time its owner uses the app; if Google refuses the rename, the app keeps using it under the old name. No data is copied and no empty sheet is created.
+- Saved sessions, offline data and preferences are untouched (their internal names stay the same), so nobody is signed out.
+- Per-vehicle PDF headers still say PETROL / DIESEL / EV CHARGING REPORT.
+
 ## [2.8.0] - 2026-11-22
 ### Added
 - **Electric vehicles.** Adding a vehicle now has a **Type** dropdown: Petrol, Diesel or Electric. For an electric vehicle the app logs **charges** instead of fill-ups: kWh charged, price per kWh and "Charged to full", and shows efficiency in **km per kWh** (the gauge runs to 12 instead of 30). Every screen follows the vehicle's type: Home ("average km / kWh", "Last charge km/kWh"), the **Charging Log** ("+ Charge", "Full charge", km/kWh column and filter), Reports, Excel/CSV (kWh and km/kWh headers, a Type column in the summary) and the PDF ("EV Charging Report", "Energy charged", "Price per kWh", charging insights). The subsidy switch is hidden for electric vehicles.
