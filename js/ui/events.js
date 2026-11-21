@@ -19,10 +19,14 @@ document.addEventListener("click",async e=>{
     for(const id of ids){try{await api("DELETE","/logs/"+id);S.sel.delete(id)}catch(err){alert(err.message);break}}
     S.deleting=false;refresh();return}
   if(t.dataset.edit)return logForm(S.data.rows.find(x=>x.id===t.dataset.edit));
+  if(t.dataset.sedit)return serviceForm(S.svc.find(x=>x.id===t.dataset.sedit));
+  if(t.dataset.sdel){if(confirm("Delete this service entry? This cannot be undone.")){try{await api("DELETE","/services/"+t.dataset.sdel)}catch(e){alert(e.message)}refresh()}return}
   const a=t.dataset.act;if(!a)return;
   if(a==="close")closeSheet();
   if(a==="addlog")logForm();
   if(a==="addcar")carForm();
+  if(a==="addsvc")serviceForm();
+  if(a==="savesvc")guard(async()=>{const id=t.dataset.id;await api(id?"PUT":"POST",id?"/services/"+id:"/services",readSvcForm($("#sheetBody"),S.vid));closeSheet();refresh()});
   if(a==="savelog")guard(async()=>{const sub=$("#f_sub").checked;if(sub&&!(+$("#f_s").value>0))throw new Error("Enter the subsidy amount, or switch the subsidy off");const id=t.dataset.id;await api(id?"PUT":"POST",id?"/logs/"+id:"/logs",{vehicleId:S.vid,date:$("#f_d").value,odometer:$("#f_o").value,liters:$("#f_l").value,price:$("#f_p").value,subsidy:sub?$("#f_s").value:0,full:$("#f_f").checked});closeSheet();refresh()});
   if(a==="savecar")guard(async()=>{const v=await api("POST","/vehicles",{name:$("#c_n").value.trim(),plate:$("#c_p").value.trim()});S.vid=v.id;closeSheet();refresh()});
   if(a==="signin")doSignIn();

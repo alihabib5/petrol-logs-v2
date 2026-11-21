@@ -17,6 +17,12 @@ function logForm(e){
   bindFillLinks({price:$("#f_p"),total:$("#f_a"),liters:$("#f_l"),hint:$("#f_h"),onChange:tot,touched:e?["price","liters"]:["price"]});
 }
 function tot(){const n=(+$("#f_l").value||0)*(+$("#f_p").value||0)-($("#f_sub").checked?+$("#f_s").value||0:0);$("#f_t").textContent=money(Math.max(n,0))}
+/* Service visit (fields, products and totals live in service-form.js) */
+function serviceForm(e){
+  sheet(`<h1 style="font-size:24px;margin:0 0 4px">${e?"Edit service":"New service"}</h1>${svcFormHTML(e)}
+  <div class="two" style="margin-top:8px"><button data-act="close">Cancel</button><button class="pri" data-act="savesvc" ${e?`data-id="${esc(e.id)}"`:""}>Save</button></div>`);
+  bindSvcForm($("#sheetBody"));
+}
 function carForm(){
   sheet(`<h1 style="font-size:24px;margin:0 0 4px">New vehicle</h1><label>Plate number (required, used as the sheet tab name)</label><input id="c_p" placeholder="e.g. LEA-1234" autocapitalize="characters" autocomplete="off"><label>Vehicle name</label><input id="c_n" placeholder="e.g. Suzuki Alto"><div class="err" id="ferr"></div>
   <div class="two" style="margin-top:8px"><button data-act="close">Cancel</button><button class="pri" data-act="savecar">Save</button></div>`);
