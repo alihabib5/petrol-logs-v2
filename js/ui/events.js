@@ -3,7 +3,7 @@ document.addEventListener("click",async e=>{
   if(S.lfOpen&&!e.target.closest("#lfPanel,[data-act=lfopen]"))lfToggle(false);
   const t=e.target.closest("button,.sheet-bg");if(!t)return;
   if(t.id==="sheet"&&e.target===t)return closeSheet();
-  if(t.dataset.t){S.tab=t.dataset.t;return render()}
+  if(t.dataset.t){S.tab=t.dataset.t;S.svcForm=null;S.flash="";scrollTo(0,0);return render()}
   if(t.dataset.theme){Prefs.set("theme",t.dataset.theme);return render()}
   if(t.dataset.del){try{await api("DELETE","/logs/"+t.dataset.del)}catch(e){alert(e.message)}return refresh()}
   if(t.dataset.rmcar){if(confirm("Remove this vehicle and all its entries?")){try{await api("DELETE","/vehicles/"+encodeURIComponent(t.dataset.rmcar))}catch(e){alert(e.message)}refresh()}return}
@@ -19,14 +19,22 @@ document.addEventListener("click",async e=>{
     for(const id of ids){try{await api("DELETE","/logs/"+id);S.sel.delete(id)}catch(err){alert(err.message);break}}
     S.deleting=false;refresh();return}
   if(t.dataset.edit)return logForm(S.data.rows.find(x=>x.id===t.dataset.edit));
-  if(t.dataset.sedit)return serviceForm(S.svc.find(x=>x.id===t.dataset.sedit));
-  if(t.dataset.sdel){if(confirm("Delete this service entry? This cannot be undone.")){try{await api("DELETE","/services/"+t.dataset.sdel)}catch(e){alert(e.message)}refresh()}return}
+  if(t.dataset.sedit){S.svcForm=t.dataset.sedit;S.flash="";S.tab="svc";scrollTo(0,0);return render()}
+  if(t.dataset.sdel){const x=S.svc.find(s=>s.id===t.dataset.sdel);if(!x||!confirm("Delete the service on "+fmtDate(x.date)+"? This cannot be undone."))return;
+    try{await api("DELETE","/services/"+x.id);S.flash="Service on "+fmtDate(x.date)+" deleted"}catch(e){alert(e.message)}return refresh()}
   const a=t.dataset.act;if(!a)return;
   if(a==="close")closeSheet();
   if(a==="addlog")logForm();
   if(a==="addcar")carForm();
-  if(a==="addsvc")serviceForm();
-  if(a==="savesvc")guard(async()=>{const id=t.dataset.id;await api(id?"PUT":"POST",id?"/services/"+id:"/services",readSvcForm($("#sheetBody"),S.vid));closeSheet();refresh()});
+  if(a==="addsvc"){S.svcForm="new";S.flash="";S.tab="svc";scrollTo(0,0);return render()}
+  if(a==="svccancel"){S.svcForm=null;return render()}
+  if(a==="side"){S.side=!S.side;try{localStorage.setItem("petrol-side",S.side?"1":"0")}catch(e){}return renderSide()}
+  if(a==="savesvc"){
+    if(t.disabled)return;t.disabled=true;$("#ferr").textContent="";
+    try{const id=t.dataset.id,r=await api(id?"PUT":"POST",id?"/services/"+id:"/services",readSvcForm($("#app"),S.vid));
+      S.svcForm=null;S.flash=`<b>Service ${id?"updated":"saved"}.</b> ${fmtDate(r.date)} · Total ${money(r.total)}${r.items.length?` (service charge ${money(r.charge)} + ${r.items.length} product${r.items.length>1?"s":""} ${money(svcItemsTotal(r.items))})`:""}`;scrollTo(0,0);refresh()}
+    catch(err){t.disabled=false;$("#ferr").textContent=err.message}
+    return}
   if(a==="savelog")guard(async()=>{const sub=$("#f_sub").checked;if(sub&&!(+$("#f_s").value>0))throw new Error("Enter the subsidy amount, or switch the subsidy off");const id=t.dataset.id;await api(id?"PUT":"POST",id?"/logs/"+id:"/logs",{vehicleId:S.vid,date:$("#f_d").value,odometer:$("#f_o").value,liters:$("#f_l").value,price:$("#f_p").value,subsidy:sub?$("#f_s").value:0,full:$("#f_f").checked});closeSheet();refresh()});
   if(a==="savecar")guard(async()=>{const v=await api("POST","/vehicles",{name:$("#c_n").value.trim(),plate:$("#c_p").value.trim()});S.vid=v.id;closeSheet();refresh()});
   if(a==="signin")doSignIn();
@@ -45,7 +53,7 @@ document.addEventListener("change",e=>{
   if(e.target.dataset&&e.target.dataset.row){const on=e.target.checked;on?S.sel.add(e.target.dataset.row):S.sel.delete(e.target.dataset.row);e.target.closest(".dt-r").classList.toggle("on",on);drawSel();return}
   if(i==="dt_all"){const on=e.target.checked;logFiltered().forEach(x=>on?S.sel.add(x.id):S.sel.delete(x.id));document.querySelectorAll("#dtBody .dt-ck").forEach(c=>{c.checked=on;c.closest(".dt-r").classList.toggle("on",on)});drawSel();return}
   if(i==="cur"){Prefs.set("cur",e.target.value);render()}
-  if(i==="veh"){S.vid=e.target.value;S.sel.clear();refresh()}
+  if(i==="veh"){S.vid=e.target.value;S.sel.clear();S.flash="";refresh()}
   if(i==="rm"&&/^\d{4}-(0[1-9]|1[0-2])$/.test(e.target.value)){S.month=e.target.value;refresh()}
   if(i==="rv"){S.rv=e.target.value;refresh()}
 });
@@ -67,6 +75,7 @@ function lfToggle(open){
   p.classList.toggle("open",open);document.querySelector("[data-act=lfopen]")?.setAttribute("aria-expanded",open);
 }
 document.addEventListener("keydown",ev=>{
+  if(ev.key==="Escape"&&S.tab==="svc"&&S.svcForm&&!$("#cal").classList.contains("on")){S.svcForm=null;return render()}
   if(ev.key==="Escape"&&S.lfOpen&&!$("#cal").classList.contains("on")){lfToggle(false);document.querySelector("[data-act=lfopen]")?.focus()}
 });
 
