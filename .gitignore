@@ -1,1 +1,6 @@
 .claude/
+# Impeccable working files (decision page, review captures, hook cache); the surface brief and design.json are kept
+.impeccable/questions/
+.impeccable/mocks/
+.impeccable/review/
+.impeccable/hook.cache.json

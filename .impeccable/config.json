@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "atkinson hyperlegible",
+        "createdAt": "2026-11-22T00:43:03.798Z",
+        "reason": "assistant: fonts of the declined decision-round sketches in .impeccable/mocks/decision (gitignored, not shipped); the app uses the system UI stack per DESIGN.md"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "noto nastaliq urdu",
+        "createdAt": "2026-11-22T00:43:04.139Z",
+        "reason": "assistant: fonts of the declined decision-round sketches in .impeccable/mocks/decision (gitignored, not shipped); the app uses the system UI stack per DESIGN.md"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "anybody",
+        "createdAt": "2026-11-22T00:43:04.513Z",
+        "reason": "assistant: fonts of the declined decision-round sketches in .impeccable/mocks/decision (gitignored, not shipped); the app uses the system UI stack per DESIGN.md"
+      }
+    ]
+  }
+}

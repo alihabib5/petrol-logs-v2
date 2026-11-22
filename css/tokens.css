@@ -1,4 +1,26 @@
-/* Design tokens: colours, light + dark theme */
-:root{--bg:#f2f1ee;--card:#fff;--ink:#16181d;--mute:#62666f;--line:#e4e2dd;--acc:#c8440c;--acc-ink:#fff;--ok:#237a35;--err:#c92a2a;--hero-mute:#4a4e55;--ok-soft:rgba(35,122,53,.12);--warn:#92400e;--warn-soft:rgba(180,83,9,.12);--glass:rgba(255,255,255,.72);--glow:26%;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0f12;--card:#1a1c21;--ink:#f3f3f1;--mute:#9a9ea8;--line:#2a2d34;--acc:#ff8a3d;--acc-ink:#1a0c00;--ok:#69db7c;--glass:rgba(26,28,33,.72);--glow:55%;--err:#ff6b6b;--hero-mute:#c9cdd5;--ok-soft:rgba(105,219,124,.14);--warn:#fbbf24;--warn-soft:rgba(251,191,36,.14)}}
-:root[data-theme="dark"]{--bg:#0e0f12;--card:#1a1c21;--ink:#f3f3f1;--mute:#9a9ea8;--line:#2a2d34;--acc:#ff8a3d;--acc-ink:#1a0c00;--ok:#69db7c;--glass:rgba(26,28,33,.72);--glow:55%;--err:#ff6b6b;--hero-mute:#c9cdd5;--ok-soft:rgba(105,219,124,.14);--warn:#fbbf24;--warn-soft:rgba(251,191,36,.14)}
+/* Design tokens (2.10.0 redesign): plain and familiar, in the owner's favourite bottle green.
+   Brand green #173E2F (sampled from the owner's reference, deepening to #002317) paints the desktop sidebar, the sign-in ground,
+   buttons, the gauge and the chart. Cool light ground, white surfaces, hairline borders; red and amber only for overdue and due soon,
+   a brighter green only for "OK". Light by default (used outdoors at the pump), dark on request or by system. */
+:root{
+  --bg:#f4f5f4;--card:#fff;--ink:#17191b;--mute:#5a615c;--line:#e1e4e2;--line-2:#cdd2cf;
+  --acc:#173e2f;--acc-ink:#fff;--acc-soft:#e1ebe6;--acc-hover:#0d2b20;--acc-fg:#173e2f;   /* acc = fills, acc-fg = green text and icons */
+  --brand:#173e2f;--brand-deep:#002317;--on-brand:#fff;--on-brand-mute:rgba(255,255,255,.74);--on-brand-line:rgba(255,255,255,.14);--on-brand-hi:rgba(255,255,255,.14);
+  --ok:#1b7a4b;--ok-soft:#e3f1e9;--err:#c22a2a;--err-soft:#fbe9e9;--warn:#995500;--warn-soft:#fdf1dc;
+  --shadow:0 1px 2px rgba(23,25,27,.06),0 4px 12px rgba(23,25,27,.06);--shadow-lg:0 12px 32px rgba(23,25,27,.16);
+  --glass:#fff;color-scheme:light;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1412;--card:#18201c;--ink:#eef1ef;--mute:#a2aaa5;--line:#28302c;--line-2:#3a443f;
+  --acc:#2e7a5c;--acc-ink:#fff;--acc-soft:#1d3329;--acc-hover:#3a8c6b;--acc-fg:#8fd4b0;   /* bottle green lifted to 3.5:1 on the dark ground, white label 5.3:1 */
+  --brand:#10291f;--brand-deep:#001a10;
+  --ok:#63c995;--ok-soft:#173025;--err:#ff7a7a;--err-soft:#3a1d1d;--warn:#f2b44b;--warn-soft:#3a2c12;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.3);--shadow-lg:0 12px 32px rgba(0,0,0,.5);
+  --glass:#18201c;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1412;--card:#18201c;--ink:#eef1ef;--mute:#a2aaa5;--line:#28302c;--line-2:#3a443f;
+  --acc:#2e7a5c;--acc-ink:#fff;--acc-soft:#1d3329;--acc-hover:#3a8c6b;--acc-fg:#8fd4b0;   /* bottle green lifted to 3.5:1 on the dark ground, white label 5.3:1 */
+  --brand:#10291f;--brand-deep:#001a10;
+  --ok:#63c995;--ok-soft:#173025;--err:#ff7a7a;--err-soft:#3a1d1d;--warn:#f2b44b;--warn-soft:#3a2c12;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.3);--shadow-lg:0 12px 32px rgba(0,0,0,.5);
+  --glass:#18201c;color-scheme:dark}
