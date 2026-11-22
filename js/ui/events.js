@@ -65,7 +65,7 @@ document.addEventListener("change",e=>{
 });
 async function doSignIn(){
   S.busy=true;S.sync="";render();
-  try{await Auth.signIn(false);DB.load();await SyncService.pull();S.vid=null}
+  try{await Auth.signIn(false);Track.ping(true);DB.load();await SyncService.pull();S.vid=null}   /* Track: sign-in record, not awaited */
   catch(err){Auth.mode=null;S.sync=err.message}
   S.busy=false;refresh();
 }
@@ -89,7 +89,7 @@ document.addEventListener("keydown",ev=>{
 async function doReconnect(){
   if(S.reconnecting)return;
   S.reconnecting=true;S.sync="";render();
-  try{await Auth.request(false);await SyncService.pull();S.sync="Synced with Google Drive ✓"}
+  try{await Auth.request(false);Track.ping();await SyncService.pull();S.sync="Synced with Google Drive ✓"}
   catch(err){Auth.needsReconnect=true;S.sync="Could not reconnect: "+err.message}
   S.reconnecting=false;refresh();
 }

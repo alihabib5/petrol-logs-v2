@@ -63,6 +63,17 @@ js/main.js            startup
 ## Odometer is optional
 Leave the odometer empty and the fill-up still counts for litres, cost and the reports; add it when you want distance and km/L. Fill-ups without an odometer give no distance of their own.
 
+## Sign-in records (Supabase, 2.12.0)
+Records which Google accounts sign in, in a Supabase table only you can read. Vehicle, fuel and service records are never sent.
+How it works: after a Google sign-in, the app sends its Google access token to the `track-signin` Edge Function. The function asks Google who the token belongs to, checks it was issued to Sawari's OAuth client, and records the account (Google id, name, email, picture, first/last seen, count) in `public.app_users` with the secret key. The browser only has the publishable key; RLS blocks it from the table.
+
+One-time setup in the Supabase dashboard (project `ffzaaamamplyiiywuwiq`):
+1. **SQL Editor:** paste and run `supabase/migrations/20261122000000_app_users.sql`.
+2. **Edge Functions → Deploy a new function → Via editor:** name it `track-signin`, paste `supabase/functions/track-signin/index.ts`, deploy. Then in the function's settings turn **Enforce JWT verification off** (or with the CLI: `supabase functions deploy track-signin --no-verify-jwt`).
+3. If the app runs on another address, add it to the function's `ALLOWED_ORIGINS` secret (comma-separated; default `https://petrol-logs.vercel.app,http://localhost:8000`).
+4. See who signed in: **Table Editor → app_users**.
+Never put the secret key (`sb_secret_…`) in this repo or in `js/config.js`.
+
 ## Home charging (2.11.0)
 Electric vehicle charges are **Home** or **Public**, with the battery % at plug-in and at unplug. Efficiency = km between charges ÷ battery % used (km per 1%), or km/kWh once the battery size is known (typed in Charging settings, or learned from a public receipt: kWh ÷ % added). Home cost = % added × battery size ÷ 0.9 × the rate per unit (from the electricity bill: amount ÷ units). Code: `AnalyticsService.computeEV`, `learnedCap` / `evCap` / `CHARGE_LOSS` in `js/services/vehicle.service.js`, `evForm` in `js/ui/forms.js`. Government subsidy applies to petrol only.
 
