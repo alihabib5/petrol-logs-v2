@@ -1,11 +1,11 @@
-# Sawari (formerly Petrol Log)
+# Safri (formerly Safri, and Petrol Log before that)
 
 Mobile-first fuel log: average km/L, government subsidy deducted from totals, monthly reports (Excel, PDF, CSV).
-Customers sign in with Google. Their data is saved in a sheet called "Sawari" in THEIR OWN Google Drive
+Customers sign in with Google. Their data is saved in a sheet called "Safri" in THEIR OWN Google Drive
 (one tab per vehicle, tab name = plate number). You store no customer data.
 
 ## 1. Google Cloud setup (one time, about 10 minutes)
-1. Go to https://console.cloud.google.com and create a project (e.g. "Sawari").
+1. Go to https://console.cloud.google.com and create a project (e.g. "Safri").
 2. APIs & Services -> Library -> enable **Google Sheets API** and **Google Drive API**.
 3. Google Auth Platform (OAuth consent screen) -> Get started:
    - App name, support email; Audience: **External**; contact email.
@@ -38,7 +38,7 @@ Services      VehicleService | FuelLogService | AnalyticsService | ReportService
    |
 Google Sign-In + Sheets API   (OAuth, drive.file scope)
    |
-Customer's own Google Drive   Sheet "Sawari", one tab per plate number
+Customer's own Google Drive   Sheet "Safri", one tab per plate number
 ```
 
 ## Project structure
@@ -65,7 +65,7 @@ Leave the odometer empty and the fill-up still counts for litres, cost and the r
 
 ## Sign-in records (Supabase, 2.12.0)
 Records which Google accounts sign in, in a Supabase table only you can read. Vehicle, fuel and service records are never sent.
-How it works: after a Google sign-in, the app sends its Google access token to the `track-signin` Edge Function. The function asks Google who the token belongs to, checks it was issued to Sawari's OAuth client, and records the account (Google id, name, email, picture, first/last seen, count) in `public.app_users` with the secret key. The browser only has the publishable key; RLS blocks it from the table.
+How it works: after a Google sign-in, the app sends its Google access token to the `track-signin` Edge Function. The function asks Google who the token belongs to, checks it was issued to Safri's OAuth client, and records the account (Google id, name, email, picture, first/last seen, count) in `public.app_users` with the secret key. The browser only has the publishable key; RLS blocks it from the table.
 
 One-time setup in the Supabase dashboard (project `ffzaaamamplyiiywuwiq`):
 1. **SQL Editor:** paste and run `supabase/migrations/20261122000000_app_users.sql`.
@@ -77,8 +77,8 @@ Never put the secret key (`sb_secret_…`) in this repo or in `js/config.js`.
 ## Home charging (2.11.0)
 Electric vehicle charges are **Home** or **Public**, with the battery % at plug-in and at unplug. Efficiency = km between charges ÷ battery % used (km per 1%), or km/kWh once the battery size is known (typed in Charging settings, or learned from a public receipt: kWh ÷ % added). Home cost = % added × battery size ÷ 0.9 × the rate per unit (from the electricity bill: amount ÷ units). Code: `AnalyticsService.computeEV`, `learnedCap` / `evCap` / `CHARGE_LOSS` in `js/services/vehicle.service.js`, `evForm` in `js/ui/forms.js`. Government subsidy applies to petrol only.
 
-## Name change (2.9.0)
-The app was called **Petrol Log**. Users' existing sheet named "Petrol Log" is still found (by its saved id, or by searching for the old name) and renamed to "Sawari" in place, so no data moves and no empty sheet is created. Saved browser data keeps its internal `petrol-*` keys and `PETROL_CONFIG` keeps its name, so nobody is signed out. Outside the code: change the app name on the Google Cloud consent screen, and optionally add a new Vercel domain (add it to the OAuth client's Authorised JavaScript origins too).
+## Name changes (2.9.0, 2.13.0)
+The app was called **Petrol Log**, then **Sawari** (2.9.0), and is now **Safri** (2.13.0). A user's existing sheet named "Sawari" or "Petrol Log" is still found (by its saved id, or by searching for the old names) and renamed to "Safri" in place, so no data moves and no empty sheet is created. Saved browser data keeps its internal `petrol-*` keys and `PETROL_CONFIG` keeps its name, so nobody is signed out. Outside the code: change the app name on the Google Cloud consent screen, and optionally add a new Vercel domain (add it to the OAuth client's Authorised JavaScript origins too).
 
 ## Vehicle types: petrol, diesel, electric
 Choose the type when adding a vehicle. Electric vehicles log charges in kWh (price per kWh, charged to full) and show km per kWh; petrol and diesel log litres and km per litre. All screens, exports and the PDF use the vehicle's own units, and "All vehicles" reports keep litres and kWh apart. The type is stored in row 1 of the vehicle's sheet tab (`Type | Electric`); older tabs without it count as Petrol. Labels: `UNITS` / `UL(vehicle)` in `js/services/vehicle.service.js`.

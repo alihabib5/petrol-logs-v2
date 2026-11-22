@@ -38,7 +38,7 @@ function renderSide(){
   document.body.classList.toggle("dash",!!Auth.mode);document.body.classList.toggle("collapsed",!!S.side);
   if(!Auth.mode){side.innerHTML="";return}
   const g=Auth.mode==="google",u=Auth.user||{};
-  side.innerHTML=`<div class="pt-brand">${LOGO}<b class="pt-name">Sawari</b>
+  side.innerHTML=`<div class="pt-brand">${LOGO}<b class="pt-name">Safri</b>
     <button class="pt-col" data-act="side" aria-label="${S.side?"Expand":"Collapse"} sidebar" aria-expanded="${!S.side}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 4v16M18 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
   <nav class="pt-nav" aria-label="Main">${TABS.map(([k,l,dl])=>`<button data-t="${k}" ${S.tab===k?'aria-current="page"':""} title="${dl||l}"><svg viewBox="0 0 24 24" aria-hidden="true">${IC[k==="cars"?"car":k]}</svg><span>${dl||l}</span></button>`).join("")}</nav>
   <div class="pt-user">${u.picture?`<img src="${esc(u.picture)}" alt="" width="36" height="36" referrerpolicy="no-referrer">`:`<span class="pt-av" aria-hidden="true">${esc((g?u.name||"G":"O")[0])}</span>`}

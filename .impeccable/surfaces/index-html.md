@@ -5,7 +5,7 @@ primary_target: "index.html"
 related_targets: []
 ---
 
-# Surface brief: Sawari app shell (index.html, all tabs)
+# Surface brief: Safri app shell (index.html, all tabs)
 
 Scope: the whole app UI (Home, Log, Service, Reports, Vehicles, Users/Account, sign-in, forms). Mode: Operate.
 Audience and job: individual owners logging fill-ups/charges one-handed at the pump; reviewing spend, service and reports on phone or laptop.

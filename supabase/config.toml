@@ -1,6 +1,6 @@
-# Supabase project settings used by the CLI for Sawari.
+# Supabase project settings used by the CLI for Safri.
 project_id = "ffzaaamamplyiiywuwiq"
 
-# The caller is a Google-signed-in Sawari user, not a Supabase user, so the function checks the Google token itself.
+# The caller is a Google-signed-in Safri user, not a Supabase user, so the function checks the Google token itself.
 [functions.track-signin]
 verify_jwt = false

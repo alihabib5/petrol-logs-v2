@@ -1,6 +1,6 @@
-// Sawari: record which Google account signed in.
+// Safri: record which Google account signed in.
 // The app sends the Google access token it already has. This function asks Google who the token belongs to and checks it
-// was issued to Sawari's own OAuth client, then records the account in public.app_users with the secret key.
+// was issued to Safri's own OAuth client, then records the account in public.app_users with the secret key.
 // The token is used only for those two Google calls and is never stored.
 // Deploy with JWT verification off (the caller is a Google user, not a Supabase user): see supabase/config.toml.
 import { createClient } from "npm:@supabase/supabase-js@2";
@@ -35,7 +35,7 @@ Deno.serve(async (req) => {
   } catch { /* fall through */ }
   if (!token || token.length > 4096) return json({ error: "Missing access_token" }, 400);
 
-  // 1. Is it a live Google token, and was it issued to Sawari?
+  // 1. Is it a live Google token, and was it issued to Safri?
   const info = await fetch("https://oauth2.googleapis.com/tokeninfo?access_token=" + encodeURIComponent(token));
   if (!info.ok) return json({ error: "Google did not accept the token" }, 401);
   const ti = await info.json();

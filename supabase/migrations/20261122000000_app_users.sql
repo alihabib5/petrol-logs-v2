@@ -1,4 +1,4 @@
--- Sawari: who has signed in with Google.
+-- Safri: who has signed in with Google.
 -- One row per Google account. Only the track-signin Edge Function writes here (with the secret key, after Google has
 -- confirmed the account). Row level security is on with no policies, so the browser's publishable key can neither
 -- read nor write this table. Vehicle, fuel and service records are never stored here; they stay in each user's own Drive.

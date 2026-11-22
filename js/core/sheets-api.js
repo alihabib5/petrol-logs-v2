@@ -1,6 +1,6 @@
-/* Google Sheets / Drive REST calls. One spreadsheet "Sawari" in the customer's Drive; one tab per plate number.
-   The app was called Petrol Log until 2.9.0: a sheet still named "Petrol Log" is found as before and renamed to "Sawari" in place. */
-const SHEET_NAME="Sawari",OLD_SHEET_NAME="Petrol Log";
+/* Google Sheets / Drive REST calls. One spreadsheet "Safri" in the customer's Drive; one tab per plate number.
+   The app was called Petrol Log until 2.9.0 and Sawari until 2.13.0: a sheet still under an old name is found as before and renamed to "Safri" in place. */
+const SHEET_NAME="Safri",OLD_SHEET_NAMES=["Sawari","Petrol Log"];
 const SHEETS="https://sheets.googleapis.com/v4/spreadsheets",DRIVE="https://www.googleapis.com/drive/v3/files";
 const HEAD=["ID","Date","Odometer (km)","Litres","Price per litre (Rs)","Subsidy (Rs)","Full tank","Net total (Rs)"];
 const EV_COLS=["Battery % at plug-in","Battery % at unplug","Where"];   /* columns I-K on electric vehicles' tabs (2.11.0) */
@@ -33,16 +33,16 @@ const Gs={
     let title="";
     if(id){try{title=(await this.call(`${SHEETS}/${id}?fields=spreadsheetId,properties.title`)).properties.title}catch(e){id=null}}
     if(!id){                                       /* the new name first, then the old one, so an existing sheet is never replaced by an empty one */
-      for(const n of[SHEET_NAME,OLD_SHEET_NAME]){
+      for(const n of[SHEET_NAME,...OLD_SHEET_NAMES]){
         const q="name='"+n+"' and mimeType='application/vnd.google-apps.spreadsheet' and trashed=false";
         const f=await this.call(`${DRIVE}?q=${enc(q)}&fields=files(id)&pageSize=1`);
         if(f.files&&f.files[0]){id=f.files[0].id;title=n;break}
       }
     }
     if(!id){
-      const j=await this.call(SHEETS,{properties:{title:SHEET_NAME},sheets:[{properties:{title:"README"},data:[{startRow:0,startColumn:0,rowData:[{values:[{userEnteredValue:{stringValue:"Sawari: each vehicle tab is named by its plate number, and services are in the Service log tab. Edit your data through the app."}}]}]}]}]});
+      const j=await this.call(SHEETS,{properties:{title:SHEET_NAME},sheets:[{properties:{title:"README"},data:[{startRow:0,startColumn:0,rowData:[{values:[{userEnteredValue:{stringValue:"Safri: each vehicle tab is named by its plate number, and services are in the Service log tab. Edit your data through the app."}}]}]}]}]});
       id=j.spreadsheetId;
-    }else if(title===OLD_SHEET_NAME){              /* rename the old sheet once; if Google refuses, keep using it under its old name */
+    }else if(OLD_SHEET_NAMES.includes(title)){              /* rename the old sheet once; if Google refuses, keep using it under its old name */
       try{await this.call(`${SHEETS}/${id}:batchUpdate`,{requests:[{updateSpreadsheetProperties:{properties:{title:SHEET_NAME},fields:"title"}}]})}catch(e){}
     }
     localStorage.setItem(k,id);return this.id=id;
