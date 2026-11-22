@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "generatedAt": "2026-11-22T00:00:00Z",
-  "title": "Design System: Sawari",
+  "title": "Design System: Safri",
   "extensions": {
     "colorMeta": {
       "bottle-green": { "role": "primary", "displayName": "Bottle Green", "canonical": "#173e2f", "cssVar": "--acc / --brand / --acc-fg (light)", "tonalRamp": ["#002317", "#0d2b20", "#173e2f", "#2e7a5c", "#3a8c6b", "#8fd4b0", "#cfe2d8", "#e1ebe6"] },
@@ -135,7 +135,7 @@
   ],
   "narrative": {
     "northStar": "The Glovebox Logbook",
-    "overview": "Sawari looks like the vehicle log anyone already knows how to use: a cool near-white ground, white cards with hairline borders, clear lists, and one colour, the owner's own bottle green. It is the category standard executed carefully, not a new idiom. The owner asked for \"simple and easier to navigate\" and \"plain and familiar, but not a finance app\", and chose this over expressive directions; Pakistani character lives in the content and wording, not in ornament.\n\nThe green is structural, not decorative. On desktop it is the whole sidebar; on sign-in it is the whole ground; everywhere else it marks the one action, the gauge arc, the chart bars and the selected tab. Status colours (a brighter green, amber, red) appear only where something is OK, due soon or overdue. Everything else is neutral, including data figures, so the numbers read as numbers rather than alarms.\n\nDensity is comfortable and touch-first: 44px minimum targets, 16px body, tabular figures for every amount. Motion is one short settle per view change plus value transitions on the gauge and bars. Light is the default because the app is used outdoors at the pump; dark follows the system or the user's preference.",
+    "overview": "Safri looks like the vehicle log anyone already knows how to use: a cool near-white ground, white cards with hairline borders, clear lists, and one colour, the owner's own bottle green. It is the category standard executed carefully, not a new idiom. The owner asked for \"simple and easier to navigate\" and \"plain and familiar, but not a finance app\", and chose this over expressive directions; Pakistani character lives in the content and wording, not in ornament.\n\nThe green is structural, not decorative. On desktop it is the whole sidebar; on sign-in it is the whole ground; everywhere else it marks the one action, the gauge arc, the chart bars and the selected tab. Status colours (a brighter green, amber, red) appear only where something is OK, due soon or overdue. Everything else is neutral, including data figures, so the numbers read as numbers rather than alarms.\n\nDensity is comfortable and touch-first: 44px minimum targets, 16px body, tabular figures for every amount. Motion is one short settle per view change plus value transitions on the gauge and bars. Light is the default because the app is used outdoors at the pump; dark follows the system or the user's preference.",
     "keyCharacteristics": [
       "One brand colour, bottle green, used as fills on large structural surfaces and the primary action.",
       "White cards on a cool near-white ground, 1px hairlines, almost no shadow.",

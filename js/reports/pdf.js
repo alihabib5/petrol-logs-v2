@@ -4,7 +4,7 @@
    can draw are used as text; arrows, the minus sign and the approx sign are drawn as shapes. */
 function exportPdf(R,fn){
   const {jsPDF}=window.jspdf,PW=595,REFH=PW*1560/960,MAXH=1500;
-  const title=(R.items.filter(it=>it.rows.length).every(it=>isEV(it.v))?"EV Charging Report — ":"Sawari Report — ")+fmtMonth(R.month);          /* file name and document title */
+  const title=(R.items.filter(it=>it.rows.length).every(it=>isEV(it.v))?"EV Charging Report — ":"Safri Report — ")+fmtMonth(R.month);          /* file name and document title */
   const items=R.items.filter(it=>it.rows.length);
   /* dry run on a very tall page to learn how tall each vehicle's report needs to be */
   const plan=items.map(it=>{const end=pdfDraw(new jsPDF({unit:"pt",format:[PW,6000]}),it,R.month,6000,PW);return end<=MAXH?Math.max(REFH,end):REFH});

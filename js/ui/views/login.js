@@ -4,7 +4,7 @@ function viewLogin(){
   const ok=Auth.configured(),busy=S.busy,off=ok&&!busy?"":"disabled";
   const tick='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   return `<section class="auth"><div class="auth-card">
-    <div class="auth-brand">${LOGO}Sawari</div>
+    <div class="auth-brand">${LOGO}Safri</div>
     <h1>Every ride, every kilometre.</h1>
     <p>Track fuel or charging, services and what every kilometre costs, with monthly reports. Petrol, diesel or electric.</p>
     <ul class="auth-feats">
@@ -16,7 +16,7 @@ function viewLogin(){
       <button class="pri" data-act="signin" ${off} ${busy?'aria-busy="true"':""}>${busy?'<span class="spin" aria-hidden="true"></span>Signing in…':"Sign in with Google"}</button>
       <button class="ghost" data-act="local" ${busy?"disabled":""}>Continue without sign-in</button>
     </div>
-    <p class="auth-note">${ok?"The app can only see the Sawari sheet it creates, not your other files.":"Setup needed: add your Google client ID in js/config.js (see README)."}</p>
+    <p class="auth-note">${ok?"The app can only see the Safri sheet it creates, not your other files.":"Setup needed: add your Google client ID in js/config.js (see README)."}</p>
     <p class="auth-note">By continuing you agree to the <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>.</p>
     <p class="auth-note err" role="status">${esc(S.sync||"")}</p>
   </div></section>`;

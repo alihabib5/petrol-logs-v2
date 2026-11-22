@@ -1,5 +1,5 @@
 ---
-name: Sawari
+name: Safri
 description: A plain, familiar vehicle log in the owner's bottle green.
 colors:
   bottle-green: "#173e2f"
@@ -149,13 +149,13 @@ components:
     rounded: "{rounded.pill}"
 ---
 
-# Design System: Sawari
+# Design System: Safri
 
 ## Overview
 
 **Creative North Star: "The Glovebox Logbook"**
 
-Sawari looks like the vehicle log anyone already knows how to use: a cool near-white ground, white cards with hairline borders, clear lists, and one colour, the owner's own bottle green. It is the category standard executed carefully, not a new idiom. The owner asked for "simple and easier to navigate" and "plain and familiar, but not a finance app", and chose this over expressive directions; Pakistani character lives in the content and wording, not in ornament.
+Safri looks like the vehicle log anyone already knows how to use: a cool near-white ground, white cards with hairline borders, clear lists, and one colour, the owner's own bottle green. It is the category standard executed carefully, not a new idiom. The owner asked for "simple and easier to navigate" and "plain and familiar, but not a finance app", and chose this over expressive directions; Pakistani character lives in the content and wording, not in ornament.
 
 The green is structural, not decorative. On desktop it is the whole sidebar; on sign-in it is the whole ground; everywhere else it marks the one action, the gauge arc, the chart bars and the selected tab. Status colours (a brighter green, amber, red) appear only where something is OK, due soon or overdue. Everything else is neutral, including data figures, so the numbers read as numbers rather than alarms.
 

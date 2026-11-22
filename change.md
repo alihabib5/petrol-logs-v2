@@ -1,6 +1,11 @@
 # Change log
 
-All notable changes to Petrol Log. Newest first.
+All notable changes to Safri (formerly Sawari and Petrol Log). Newest first.
+
+## [2.13.0] - 2026-11-22
+### Changed
+- **The app is now called Safri** (it was Sawari). "Safri" (سفری) means "for travel", as in *safri akhrajaat*, travel expenses: it fits the owner's own vehicle today and public transport and ride-hailing later. The new name is on the browser tab, sign-in screen, sidebar, reports (PDF title, `safri-report-…` file names), Privacy Policy and Terms.
+- **Google Sheet:** new users get a sheet called "Safri". An existing "Sawari" or "Petrol Log" sheet is found as before and **renamed to "Safri" in place** the next time its owner uses the app; no data moves. Saved browser data keeps its `petrol-*` keys, so nobody is signed out.
 
 ## [2.12.0] - 2026-11-22
 ### Added

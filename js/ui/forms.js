@@ -30,7 +30,7 @@ function logForm(e){
       document.querySelectorAll("#sheetBody [data-src]:not([data-act])").forEach(b=>b.setAttribute("aria-pressed",b.dataset.src===s));
       $("#f_pub").hidden=s==="home";$("#f_home").hidden=s!=="home";
       $("#f_on").textContent=s==="home"?"(needed for home charging)":"(optional)";
-      $("#f_bh").textContent=s==="home"?"":"Optional: with both, Sawari learns your battery size from this receipt.";evSum()};
+      $("#f_bh").textContent=s==="home"?"":"Optional: with both, Safri learns your battery size from this receipt.";evSum()};
     const evSum=()=>{
       const bs=$("#f_bs").value,be=$("#f_be").value,add=bs!==""&&be!==""?be-bs:null,cap=evCap(v),rate=v.rate>0?v.rate:null;
       let h=add>0?`<b>Added ${add}% of the battery</b>`:`<b>Enter the battery % at plug-in and at unplug</b>`;
@@ -49,7 +49,7 @@ function evForm(v){
   const lc=learnedCap(v.id),num='type="number" inputmode="decimal" step="any" min="0"';
   sheet(`<h1 style="font-size:24px;margin:0 0 4px">Charging settings</h1><p class="hint" style="margin:0">${esc(v.plate)} · ${esc(v.name)}. Used to turn battery % into kWh and cost for home charging.</p>
   <label for="e_c">Battery size (kWh) <span style="font-weight:500">(optional)</span></label><input id="e_c" ${num} placeholder="${lc?"Learned: "+lc.toFixed(1):"e.g. 51"}" value="${v.cap>0?v.cap:""}">
-  <div class="hint">${lc?`Sawari learned about ${lc.toFixed(1)} kWh from your public charge receipts. Leave this empty to keep using it.`:"From your car's manual or dealer. Or leave it empty: log one public charge with its kWh and battery %, and Sawari works it out."}</div>
+  <div class="hint">${lc?`Safri learned about ${lc.toFixed(1)} kWh from your public charge receipts. Leave this empty to keep using it.`:"From your car's manual or dealer. Or leave it empty: log one public charge with its kWh and battery %, and Safri works it out."}</div>
   <label for="e_r">Home electricity rate (${Prefs.sym()} per unit)</label><input id="e_r" ${num} placeholder="e.g. 60" value="${v.rate>0?v.rate:""}">
   <div class="card bill"><b>Work it out from your electricity bill</b><span class="hint" style="margin:0">Your bill (K-Electric, LESCO, IESCO or any other) shows the units used and the amount payable.</span>
     <div class="two"><div><label for="e_u">Units used</label><input id="e_u" ${num} placeholder="e.g. 350"></div><div><label for="e_a">Amount payable (${Prefs.sym()})</label><input id="e_a" ${num} placeholder="e.g. 21000"></div></div>

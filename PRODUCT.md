@@ -10,10 +10,10 @@ web
 Individual vehicle owners in Pakistan tracking their own car, motorbike or electric vehicle. They log a fill-up or charge on a phone, often standing at the pump or charger, and review costs, services and reports later on a phone or laptop.
 
 ## Product Purpose
-Sawari (formerly Petrol Log) shows owners what their vehicle really costs to run: fuel or charging, efficiency (km per litre or per kWh), cost per km, government subsidy, and workshop services with the parts bought for them. Success: logging takes seconds, and the owner always knows their efficiency, their spend and what service is due next.
+Safri (formerly Sawari, and Petrol Log before that) shows owners what their vehicle really costs to run: fuel or charging, efficiency (km per litre or per kWh), cost per km, government subsidy, and workshop services with the parts bought for them. Success: logging takes seconds, and the owner always knows their efficiency, their spend and what service is due next.
 
 ## Positioning
-Data lives in the owner's own Google Drive (a "Sawari" Google Sheet), not on a company server. One app covers petrol, diesel and electric vehicles, fuel, charging and servicing. Planned: public transport and ride-hailing trips, which is why the name means "a ride / any vehicle".
+Data lives in the owner's own Google Drive (a "Safri" Google Sheet), not on a company server. One app covers petrol, diesel and electric vehicles, fuel, charging and servicing. Planned: public transport and ride-hailing trips, which is why the name means "a ride / any vehicle".
 
 ## Operating Context
 - Phone, one hand, at a petrol pump or charger: add a fill-up or charge quickly.
@@ -31,7 +31,7 @@ Data lives in the owner's own Google Drive (a "Sawari" Google Sheet), not on a c
 - Currency is a display label; amounts are in rupees ("Rs") throughout.
 
 ## Brand Commitments
-- The name **Sawari** is fixed.
+- The name **Safri** is fixed.
 - No visual element is fixed: colours, type and layout may all be replaced.
 - Feel: dynamic, with recognisably Pakistani character (owner's words: "a dynamic app that feels Pakistani").
 - **Standing preference (22 Nov 2026, redesign round):** the UI should be "simple and easier to navigate", "plain and familiar, but not a finance app". Owner declined the expressive directions (Metro Lines, truck art) and named no reference app. Familiar vehicle-log conventions win over local ornament; Pakistani character lives in content and wording, not decoration.
