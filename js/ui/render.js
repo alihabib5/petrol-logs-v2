@@ -13,6 +13,7 @@ function render(){
   S.entering=view!==S.view;S.view=view;if(S.entering)S.lfOpen=false; /* the filter dropdown starts closed on every visit */ /* a view change animates in; re-rendering the same view does not replay it */
   document.querySelector(".tabs").style.display=Auth.mode?"":"none";
   app.classList[Auth.mode?"remove":"add"]("landing");
+  document.querySelectorAll('meta[name="theme-color"]').forEach(m=>{m.dataset.c=m.dataset.c||m.content;m.content=Auth.mode?m.dataset.c:"#173e2f"});  /* the sign-in screen is all brand green */
   if(!Auth.mode){renderSide();$("#tabs").innerHTML="";app.classList.remove("enter");app.innerHTML=viewLogin();return settle(app)}
   const tabs=$("#tabs");
   if(!tabs.children.length)tabs.innerHTML=TABS.map(([k,l])=>`<button role="tab" data-t="${k}"><svg viewBox="0 0 24 24">${IC[k==="cars"?"car":k]}</svg>${l}</button>`).join("");

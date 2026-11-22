@@ -10,7 +10,7 @@ function logAll(){return S.data?S.data.rows.map((x,i)=>({...x,n:i+1})).reverse()
 function logFiltered(){
   const f=S.lf,q=f.q.trim().toLowerCase().replace(/,/g,""),tmin=numOrNull(f.tmin),tmax=numOrNull(f.tmax),kmin=numOrNull(f.kmin),kmax=numOrNull(f.kmax);
   return logAll().filter(x=>{
-    if(q&&!(x.date+" "+(x.odometer??"")).toLowerCase().includes(q))return false;
+    if(q&&!(x.date+" "+fmtDate(x.date)+" "+(x.odometer??"")).toLowerCase().includes(q))return false;
     if(f.type==="full"&&!x.full||f.type==="partial"&&x.full)return false;
     const t=rowTotal(x),k=rowKmL(x);
     if(tmin!==null&&t<tmin||tmax!==null&&t>tmax)return false;
@@ -23,9 +23,9 @@ const lfActive=()=>Object.keys(LF0).filter(k=>String(S.lf[k])!==String(LF0[k])).
 
 function logRowHTML(x){
   const on=S.sel.has(x.id),total=money(rowTotal(x));
-  const odo=x.odometer!=null?x.odometer.toLocaleString()+" km":"",label=x.date+(odo?", "+odo:"");
+  const odo=x.odometer!=null?x.odometer.toLocaleString()+" km":"",label=fmtDate(x.date)+(odo?", "+odo:"");
   return `<div class="dt-r ${on?"on":""}" role="row"><label class="dt-c"><input type="checkbox" class="dt-ck" data-row="${esc(x.id)}" aria-label="Select ${label}" ${on?"checked":""}></label>
-  <div class="dt-m" role="cell"><div class="t num">${x.date}${odo?" · "+odo:""}</div><div class="s num"><span class="dt-n">#${x.n} · </span>${x.liters} ${UL(curV()).u} × Rs ${x.price}${x.subsidy?` − Rs ${x.subsidy} subsidy`:""}<span class="sm"> = ${total}${x.full?"":" · partial"}</span></div></div>
+  <div class="dt-m" role="cell"><div class="t num"><span class="nw">${fmtDate(x.date)}</span>${odo?` · <span class="nw">${odo}</span>`:""}</div><div class="s num"><span class="dt-n">#${x.n} · </span><span class="nw">${x.liters} ${UL(curV()).u}</span> × <span class="nw">Rs ${x.price}</span>${x.subsidy?` − <span class="nw">Rs ${x.subsidy}</span> subsidy`:""}<span class="sm"> = <span class="nw">${total}</span>${x.full?"":" · partial"}</span></div></div>
   <span class="dt-t num" role="cell">${total}</span>
   <span class="dt-b" role="cell"><span class="badge ${x.full?"full":"part"}">${x.full?UL(curV()).full:"Partial"}</span></span>
   <span class="dt-k" role="cell"><span class="pill num ${x.eff===null?"na":""}" ${x.eff===null&&x.est?`title="Estimate from odometer readings"`:""}>${x.eff!==null?x.eff.toFixed(1):x.est?"~"+x.est.toFixed(1):"–"}</span></span>
@@ -56,7 +56,7 @@ function drawSel(){
 function viewLog(){
   const f=S.lf,all=logAll(),list=logFiltered(),ids=new Set(all.map(x=>x.id));
   S.sel=new Set([...S.sel].filter(id=>ids.has(id)));
-  let h=`<h1>${UL(curV()).log}</h1>${picker()}`;
+  let h=pageTop(UL(curV()).log,S.vid?`<button class="pri top-add has-fab" data-act="addlog">${PLUS}${UL(curV()).Fill}</button>`:"");
   if(!all.length)h+=`<div class="card" style="margin-top:14px"><div class="empty">No entries yet.</div></div>`;
   else{
     const vis=list.map(x=>x.id),n=vis.filter(id=>S.sel.has(id)).length,c=lfActive();
@@ -76,6 +76,6 @@ function viewLog(){
       <div id="dtBody" role="rowgroup">${logRowsHTML(list)}</div>
     </div></div>`;
   }
-  if(S.vid)h+=`<button class="pri fab" data-act="addlog">+ ${UL(curV()).Fill}</button>`;
+  if(S.vid)h+=`<button class="pri fab" data-act="addlog">${PLUS}${UL(curV()).Fill}</button>`;
   return h;
 }

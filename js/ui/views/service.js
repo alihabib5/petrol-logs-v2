@@ -9,8 +9,7 @@ function viewService(){
     return top(e?"Edit service":"New service","")+`<div class="card pt-form"><div class="pt-fveh">Vehicle <b>${esc(v.plate)} · ${esc(v.name)}</b></div>${svcFormHTML(e)}
     <div class="pt-fbtn"><button class="ghost" data-act="svccancel">Cancel</button><button class="pri" data-act="savesvc" ${e?`data-id="${esc(e.id)}"`:""}>${e?"Save changes":"Submit service"}</button></div></div>`;
   }
-  const veh=`<select id="veh" aria-label="Vehicle">${S.vehicles.map(v=>`<option value="${esc(v.id)}" ${v.id===S.vid?"selected":""}>${esc(v.plate)} · ${esc(v.name)}</option>`).join("")}</select>`;
-  let h=top("Service",veh+`<button class="pri" data-act="addsvc">+ New service</button>`)+flash;
+  let h=pageTop("Service",`<button class="pri" data-act="addsvc">${PLUS}New service</button>`)+flash;
   const list=S.svc,today=todayISO(),last=list[0],odo=svcLastOdo();
   const spent=list.reduce((s,x)=>s+(x.total||0),0),prod=list.reduce((s,x)=>s+svcItemsTotal(x.items),0),nItems=list.reduce((s,x)=>s+x.items.length,0);
   let due="",dueSub="No reminder set",dueBad=false;
@@ -23,7 +22,7 @@ function viewService(){
     ${stat("Next service",due||"–",dueSub,dueBad)}
     ${stat("Spent on service",money(spent),list.length+" visit"+(list.length===1?"":"s"))}
     ${stat("Products bought",money(prod),nItems+" item"+(nItems===1?"":"s")+" outside the workshop")}</div>`;
-  if(!list.length)return h+`<div class="card pt-empty"><b>No services yet</b><p>Record each workshop visit: the date, odometer, and the products you bought for it. The total is added up for you.</p><button class="pri" data-act="addsvc">+ New service</button></div>`;
+  if(!list.length)return h+`<div class="card pt-empty"><b>No services yet</b><p>Record each workshop visit: the date, odometer, and the products you bought for it. The total is added up for you.</p><button class="pri" data-act="addsvc">${PLUS}New service</button></div>`;
   h+=`<h2>Parts due</h2><div class="card pt-parts"><div class="pd-g">${partsHTML(ServiceLogService.parts(S.vid,odo,today))}</div></div><h2>Service history</h2>`;
   h+=`<div class="card pt-table" role="table" aria-label="Service history"><div class="pt-tr pt-th" role="row"><span role="columnheader">Date</span><span role="columnheader">Odometer</span><span role="columnheader">Work and products</span><span role="columnheader" class="r">Service charge</span><span role="columnheader" class="r">Products</span><span role="columnheader" class="r">Total</span><span role="columnheader"><span class="sr">Actions</span></span></div>`;
   h+=list.map(x=>`<div class="pt-tr" role="row"><span role="cell" class="num"><b>${fmtDate(x.date)}</b></span><span role="cell" class="num">${x.odometer!=null?x.odometer.toLocaleString()+" km":"–"}</span>
@@ -39,9 +38,10 @@ function renderSide(){
   document.body.classList.toggle("dash",!!Auth.mode);document.body.classList.toggle("collapsed",!!S.side);
   if(!Auth.mode){side.innerHTML="";return}
   const g=Auth.mode==="google",u=Auth.user||{};
-  side.innerHTML=`<div class="pt-brand"><span class="pt-logo" aria-hidden="true"></span><b class="pt-name">Sawari</b>
+  side.innerHTML=`<div class="pt-brand">${LOGO}<b class="pt-name">Sawari</b>
     <button class="pt-col" data-act="side" aria-label="${S.side?"Expand":"Collapse"} sidebar" aria-expanded="${!S.side}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 4v16M18 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
   <nav class="pt-nav" aria-label="Main">${TABS.map(([k,l,dl])=>`<button data-t="${k}" ${S.tab===k?'aria-current="page"':""} title="${dl||l}"><svg viewBox="0 0 24 24" aria-hidden="true">${IC[k==="cars"?"car":k]}</svg><span>${dl||l}</span></button>`).join("")}</nav>
   <div class="pt-user">${u.picture?`<img src="${esc(u.picture)}" alt="" width="36" height="36" referrerpolicy="no-referrer">`:`<span class="pt-av" aria-hidden="true">${esc((g?u.name||"G":"O")[0])}</span>`}
-    <div class="pt-who"><b>${g?esc(u.name||"Google account"):"Offline mode"}</b><small>${g?esc(u.email||""):"Data stays in this browser"}</small></div></div>`;
+    <div class="pt-who"><b>${g?esc(u.name||"Google account"):"Offline mode"}</b><small>${g?esc(u.email||""):"Saved in this browser"}</small></div>
+    <button class="pt-out" data-act="signout" aria-label="${g?"Sign out":"Back to sign-in"}" title="${g?"Sign out":"Back to sign-in"}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 20H6a2 2 0 01-2-2V6a2 2 0 012-2h3M16 17l5-5-5-5M21 12H9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>`;
 }

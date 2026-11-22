@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-22T00:00:00Z",
+  "title": "Design System: Sawari",
+  "extensions": {
+    "colorMeta": {
+      "bottle-green": { "role": "primary", "displayName": "Bottle Green", "canonical": "#173e2f", "cssVar": "--acc / --brand / --acc-fg (light)", "tonalRamp": ["#002317", "#0d2b20", "#173e2f", "#2e7a5c", "#3a8c6b", "#8fd4b0", "#cfe2d8", "#e1ebe6"] },
+      "bottle-green-deep": { "role": "primary", "displayName": "Bottle Green Deep", "canonical": "#002317", "cssVar": "--brand-deep" },
+      "bottle-green-hover": { "role": "primary", "displayName": "Bottle Green Hover", "canonical": "#0d2b20", "cssVar": "--acc-hover" },
+      "bottle-green-soft": { "role": "primary", "displayName": "Bottle Green Mist", "canonical": "#e1ebe6", "cssVar": "--acc-soft" },
+      "bottle-green-dark-fill": { "role": "primary", "displayName": "Lifted Bottle Green", "canonical": "#2e7a5c", "cssVar": "--acc (dark)" },
+      "bottle-green-dark-hover": { "role": "primary", "displayName": "Lifted Bottle Green Hover", "canonical": "#3a8c6b", "cssVar": "--acc-hover (dark)" },
+      "bottle-green-dark-text": { "role": "primary", "displayName": "Pale Bottle Green", "canonical": "#8fd4b0", "cssVar": "--acc-fg (dark)" },
+      "sidebar-dark": { "role": "primary", "displayName": "Night Sidebar", "canonical": "#10291f", "cssVar": "--brand (dark)" },
+      "sidebar-dark-deep": { "role": "primary", "displayName": "Night Sidebar Deep", "canonical": "#001a10", "cssVar": "--brand-deep (dark)" },
+      "on-brand": { "role": "neutral", "displayName": "On Brand White", "canonical": "#ffffff", "cssVar": "--on-brand / --acc-ink" },
+      "ok-green": { "role": "secondary", "displayName": "Status Green", "canonical": "#1b7a4b", "cssVar": "--ok", "tonalRamp": ["#0f4a2d", "#1b7a4b", "#63c995", "#e3f1e9"] },
+      "due-amber": { "role": "secondary", "displayName": "Due Amber", "canonical": "#995500", "cssVar": "--warn", "tonalRamp": ["#5e3400", "#995500", "#f2b44b", "#fdf1dc"] },
+      "overdue-red": { "role": "secondary", "displayName": "Overdue Red", "canonical": "#c22a2a", "cssVar": "--err", "tonalRamp": ["#7a1a1a", "#c22a2a", "#ff7a7a", "#fbe9e9"] },
+      "ground": { "role": "neutral", "displayName": "Cool Paper", "canonical": "#f4f5f4", "cssVar": "--bg" },
+      "surface": { "role": "neutral", "displayName": "White Card", "canonical": "#ffffff", "cssVar": "--card" },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#17191b", "cssVar": "--ink" },
+      "mute": { "role": "neutral", "displayName": "Graphite Mute", "canonical": "#5a615c", "cssVar": "--mute" },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "#e1e4e2", "cssVar": "--line" },
+      "hairline-strong": { "role": "neutral", "displayName": "Hairline Strong", "canonical": "#cdd2cf", "cssVar": "--line-2" },
+      "dark-ground": { "role": "neutral", "displayName": "Night Ground", "canonical": "#0f1412", "cssVar": "--bg (dark)" },
+      "dark-surface": { "role": "neutral", "displayName": "Night Card", "canonical": "#18201c", "cssVar": "--card (dark)" },
+      "dark-ink": { "role": "neutral", "displayName": "Night Ink", "canonical": "#eef1ef", "cssVar": "--ink (dark)" },
+      "dark-mute": { "role": "neutral", "displayName": "Night Mute", "canonical": "#a2aaa5", "cssVar": "--mute (dark)" },
+      "dark-hairline": { "role": "neutral", "displayName": "Night Hairline", "canonical": "#28302c", "cssVar": "--line (dark)" },
+      "dark-hairline-strong": { "role": "neutral", "displayName": "Night Hairline Strong", "canonical": "#3a443f", "cssVar": "--line-2 (dark)" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The efficiency figure inside the gauge; one per view." },
+      "headline": { "displayName": "Headline", "purpose": "Page titles in the page header; 26px on the sign-in card." },
+      "title": { "displayName": "Title", "purpose": "Section headings between cards." },
+      "stat": { "displayName": "Stat", "purpose": "Stat-card values; 19px on phones." },
+      "body": { "displayName": "Body", "purpose": "Running text and all controls." },
+      "label": { "displayName": "Label", "purpose": "Form labels and stat captions." },
+      "column-head": { "displayName": "Column head", "purpose": "Uppercase table column headers on wide layouts only." }
+    },
+    "shadows": [
+      { "name": "lift", "value": "0 1px 2px rgba(23,25,27,.06), 0 4px 12px rgba(23,25,27,.06)", "purpose": "Selected segment in a segmented control." },
+      { "name": "float", "value": "0 12px 32px rgba(23,25,27,.16)", "purpose": "Floating add button, calendar, filter popover." },
+      { "name": "sign-in", "value": "0 20px 50px rgba(0,20,12,.35)", "purpose": "The sign-in card over the green ground only." },
+      { "name": "lift-dark", "value": "0 1px 2px rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.3)", "purpose": "Dark-mode Lift." },
+      { "name": "float-dark", "value": "0 12px 32px rgba(0,0,0,.5)", "purpose": "Dark-mode Float." },
+      { "name": "focus-halo", "value": "0 0 0 3px var(--acc-soft)", "purpose": "Input and select focus." }
+    ],
+    "motion": [
+      { "name": "view-enter", "value": "in .3s cubic-bezier(.16,1,.3,1) (opacity 0, translateY 6px)", "purpose": "One settle per view change; no staggered cascade." },
+      { "name": "sheet-up", "value": "up .28s ease-out (translateY 40px, opacity 0)", "purpose": "Bottom sheet entrance." },
+      { "name": "overlay-fade", "value": "fade .2s ease", "purpose": "Sheet and calendar scrim." },
+      { "name": "gauge-arc", "value": "stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1)", "purpose": "Gauge eases to its new value." },
+      { "name": "bar-grow", "value": "transform .7s cubic-bezier(.2,.8,.2,1) with per-bar delay", "purpose": "Monthly bars grow from the baseline." },
+      { "name": "state", "value": ".15s", "purpose": "Button and input colour, border and shadow changes; press scale .98." },
+      { "name": "sidebar", "value": "width .25s ease", "purpose": "Sidebar collapse and content offset." },
+      { "name": "reduced-motion", "value": "all animation and transition durations .01ms", "purpose": "Honour prefers-reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "products-columns", "value": "560px" },
+      { "name": "log-columns", "value": "680px" },
+      { "name": "app-top-padding", "value": "700px" },
+      { "name": "header-stack-below", "value": "760px" },
+      { "name": "dashboard-sidebar", "value": "900px" },
+      { "name": "service-stats-four-up", "value": "1080px" },
+      { "name": "table-stack (container)", "value": "880px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one primary action per view, top right of the page header.",
+      "html": "<button class=\"ds-btn-pri\"><svg class=\"ds-ico\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>Fill-up</button>",
+      "css": ".ds-btn-pri{font:600 16px/1.45 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;display:inline-flex;align-items:center;min-height:44px;padding:10px 18px;border:0;border-radius:10px;background:var(--acc,#173e2f);color:var(--acc-ink,#fff);cursor:pointer;transition:background-color .15s,transform .1s}.ds-btn-pri:hover{background:var(--acc-hover,#0d2b20)}.ds-btn-pri:active{transform:scale(.98)}.ds-btn-pri:focus-visible{outline:2px solid var(--acc,#173e2f);outline-offset:2px}.ds-ico{width:18px;height:18px;margin-right:6px}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary actions: cancel, filter, export.",
+      "html": "<button class=\"ds-btn-ghost\">Cancel</button>",
+      "css": ".ds-btn-ghost{font:600 16px/1.45 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;min-height:44px;padding:10px 18px;border:1px solid var(--line-2,#cdd2cf);border-radius:10px;background:var(--card,#fff);color:var(--ink,#17191b);cursor:pointer;transition:background-color .15s,transform .1s}.ds-btn-ghost:hover{background:var(--bg,#f4f5f4)}.ds-btn-ghost:active{transform:scale(.98)}.ds-btn-ghost:focus-visible{outline:2px solid var(--acc,#173e2f);outline-offset:2px}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Inputs and selects: white, strong hairline, green border and mist halo on focus.",
+      "html": "<label class=\"ds-label\">Price per litre<input class=\"ds-input\" inputmode=\"decimal\" placeholder=\"Rs 0.00\"></label>",
+      "css": ".ds-label{display:block;font:600 14px system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:var(--ink,#17191b)}.ds-input{display:block;margin-top:6px;font:16px/1.45 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;width:100%;min-height:44px;padding:11px 12px;border:1px solid var(--line-2,#cdd2cf);border-radius:10px;background:var(--card,#fff);color:var(--ink,#17191b);transition:border-color .15s,box-shadow .15s}.ds-input::placeholder{color:var(--mute,#5a615c)}.ds-input:hover{border-color:var(--mute,#5a615c)}.ds-input:focus{outline:none;border-color:var(--acc,#173e2f);box-shadow:0 0 0 3px var(--acc-soft,#e1ebe6)}"
+    },
+    {
+      "name": "Stat Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "White card with a hairline, muted caption and tabular value.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-l\">Cost per km</div><b class=\"ds-v\">Rs 18.40</b><small class=\"ds-s\">last 30 days</small></div>",
+      "css": ".ds-card{display:flex;flex-direction:column;gap:4px;background:var(--card,#fff);border:1px solid var(--line,#e1e4e2);border-radius:12px;padding:16px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:var(--ink,#17191b)}.ds-l{font-size:14px;font-weight:600;color:var(--mute,#5a615c)}.ds-v{font-size:24px;font-weight:700;letter-spacing:-.01em;font-variant-numeric:tabular-nums}.ds-s{font-size:14px;color:var(--mute,#5a615c)}"
+    },
+    {
+      "name": "Neutral Pill and Status Tags",
+      "kind": "chip",
+      "refersTo": "pill-neutral",
+      "description": "Figures are neutral pills; only status (OK, due soon, overdue) takes colour.",
+      "html": "<span class=\"ds-pill\">14.2 km/L</span> <span class=\"ds-st ds-ok\">OK</span> <span class=\"ds-st ds-soon\">Due soon</span> <span class=\"ds-st ds-bad\">Overdue</span>",
+      "css": ".ds-pill{font:700 13px system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;padding:3px 10px;border-radius:99px;background:var(--bg,#f4f5f4);border:1px solid var(--line,#e1e4e2);color:var(--ink,#17191b);font-variant-numeric:tabular-nums}.ds-st{font:700 12px system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;text-transform:uppercase;letter-spacing:.05em;padding:3px 10px;border-radius:99px}.ds-ok{background:var(--ok-soft,#e3f1e9);color:var(--ok,#1b7a4b)}.ds-soon{background:var(--warn-soft,#fdf1dc);color:var(--warn,#995500)}.ds-bad{background:var(--err-soft,#fbe9e9);color:var(--err,#c22a2a)}"
+    },
+    {
+      "name": "Sidebar Navigation",
+      "kind": "nav",
+      "refersTo": "sidebar",
+      "description": "Desktop (900px+) bottle-green sidebar; current page is a white pill with green text.",
+      "html": "<nav class=\"ds-side\"><button class=\"ds-nav\" aria-current=\"page\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 11l9-7 9 7v9H3z\"/></svg><span>Home</span></button><button class=\"ds-nav\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M4 6h16M4 12h16M4 18h16\"/></svg><span>Log</span></button></nav>",
+      "css": ".ds-side{display:flex;flex-direction:column;gap:6px;width:264px;padding:14px 12px;background:var(--brand,#173e2f);color:var(--on-brand,#fff)}.ds-nav{display:flex;align-items:center;gap:12px;width:100%;min-height:44px;padding:10px 12px;border:0;border-radius:10px;background:transparent;color:var(--on-brand-mute,rgba(255,255,255,.74));font:600 16px system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;text-align:left;cursor:pointer;transition:background-color .15s,color .15s}.ds-nav svg{flex:none;width:22px;height:22px}.ds-nav:hover{background:var(--on-brand-hi,rgba(255,255,255,.14));color:var(--on-brand,#fff)}.ds-nav[aria-current=page]{background:var(--on-brand,#fff);color:var(--brand,#173e2f)}.ds-nav:focus-visible{outline:2px solid var(--on-brand,#fff);outline-offset:2px}"
+    },
+    {
+      "name": "Phone Tab Bar",
+      "kind": "nav",
+      "refersTo": "tab-bar",
+      "description": "Bottom tabs on phones; the active icon sits in a mist-green pill.",
+      "html": "<nav class=\"ds-tabs\"><button class=\"ds-tab\" aria-selected=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 11l9-7 9 7v9H3z\"/></svg>Home</button><button class=\"ds-tab\" aria-selected=\"false\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M4 6h16M4 12h16M4 18h16\"/></svg>Log</button></nav>",
+      "css": ".ds-tabs{display:flex;max-width:560px;padding:6px 8px;background:var(--card,#fff);border-top:1px solid var(--line,#e1e4e2)}.ds-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;border:0;background:transparent;color:var(--mute,#5a615c);font:600 11.5px system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;cursor:pointer;transition:color .2s}.ds-tab svg{width:52px;height:28px;padding:3px 0;border-radius:99px;transition:background-color .2s}.ds-tab[aria-selected=true]{color:var(--acc-fg,#173e2f)}.ds-tab[aria-selected=true] svg{background:var(--acc-soft,#e1ebe6)}.ds-tab:focus-visible{outline:2px solid var(--acc,#173e2f);outline-offset:2px}"
+    },
+    {
+      "name": "Efficiency Gauge",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Signature: half-circle arc in bottle green on a hairline track, display figure inside.",
+      "html": "<div class=\"ds-gauge\"><svg viewBox=\"0 0 220 125\" role=\"img\" aria-label=\"Gauge\"><path d=\"M20 110 A90 90 0 0 1 200 110\" fill=\"none\" stroke=\"var(--line,#e1e4e2)\" stroke-width=\"16\" stroke-linecap=\"round\"/><path d=\"M20 110 A90 90 0 0 1 200 110\" fill=\"none\" stroke=\"var(--acc,#173e2f)\" stroke-width=\"16\" stroke-linecap=\"round\" stroke-dasharray=\"282.7\" stroke-dashoffset=\"146\"/></svg><div class=\"ds-big\">14.2</div><div class=\"ds-unit\">km per litre</div></div>",
+      "css": ".ds-gauge{text-align:center;padding:22px 12px 18px;background:var(--card,#fff);border:1px solid var(--line,#e1e4e2);border-radius:12px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:var(--ink,#17191b)}.ds-gauge svg{width:min(300px,80%);display:block;margin:0 auto}.ds-big{font-size:60px;font-weight:700;letter-spacing:-.03em;line-height:1;margin-top:-60px;font-variant-numeric:tabular-nums}.ds-unit{color:var(--mute,#5a615c);font-size:15px;margin-top:6px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Glovebox Logbook",
+    "overview": "Sawari looks like the vehicle log anyone already knows how to use: a cool near-white ground, white cards with hairline borders, clear lists, and one colour, the owner's own bottle green. It is the category standard executed carefully, not a new idiom. The owner asked for \"simple and easier to navigate\" and \"plain and familiar, but not a finance app\", and chose this over expressive directions; Pakistani character lives in the content and wording, not in ornament.\n\nThe green is structural, not decorative. On desktop it is the whole sidebar; on sign-in it is the whole ground; everywhere else it marks the one action, the gauge arc, the chart bars and the selected tab. Status colours (a brighter green, amber, red) appear only where something is OK, due soon or overdue. Everything else is neutral, including data figures, so the numbers read as numbers rather than alarms.\n\nDensity is comfortable and touch-first: 44px minimum targets, 16px body, tabular figures for every amount. Motion is one short settle per view change plus value transitions on the gauge and bars. Light is the default because the app is used outdoors at the pump; dark follows the system or the user's preference.",
+    "keyCharacteristics": [
+      "One brand colour, bottle green, used as fills on large structural surfaces and the primary action.",
+      "White cards on a cool near-white ground, 1px hairlines, almost no shadow.",
+      "System UI type with tabular figures; weight, not typeface, carries hierarchy.",
+      "Status colour only for status; data pills and badges stay neutral.",
+      "Category-standard navigation: bottom tab bar on phones, a labelled green sidebar from 900px."
+    ],
+    "rules": [
+      { "name": "The Two Greens Rule", "body": "Fills use the fill token (acc); green text and icons use the text token (acc-fg). In light mode they are the same bottle green; in dark mode the fill lifts to Lifted Bottle Green with white ink and the text becomes Pale Bottle Green. Never use the fill colour for text in dark mode.", "section": "colors" },
+      { "name": "The Status Means Status Rule", "body": "Status Green, Due Amber and Overdue Red appear only when something is OK, due soon, overdue or an error. Data pills, chips and the Full tank / Partial badges are neutral.", "section": "colors" },
+      { "name": "The Structural Green Rule", "body": "Bottle green goes on whole structural surfaces (sidebar, sign-in ground) and on the one primary action per view; it is not sprinkled on headings, card borders or decorative accents.", "section": "colors" },
+      { "name": "The Tabular Figures Rule", "body": "Every amount, distance, efficiency and date that sits in a column or stat uses tabular figures, so numbers line up and do not jitter when they change.", "section": "typography" },
+      { "name": "The One Face Rule", "body": "No webfonts and no display face; the system stack is the brand's type.", "section": "typography" },
+      { "name": "The Hairline Not Shadow Rule", "body": "Resting cards never carry a shadow; if it does not float over other content, it gets a 1px hairline and nothing else.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep bottle green (#173E2F) to the sidebar, the sign-in ground, the primary action, the gauge, chart bars, toggles and the active tab.",
+      "Do use the text token for green text and icons and the fill token for green fills, so dark mode stays legible.",
+      "Do separate resting cards with a 1px hairline on Cool Paper, with no shadow.",
+      "Do keep every touch target at least 44px tall.",
+      "Do set every figure in tabular numerals.",
+      "Do limit motion to one short settle per view change (0.3s) and value transitions on the gauge and bars, and honour reduced motion."
+    ],
+    "donts": [
+      "Don't use red, amber or the status green for anything that is not a status; data pills and Full tank / Partial badges stay neutral.",
+      "Don't drift toward a fintech dashboard: no blue, no KPI-tile walls, no chart-first screens (owner: \"not a finance app\").",
+      "Don't add decorative \"local\" theming such as truck-art ornament or patterned grounds; the owner declined it.",
+      "Don't introduce webfonts or a display face.",
+      "Don't put shadows on resting cards or stagger view entrances in a cascade."
+    ]
+  }
+}

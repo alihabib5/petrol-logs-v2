@@ -3,6 +3,11 @@ function picker(){
   if(!S.vehicles.length)return"";
   return `<label for="veh" style="margin-top:0">Vehicle</label><select id="veh" aria-label="Vehicle">${S.vehicles.map(v=>`<option value="${esc(v.id)}" ${v.id===S.vid?"selected":""}>${esc(v.plate)} · ${esc(v.name)}</option>`).join("")}</select>`;
 }
+/* Page header shared by Home, Log and Service: title, vehicle picker and the page's primary action at top right */
+const PLUS='<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>';
+function vehSelect(){return S.vehicles.length?`<select id="veh" aria-label="Vehicle">${S.vehicles.map(v=>`<option value="${esc(v.id)}" ${v.id===S.vid?"selected":""}>${esc(v.plate)} · ${esc(v.name)}</option>`).join("")}</select>`:""}
+/* title | picker | action on wide screens; on phones the action shares the title row and the picker takes the next row */
+function pageTop(title,action){return `<div class="pt-top"><h1>${title}</h1><div class="pt-tools">${vehSelect()}</div>${action||""}</div>`}
 /* live=true: the arc animates from where it was (or from empty on a new view) to the new value; live=false: static (logo) */
 function gauge(avg,live=true,max=30){   /* max: top of the scale (30 km/L, 12 km/kWh) */
   const pct=avg?Math.min(avg/max,1):0,L=Math.PI*90,off=L*(1-pct);

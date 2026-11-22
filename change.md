@@ -2,6 +2,37 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [2.10.0] - 2026-11-22
+### Changed
+- **New look: plain, familiar and easy to navigate.** Chosen with the owner over two more expressive directions (Metro Lines and truck art): "simple and easier to navigate", "plain and familiar, but not a finance app".
+  - Colours: the owner's favourite **bottle green** (#173E2F, from their own reference image) is the brand colour. It paints the desktop sidebar and the sign-in screen, and colours buttons, the selected tab, the gauge and the chart. Around it: a cool light-grey background and white cards with thin borders. Red and amber appear only for overdue and due soon; a brighter green only for "OK". Matching dark theme.
+  - Controls: 10-12px corners, white inputs with a green focus ring, a select arrow, section headings in normal sentence case instead of small grey capitals, and a segmented theme switch with a white selected segment.
+  - Phones: a plain bottom tab bar across the full width (was a blurred floating pill), with a green pill behind the active tab's icon.
+  - Desktop: a bottle-green sidebar with white text, a white pill on the active item, and a new steering-wheel mark; the "+" button sits in the bottom-right of the content.
+  - Sign-in: one white card on the bottle green, with the name, a short description, three points and the two buttons (was a full-screen animated hero).
+  - Text selection, the text cursor, scrollbars and checkboxes now use the app's colours. View changes use one short fade instead of a staggered cascade.
+  - Privacy and Terms use the new colours and a clearer heading scale.
+  - Page headers: Home, Log and Service share one header: the page title, the vehicle picker and the main button ("+ Fill-up", "+ New service", with a drawn plus icon). On desktop they sit at the top right; on phones the button shares the title row and the picker goes underneath (Log keeps its floating button on phones). Home's heading is now "Home" (it repeated "Sawari").
+  - Desktop Home shows its four stats in one row.
+  - Colour means status only: km/L figures and the "Full tank" badge are neutral now; "Partial" is a muted outline.
+  - Log rows show dates as "22 Nov 2026" (like the form and Service), amounts never split across lines, and search matches that date format too.
+  - Sidebar subtitle in offline mode shortened to "Saved in this browser" (it was cut off).
+### Fixed
+- **The efficiency gauge always showed a full ring for motorbikes**: its scale stopped at 30 km/L. It now scales to the vehicle's own best (51.9 km/L with a best of 79.2 shows about half), so it says something.
+- Each efficiency bar now shows its date underneath.
+- The vehicle picker in the page header had lost its dropdown arrow.
+- On desktop, the fill-up form and date picker now dim the sidebar too (they used to sit under it).
+- The value above the tallest efficiency bar was cut off.
+- Product chips in the service table are neutral (they were amber, which read as a warning).
+### Added
+- `PRODUCT.md`: product context for future design work.
+
+## [2.9.1] - 2026-11-22
+### Added
+- **Sign-out button in the sidebar**, next to your name and email at the bottom (under your avatar when the sidebar is collapsed). In offline mode it reads "Back to sign-in". The Users page keeps its own Sign out button.
+### Fixed
+- **"Back to sign-in" no longer deletes offline data.** Signing out used to clear the browser's saved data for every mode; in offline mode that is the only copy, so it was lost. Now only a Google account's cached copy is cleared (its data is safe in the Sheet), and offline data is there again when you choose "Continue without sign-in".
+
 ## [2.9.0] - 2026-11-22
 ### Changed
 - **The app is now called Sawari** (it was Petrol Log), ready for electric vehicles now and public transport and ride-hailing later. The new name is on the browser tab, the sign-in screen (new headline "Every ride, every kilometre."), the sidebar, Home, the PDF ("Sawari Report — November 2026"), export file names (`sawari-report-2026-11`), and the Privacy Policy and Terms (updated 22 November 2026, which also now mention EV charging and services).

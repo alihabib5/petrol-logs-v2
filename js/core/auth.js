@@ -48,7 +48,7 @@ const Auth={
   },
   signOut(){
     try{if(this.token&&window.google)google.accounts.oauth2.revoke(this.token,()=>{})}catch(e){}
-    DB.clear();Gs.id=null;this.token=null;this.exp=0;this.user=null;this.mode=null;this.needsReconnect=false;
+    if(this.mode=="google")DB.clear();Gs.id=null;   /* a Google user's data is safe in their Sheet; offline data exists only in this browser, so it is kept */this.token=null;this.exp=0;this.user=null;this.mode=null;this.needsReconnect=false;
     localStorage.removeItem("petrol-mode");kv.del("petrol-user");kv.del("petrol-token");
   }
 };
