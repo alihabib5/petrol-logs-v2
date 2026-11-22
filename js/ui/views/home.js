@@ -8,7 +8,8 @@ function viewHome(){
       <div class="grid"><div class="card stat"><div class="v num">${f1(d.last,d.approx)}</div><div class="l">Last ${L.fill} ${L.eff}</div></div>
       <div class="card stat"><div class="v num">${f1(d.best,d.approx)}</div><div class="l">Best ${L.eff}</div></div>
       <div class="card stat"><div class="v num">${d.costKm?"Rs "+d.costKm.toFixed(1):"–"}</div><div class="l">Cost per km</div></div>
-      <div class="card stat"><div class="v num">${money(d.spend)}</div><div class="l">Total spent (after subsidy)</div></div></div>`;
+      <div class="card stat"><div class="v num">${d.unknownCost&&!d.spend?"–":(d.unknownCost?"≥ ":"")+money(d.spend)}</div><div class="l">Total spent${vType(curV())==="petrol"?" (after subsidy)":""}</div></div></div>`;
+      if(d.unknownCost)h+=`<div class="card hint-card"><div><b>Home charging cost not set</b><small>Add your electricity rate${d.cap?"":" and battery size"} to see what home charging costs.</small></div><button class="ghost" data-evset="${esc(S.vid)}">Charging settings</button></div>`;
       const e=d.rows.filter(x=>x.eff!==null).slice(-10),mx=Math.max(...e.map(x=>x.eff),1);
       h+=`<h2>Efficiency by ${L.fill}</h2><div class="card">${e.length?`<div class="bars">${e.map((x,i)=>`<div class="bar" style="height:${x.eff/mx*100}%;--td:${i*.05}s" data-prop="--s" data-to="1" title="${fmtDate(x.date)}"><span class="num">${x.eff.toFixed(1)}</span><em>${fmtDate(x.date).replace(/ \d{4}$/,"")}</em></div>`).join("")}</div>`:`<div class="empty">${L.needTwo}</div>`}</div>`;
     }

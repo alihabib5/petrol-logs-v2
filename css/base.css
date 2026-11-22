@@ -1,5 +1,6 @@
 /* Reset, typography, form controls, buttons, browser surfaces */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}   /* components set display:flex/grid, which would otherwise override hidden */
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scrollbar-color:var(--line-2) transparent;accent-color:var(--acc)}
 html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
 ::selection{background:var(--acc-soft);color:var(--ink)}

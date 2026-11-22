@@ -63,6 +63,9 @@ js/main.js            startup
 ## Odometer is optional
 Leave the odometer empty and the fill-up still counts for litres, cost and the reports; add it when you want distance and km/L. Fill-ups without an odometer give no distance of their own.
 
+## Home charging (2.11.0)
+Electric vehicle charges are **Home** or **Public**, with the battery % at plug-in and at unplug. Efficiency = km between charges ÷ battery % used (km per 1%), or km/kWh once the battery size is known (typed in Charging settings, or learned from a public receipt: kWh ÷ % added). Home cost = % added × battery size ÷ 0.9 × the rate per unit (from the electricity bill: amount ÷ units). Code: `AnalyticsService.computeEV`, `learnedCap` / `evCap` / `CHARGE_LOSS` in `js/services/vehicle.service.js`, `evForm` in `js/ui/forms.js`. Government subsidy applies to petrol only.
+
 ## Name change (2.9.0)
 The app was called **Petrol Log**. Users' existing sheet named "Petrol Log" is still found (by its saved id, or by searching for the old name) and renamed to "Sawari" in place, so no data moves and no empty sheet is created. Saved browser data keeps its internal `petrol-*` keys and `PETROL_CONFIG` keeps its name, so nobody is signed out. Outside the code: change the app name on the Google Cloud consent screen, and optionally add a new Vercel domain (add it to the OAuth client's Authorised JavaScript origins too).
 

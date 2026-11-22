@@ -2,6 +2,19 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [2.11.0] - 2026-11-22
+### Added
+- **Home charging for electric vehicles.** Most owners charge at home, with no receipt and no idea of their battery size. Each charge now has **Home** or **Public charger**, plus the **battery % at plug-in** and **at unplug** and the odometer.
+  - **Efficiency from battery %:** between two charges, km driven ÷ battery % used (last unplug % − this plug-in %) = **km per 1% of battery**. This works with nothing else entered. For example: unplug at 90% at 12,000 km, next plug-in at 30% at 12,280 km = 280 km on 60% = 4.7 km per 1%.
+  - **Battery size, learned:** a public charge with its receipt kWh and battery % teaches the app the battery size (kWh ÷ % added; the median of all such receipts). It can also be typed in. Once known, efficiency shows in km/kWh.
+  - **Home cost from the electricity bill:** a new **Charging settings** form (Vehicles → an electric vehicle) holds the battery size and the home rate per unit. Type the units used and the amount payable from any K-Electric, LESCO, IESCO or other bill and it works out the rate (amount ÷ units). Home charge cost = % added × battery size ÷ 0.9 (about 10% is lost charging from the wall) × rate, shown as an estimate (≈).
+  - The charge form shows a live summary ("Added 55% of the battery · ≈ 28.1 kWh · ≈ Rs 1,870"). Home shows a "Home charging cost not set" card until the rate and size are known; unknown costs show as "–", never as Rs 0.
+  - Google Sheet: electric vehicles' tabs gain columns I-K (Battery % at plug-in, Battery % at unplug, Where). Charging settings are stored in row 1 (G1:J1). Older electric tabs get the new headers the first time a charge is saved.
+### Changed
+- **Government subsidy is for petrol only.** The subsidy switch no longer appears for diesel or electric vehicles (an older entry that already has a subsidy still shows it). "Total spent" drops "(after subsidy)" for them.
+### Fixed
+- Elements marked hidden could still show when their style set a display (this is why the subsidy switch appeared on electric charges).
+
 ## [2.10.0] - 2026-11-22
 ### Changed
 - **New look: plain, familiar and easy to navigate.** Chosen with the owner over two more expressive directions (Metro Lines and truck art): "simple and easier to navigate", "plain and familiar, but not a finance app".

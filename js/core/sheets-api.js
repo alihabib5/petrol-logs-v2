@@ -3,7 +3,11 @@
 const SHEET_NAME="Sawari",OLD_SHEET_NAME="Petrol Log";
 const SHEETS="https://sheets.googleapis.com/v4/spreadsheets",DRIVE="https://www.googleapis.com/drive/v3/files";
 const HEAD=["ID","Date","Odometer (km)","Litres","Price per litre (Rs)","Subsidy (Rs)","Full tank","Net total (Rs)"];
-const HEAD_EV=["ID","Date","Odometer (km)","kWh","Price per kWh (Rs)","Subsidy (Rs)","Full charge","Net total (Rs)"];
+const EV_COLS=["Battery % at plug-in","Battery % at unplug","Where"];   /* columns I-K on electric vehicles' tabs (2.11.0) */
+const HEAD_EV=["ID","Date","Odometer (km)","kWh","Price per kWh (Rs)","Subsidy (Rs)","Full charge","Net total (Rs)",...EV_COLS];
+const logRow=l=>[l.id,"'"+l.date,l.odometer==null?"":l.odometer,l.liters,l.price,l.subsidy||0,l.full?"Yes":"No",+(l.liters*l.price-(l.subsidy||0)).toFixed(2),
+  l.bs??"",l.be??"",l.src==="home"?"Home":l.src==="public"?"Public":""];
+const evHeadDone=new Set();
 /* Service log tab, columns A-L. A (ID) and L (the products as data, read back by the app) are hidden; G is the same list for people to read. */
 const SVC_HEAD=["ID","Plate","Date","Odometer (km)","Work done","Service charge (Rs)","Products bought","Products total (Rs)","Total (Rs)","Next service date","Next service at (km)","Items (app data)"];
 const svcRow=s=>[s.id,s.vehicleId,"'"+s.date,s.odometer==null?"":s.odometer,"'"+s.work,s.charge||0,"'"+s.items.map(x=>x.name+" x"+x.qty+" @ "+x.price+svcEvery(x)).join("; "),svcItemsTotal(s.items),s.total,
@@ -60,8 +64,11 @@ const Gs={
       }
       if(!v[0]||v[0][0]!=="Plate")return;
       const ty=v[0][4]==="Type"?String(v[0][5]||"").toLowerCase():"";      /* E1:F1 = Type | Petrol/Diesel/Electric; older tabs have none = petrol */
-      vehicles.push({id:t,plate:t,name:v[0][3]||"",type:VTYPES.some(x=>x[0]===ty)?ty:"petrol"});
-      logs[t]=v.slice(2).filter(r=>r[0]).map(r=>({id:String(r[0]),vehicleId:t,date:day(r[1]),odometer:r[2]===""||r[2]==null||!Number.isFinite(+r[2])?null:+r[2],liters:+r[3],price:+r[4],subsidy:+r[5]||0,full:r[6]==="Yes"?1:0}));
+      const veh={id:t,plate:t,name:v[0][3]||"",type:VTYPES.some(x=>x[0]===ty)?ty:"petrol"};
+      if(v[0][6]==="Battery (kWh)"){veh.cap=numN(v[0][7]);veh.rate=numN(v[0][9])}          /* G1:J1 = EV charging settings */
+      vehicles.push(veh);
+      logs[t]=v.slice(2).filter(r=>r[0]).map(r=>({id:String(r[0]),vehicleId:t,date:day(r[1]),odometer:r[2]===""||r[2]==null||!Number.isFinite(+r[2])?null:+r[2],liters:+r[3],price:+r[4],subsidy:+r[5]||0,full:r[6]==="Yes"?1:0,
+        src:r[10]==="Home"?"home":r[10]==="Public"?"public":"",bs:numN(r[8]),be:numN(r[9])}));
     });
     return{vehicles,logs,services};
   },
@@ -72,7 +79,7 @@ const Gs={
       {addSheet:{properties:{sheetId:sid,title:plate,gridProperties:{frozenRowCount:2}}}},
       {repeatCell:{range:{sheetId:sid,startRowIndex:1,endRowIndex:2},cell:{userEnteredFormat:{backgroundColor:{red:.91,green:.35,blue:.05},textFormat:{bold:true,foregroundColor:{red:1,green:1,blue:1}}}},fields:"userEnteredFormat(backgroundColor,textFormat)"}},
       {updateDimensionProperties:{range:{sheetId:sid,dimension:"COLUMNS",startIndex:0,endIndex:1},properties:{hiddenByUser:true},fields:"hiddenByUser"}}]});
-    await this.call(`${SHEETS}/${this.id}/values/${enc(A1(plate)+"!A1:H2")}?valueInputOption=RAW`,{values:[["Plate",plate,"Vehicle",name,"Type",vTypeName({type})],type==="electric"?HEAD_EV:HEAD]},"PUT");
+    await this.call(`${SHEETS}/${this.id}/values/${enc(A1(plate)+"!A1:K2")}?valueInputOption=RAW`,{values:[["Plate",plate,"Vehicle",name,"Type",vTypeName({type})],type==="electric"?HEAD_EV:[...HEAD,"","",""]]},"PUT");
     this.tabs[plate]=sid;
   },
   async deleteVehicle({plate}){
@@ -115,7 +122,17 @@ const Gs={
   async addLog({plate,log:l}){
     await this.ensure();
     await this.call(`${SHEETS}/${this.id}/values/${enc(A1(plate)+"!A3")}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
-      {values:[[l.id,"'"+l.date,l.odometer==null?"":l.odometer,l.liters,l.price,l.subsidy||0,l.full?"Yes":"No",+(l.liters*l.price-(l.subsidy||0)).toFixed(2)]]});
+      {values:[logRow(l)]});
+    await this.evHead(plate,l);
+  },
+  /* electric tabs made before 2.11.0 have no headers for columns I-K; add them once */
+  async evHead(plate,l){
+    if(!l.src||evHeadDone.has(plate))return;evHeadDone.add(plate);
+    try{await this.call(`${SHEETS}/${this.id}/values/${enc(A1(plate)+"!I2:K2")}?valueInputOption=RAW`,{values:[EV_COLS]},"PUT")}catch(e){}
+  },
+  async updateVehicle({plate,cap,rate}){
+    await this.ensure();
+    await this.call(`${SHEETS}/${this.id}/values/${enc(A1(plate)+"!G1:J1")}?valueInputOption=RAW`,{values:[["Battery (kWh)",cap??"","Home rate (Rs/unit)",rate??""]]},"PUT");
   },
   async rowOf(plate,id){
     const c=await this.call(`${SHEETS}/${this.id}/values/${enc(A1(plate)+"!A:A")}`);
@@ -125,8 +142,9 @@ const Gs={
     await this.ensure();
     const i=await this.rowOf(plate,l.id);
     if(i<0)throw new Error("Entry not found in your sheet. Tap Sync now and try again.");
-    await this.call(`${SHEETS}/${this.id}/values/${enc(A1(plate)+"!A"+(i+1)+":H"+(i+1))}?valueInputOption=USER_ENTERED`,
-      {values:[[l.id,"'"+l.date,l.odometer==null?"":l.odometer,l.liters,l.price,l.subsidy||0,l.full?"Yes":"No",+(l.liters*l.price-(l.subsidy||0)).toFixed(2)]]},"PUT");
+    await this.call(`${SHEETS}/${this.id}/values/${enc(A1(plate)+"!A"+(i+1)+":K"+(i+1))}?valueInputOption=USER_ENTERED`,
+      {values:[logRow(l)]},"PUT");
+    await this.evHead(plate,l);
   },
   async deleteLog({plate,id}){
     await this.ensure();const sid=await this.sheetId(plate);

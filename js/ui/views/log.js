@@ -1,7 +1,7 @@
 /* log view: filterable table (cards on phones, columns on wide screens) with row selection and bulk delete */
 const PEN='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>',CROSS='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',LENS='<svg class="dt-lens" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M11 4a7 7 0 100 14 7 7 0 000-14zM20 20l-4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 const LF0={q:"",tmin:"",tmax:"",type:"all",kmin:"",kmax:""};
-const rowTotal=x=>x.liters*x.price-(x.subsidy||0);
+const rowTotal=x=>x.src==="home"?x.cost:x.liters*x.price-(x.subsidy||0);   /* home charge: estimated cost, null when unknown */
 const rowKmL=x=>x.eff!==null?x.eff:x.est;                       /* exact km/L, else the odometer estimate, else null */
 const numOrNull=v=>{const s=String(v).trim();if(s==="")return null;const n=+s.replace(",",".");return Number.isFinite(n)?n:null};
 
@@ -22,12 +22,13 @@ function logFiltered(){
 const lfActive=()=>Object.keys(LF0).filter(k=>String(S.lf[k])!==String(LF0[k])).length;
 
 function logRowHTML(x){
-  const on=S.sel.has(x.id),total=money(rowTotal(x));
+  const on=S.sel.has(x.id),tv=rowTotal(x),total=tv==null?"–":(x.src==="home"?"≈ ":"")+money(tv);
   const odo=x.odometer!=null?x.odometer.toLocaleString()+" km":"",label=fmtDate(x.date)+(odo?", "+odo:"");
   return `<div class="dt-r ${on?"on":""}" role="row"><label class="dt-c"><input type="checkbox" class="dt-ck" data-row="${esc(x.id)}" aria-label="Select ${label}" ${on?"checked":""}></label>
-  <div class="dt-m" role="cell"><div class="t num"><span class="nw">${fmtDate(x.date)}</span>${odo?` · <span class="nw">${odo}</span>`:""}</div><div class="s num"><span class="dt-n">#${x.n} · </span><span class="nw">${x.liters} ${UL(curV()).u}</span> × <span class="nw">Rs ${x.price}</span>${x.subsidy?` − <span class="nw">Rs ${x.subsidy}</span> subsidy`:""}<span class="sm"> = <span class="nw">${total}</span>${x.full?"":" · partial"}</span></div></div>
+  <div class="dt-m" role="cell"><div class="t num"><span class="nw">${fmtDate(x.date)}</span>${odo?` · <span class="nw">${odo}</span>`:""}</div><div class="s num"><span class="dt-n">#${x.n} · </span>${x.src==="home"?`Home · <span class="nw">${x.bs}% → ${x.be}%</span>${x.liters?` · <span class="nw">≈ ${x.liters.toFixed(1)} kWh</span>`:""}<span class="sm"> = <span class="nw">${tv==null?"cost not set":total}</span></span>`
+      :`${x.src==="public"?"Public · ":""}<span class="nw">${x.liters} ${UL(curV()).u}</span> × <span class="nw">Rs ${x.price}</span>${x.subsidy?` − <span class="nw">Rs ${x.subsidy}</span> subsidy`:""}<span class="sm"> = <span class="nw">${total}</span>${x.full?"":" · partial"}</span>`}</div></div>
   <span class="dt-t num" role="cell">${total}</span>
-  <span class="dt-b" role="cell"><span class="badge ${x.full?"full":"part"}">${x.full?UL(curV()).full:"Partial"}</span></span>
+  <span class="dt-b" role="cell"><span class="badge ${x.src==="home"||x.full?"full":"part"}">${x.src==="home"?"Home":x.full?UL(curV()).full:"Partial"}</span></span>
   <span class="dt-k" role="cell"><span class="pill num ${x.eff===null?"na":""}" ${x.eff===null&&x.est?`title="Estimate from odometer readings"`:""}>${x.eff!==null?x.eff.toFixed(1):x.est?"~"+x.est.toFixed(1):"–"}</span></span>
   <div class="dt-a" role="cell"><button class="ghost" style="padding:0 12px" aria-label="Edit entry" data-edit="${esc(x.id)}">${PEN}</button><button class="ghost" style="padding:0 12px" aria-label="Delete entry" data-del="${esc(x.id)}">${CROSS}</button></div></div>`;
 }
