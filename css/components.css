@@ -196,8 +196,8 @@ button.cal-cap:hover{background:var(--bg)}
 .auth-note{font-size:13px;color:var(--mute);margin:14px 0 0;line-height:1.5}
 .auth-note a{color:var(--mute)}.auth-note a:hover{color:var(--ink)}
 .auth-note.err{color:var(--err);min-height:20px}
-.logo-s{flex:none;width:32px;height:32px;border-radius:9px;background:var(--acc);color:var(--acc-ink);display:grid;place-items:center}
-.logo-s svg{width:20px;height:20px}
+.logo-s{flex:none;width:32px;height:32px;border-radius:8px;display:block}
+.wordmark{font-family:"Lexend",system-ui,sans-serif;font-weight:600;letter-spacing:-.01em}
 /* EV home charging (2.11.0): live summary in the charge form, bill helper in charging settings, hint card on Home */
 .ev-sum{margin-top:14px;display:grid;gap:4px;font-size:15px}.ev-sum span{color:var(--mute)}.ev-sum span b{color:var(--ink)}
 .bill{margin-top:14px;display:grid;gap:6px;background:var(--bg)}.bill label{margin-top:6px}

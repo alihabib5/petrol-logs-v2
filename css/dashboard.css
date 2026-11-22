@@ -16,7 +16,7 @@
   body.dash .app h1{font-size:28px}
 }
 .pt-brand{display:flex;align-items:center;gap:10px;min-height:52px;padding:0 4px 10px;border-bottom:1px solid var(--on-brand-line)}
-.pt-side .logo-s{background:var(--on-brand);color:var(--brand)}
+.pt-side .logo-s{box-shadow:0 0 0 1px var(--on-brand-line)}
 .pt-name{font-size:18px;font-weight:700;white-space:nowrap;flex:1}
 .pt-col{flex:none;min-height:40px;width:40px;padding:0;display:grid;place-items:center;background:transparent;color:var(--on-brand-mute);border-radius:10px}
 .pt-col:hover{background:var(--on-brand-hi);color:var(--on-brand)}

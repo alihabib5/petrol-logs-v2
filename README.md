@@ -43,9 +43,12 @@ Customer's own Google Drive   Sheet "Safri", one tab per plate number
 
 ## Project structure
 ```
-index.html            markup only
+index.html            landing page (2.14.0); people who already use the app are sent on to app.html (?home shows it anyway)
+app.html              the app (markup only)
+css/landing.css       landing page styles
+img/                  the safri app icon (512, 192, apple-touch, favicon)
 portal.html           redirect to the Service page (old portal link)
-vercel.json           headers (needed for Google's sign-in popup)
+vercel.json           headers (needed for Google's sign-in popup); clean URLs, so the app is at /app
 privacy.html          privacy policy page (required by Google consent screen; linked from the sign-in screen and the Account tab)
 terms.html            terms of service page (linked from the consent screen, the sign-in screen and the Account tab)
 css/                  tokens.css | base.css | components.css | dashboard.css (sidebar layout, Service page)
@@ -62,6 +65,9 @@ js/main.js            startup
 
 ## Odometer is optional
 Leave the odometer empty and the fill-up still counts for litres, cost and the reports; add it when you want distance and km/L. Fill-ups without an odometer give no distance of their own.
+
+## Landing page and logo (2.14.0)
+The front page (`index.html`) is now a landing page about where your data lives; the app moved to `app.html` (served at `/app`). Anyone who has used the app in that browser (`petrol-mode` in localStorage) is sent straight on to the app, keeping any `?tab=`. The new safri icon is in `img/` and replaces the drawn logo on the sign-in screen and sidebar; the wordmark is lowercase "safri" in Lexend (Google Fonts). Google OAuth: the home page URL stays `https://petrol-logs.vercel.app`, which now describes the app as Google expects; no new origin is needed.
 
 ## Sign-in records (Supabase, 2.12.0)
 Records which Google accounts sign in, in a Supabase table only you can read. Vehicle, fuel and service records are never sent.

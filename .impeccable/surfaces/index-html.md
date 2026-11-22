@@ -1,11 +1,11 @@
 ---
 version: 1
 slug: "index-html"
-primary_target: "index.html"
+primary_target: "app.html"
 related_targets: []
 ---
 
-# Surface brief: Safri app shell (index.html, all tabs)
+# Surface brief: Safri app shell (app.html, all tabs; index.html is the landing page)
 
 Scope: the whole app UI (Home, Log, Service, Reports, Vehicles, Users/Account, sign-in, forms). Mode: Operate.
 Audience and job: individual owners logging fill-ups/charges one-handed at the pump; reviewing spend, service and reports on phone or laptop.

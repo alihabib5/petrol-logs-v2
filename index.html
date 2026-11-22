@@ -3,56 +3,132 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f4f5f4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0f1412" media="(prefers-color-scheme: dark)">
-<title>Safri</title>
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/dashboard.css">
-<!-- Libraries: Google sign-in, Excel + PDF export -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<title>safri: your travel costs, in your own Google Drive</title>
+<meta name="description" content="Safri records every fill-up, charge and service for your car, bike or EV, and saves it to a Google Sheet in your own Drive. Your vehicle records never reach our servers.">
+<meta name="theme-color" content="#123a35">
+<link rel="icon" type="image/png" href="img/favicon-64.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta property="og:title" content="safri">
+<meta property="og:description" content="Your travel costs, in your own Google Drive.">
+<meta property="og:image" content="img/safri-icon-512.png">
+<script>/* People who already use the app go straight to it; ?home shows this page anyway. */
+try{if(localStorage.getItem("petrol-mode")&&!/[?&]home\b/.test(location.search))location.replace("app.html"+location.search)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="css/landing.css">
 </head>
 <body>
-<aside class="pt-side" id="side" aria-label="Sidebar"></aside>
-<div class="app" id="app"></div>
-<div class="tabs"><nav role="tablist" id="tabs"></nav></div>
-<div class="sheet-bg" id="sheet" role="dialog" aria-modal="true"><div class="sheet" id="sheetBody"></div></div>
-<div class="cal-bg" id="cal"><div class="cal" id="calBody" role="dialog" aria-modal="true" aria-label="Choose date"></div></div>
 
-<!-- App code: plain scripts, loaded in order (works by double-click, no build step) -->
-<script src="js/config.js"></script>
-<script src="js/core/prefs.js"></script>
-<script src="js/core/storage.js"></script>
-<script src="js/core/auth.js"></script>
-<script src="js/core/track.js"></script>
-<script src="js/core/sheets-api.js"></script>
-<script src="js/services/vehicle.service.js"></script>
-<script src="js/services/fuel-log.service.js"></script>
-<script src="js/services/service-log.service.js"></script>
-<script src="js/services/sync.service.js"></script>
-<script src="js/services/analytics.service.js"></script>
-<script src="js/services/report.service.js"></script>
-<script src="js/gateway.js"></script>
-<script src="js/ui/state.js"></script>
-<script src="js/ui/calendar.js"></script>
-<script src="js/ui/components.js"></script>
-<script src="js/ui/service-form.js"></script>
-<script src="js/ui/views/home.js"></script>
-<script src="js/ui/views/log.js"></script>
-<script src="js/ui/views/service.js"></script>
-<script src="js/ui/views/reports.js"></script>
-<script src="js/ui/views/vehicles.js"></script>
-<script src="js/ui/views/account.js"></script>
-<script src="js/ui/views/login.js"></script>
-<script src="js/ui/render.js"></script>
-<script src="js/ui/fuel-fallback.js"></script>
-<script src="js/ui/forms.js"></script>
-<script src="js/ui/events.js"></script>
-<script src="js/reports/pdf.js"></script>
-<script src="js/reports/export.js"></script>
-<script src="js/main.js"></script>
+<header class="top">
+  <a class="brand" href="./?home" aria-label="safri home"><img src="img/safri-icon-192.png" alt="" width="36" height="36"><span>safri</span></a>
+  <nav aria-label="Main">
+    <a href="#data">Where your data goes</a>
+    <a href="privacy.html">Privacy</a>
+    <a class="btn btn-sm" href="app.html">Open app</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero">
+  <div class="hero-copy">
+    <h1>Your travel costs, in your own Google&nbsp;Drive.</h1>
+    <p class="lede">Safri records every fill-up, charge and service, and saves it to a sheet called “Safri” in <em>your</em> Google Drive. Your vehicle records never reach our servers.</p>
+    <div class="cta">
+      <a class="btn" href="app.html">Start your Safri sheet</a>
+      <a class="link" href="#data">See where your data goes</a>
+    </div>
+    <p class="kinds">For petrol, diesel and electric cars and motorbikes.</p>
+  </div>
+
+  <figure class="demo" aria-label="Example: a fill-up logged on a phone is added as a new row in the owner's Safri sheet">
+    <div class="sheet">
+      <div class="sheet-bar">
+        <svg class="sheet-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M3 15h18M10 9v12"/></svg>
+        <div class="sheet-title"><b>Safri</b><span>My Drive</span></div>
+        <span class="only-you"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>Only you</span>
+      </div>
+      <div class="grid-wrap">
+        <table class="grid">
+          <thead>
+            <tr class="cols"><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+            <tr class="heads"><th>2</th><th>Date</th><th>Odometer (km)</th><th>Litres</th><th>Price per litre (Rs)</th><th>Full tank</th><th>Net total (Rs)</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>3</th><td>02 Nov 2026</td><td>48,212</td><td>30.4</td><td>265.40</td><td>Yes</td><td>8,068.16</td></tr>
+            <tr><th>4</th><td>09 Nov 2026</td><td>48,560</td><td>28.9</td><td>265.40</td><td>Yes</td><td>7,670.06</td></tr>
+            <tr><th>5</th><td>16 Nov 2026</td><td>48,905</td><td>29.6</td><td>263.10</td><td>Yes</td><td>7,787.76</td></tr>
+            <tr class="new"><th>6</th><td>22 Nov 2026</td><td>49,247</td><td>29.1</td><td>263.10</td><td>Yes</td><td>7,656.21</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sheet-tabs" aria-hidden="true"><span class="on">LEC-21-4471</span><span>ICT-KL-209</span><span>Service log</span></div>
+    </div>
+
+    <div class="phone" aria-hidden="true">
+      <div class="phone-head"><img src="img/safri-icon-192.png" alt="" width="20" height="20"><span>Fill-up saved</span><svg class="tick" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <div class="phone-row"><span>Litres</span><b>29.1</b></div>
+      <div class="phone-row"><span>Total</span><b>Rs 7,656</b></div>
+      <div class="phone-row"><span>Since last full tank</span><b>11.8 km/L</b></div>
+    </div>
+    <figcaption>Example data</figcaption>
+  </figure>
+</section>
+
+<section class="data" id="data">
+  <div class="wrap">
+    <h2>Your records go to one place: your own Google&nbsp;Drive.</h2>
+    <div class="flow" aria-hidden="true">
+      <div class="node"><svg viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg><span>Your phone or laptop</span></div>
+      <div class="pipe"><span></span></div>
+      <div class="node node-on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M3 15h18M10 9v12"/></svg><span>“Safri” sheet in your Drive</span></div>
+      <div class="off"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="6" rx="1.5"/><rect x="4" y="14" width="16" height="6" rx="1.5"/><path d="M3 21L21 3"/></svg><span>Safri’s servers: no vehicle records</span></div>
+    </div>
+
+    <dl class="facts">
+      <div><dt>What Safri can open</dt><dd>Only the “Safri” sheet it creates for you. Not your other files, photos or email: Google’s “drive.file” permission keeps it to that one sheet.</dd></div>
+      <div><dt>What Safri keeps</dt><dd>Your Google name, email and picture, and when you signed in. Nothing about your vehicles, fuel or services. <a href="privacy.html">Read the Privacy Policy</a></dd></div>
+      <div><dt>If you leave</dt><dd>Remove Safri’s access at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>. The sheet stays in your Drive, yours to keep, open in Google Sheets, or delete.</dd></div>
+      <div><dt>No Google account?</dt><dd>Use Safri without signing in. Your records then stay in that browser only.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="answers">
+  <div class="wrap">
+    <div class="answers-head">
+      <h2>The sheet holds the records. Safri does the sums.</h2>
+      <p class="sub">From the four fill-ups above:</p>
+    </div>
+    <ul class="qa">
+      <li><span class="q">How far does a litre take me?</span><span class="a">11.8 km</span></li>
+      <li><span class="q">What does each kilometre cost?</span><span class="a">Rs 22.39</span></li>
+      <li><span class="q">What did fuel cost this month?</span><span class="a">Rs 31,182</span></li>
+      <li><span class="q">When is the next service due?</span><span class="a">In 753 km</span></li>
+    </ul>
+    <p class="note">Example figures. Safri also keeps your service visits and the parts you bought, reminds you which parts are due, and makes monthly reports as PDF, Excel or CSV. Electric car? Note the battery % when you plug in and unplug at home, and Safri works out the cost from your electricity rate.</p>
+  </div>
+</section>
+
+<section class="later">
+  <div class="wrap">
+    <p><b>Planned for 2028:</b> bus, Metro and ride-hailing fares in the same sheet, so every way you travel is in one place.</p>
+  </div>
+</section>
+
+<section class="close">
+  <div class="wrap">
+    <img src="img/safri-icon-192.png" alt="" width="72" height="72">
+    <h2>Start your Safri sheet.</h2>
+    <p>Sign in with Google and Safri creates the sheet in your Drive. It takes a few seconds.</p>
+    <a class="btn" href="app.html">Open safri</a>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <span class="brand-sm"><img src="img/safri-icon-192.png" alt="" width="22" height="22">safri</span>
+  <nav aria-label="Legal"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a></nav>
+  <span>© 2026 Safri</span>
+</footer>
 </body>
 </html>

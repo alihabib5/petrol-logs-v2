@@ -2,6 +2,13 @@
 
 All notable changes to Safri (formerly Sawari and Petrol Log). Newest first.
 
+## [2.14.0] - 2026-11-22
+### Added
+- **Landing page** at the front of the site (`index.html`): "Your travel costs, in your own Google Drive." It shows an example Safri sheet getting a new row from a fill-up, where records go (your Drive, never our servers), what Safri can open and keeps, how to leave, the sums Safri works out, and the 2028 plan. People who already use the app go straight to it.
+- **New safri logo** (app icon) on the landing page, sign-in screen, sidebar and as the browser icon; lowercase "safri" wordmark.
+### Changed
+- The app moved from `index.html` to `app.html` (served at `/app` with clean URLs). `portal.html` points there.
+
 ## [2.13.0] - 2026-11-22
 ### Changed
 - **The app is now called Safri** (it was Sawari). "Safri" (سفری) means "for travel", as in *safri akhrajaat*, travel expenses: it fits the owner's own vehicle today and public transport and ride-hailing later. The new name is on the browser tab, sign-in screen, sidebar, reports (PDF title, `safri-report-…` file names), Privacy Policy and Terms.
