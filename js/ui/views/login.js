@@ -1,10 +1,10 @@
 /* Sign-in screen: one plain centred card (2.10.0 redesign; replaces the full-width animated hero) */
-const LOGO='<span class="logo-s" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.2"/><path d="M3.8 10.5l6 1M14.2 11.5l6-1M12 14.2v6"/></svg></span>';
+const LOGO='<img class="logo-s" src="img/safri-icon-192.png" alt="" width="32" height="32">';   /* the safri app icon (2.14.0) */
 function viewLogin(){
   const ok=Auth.configured(),busy=S.busy,off=ok&&!busy?"":"disabled";
   const tick='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   return `<section class="auth"><div class="auth-card">
-    <div class="auth-brand">${LOGO}Safri</div>
+    <div class="auth-brand">${LOGO}<span class="wordmark">safri</span></div>
     <h1>Every ride, every kilometre.</h1>
     <p>Track fuel or charging, services and what every kilometre costs, with monthly reports. Petrol, diesel or electric.</p>
     <ul class="auth-feats">

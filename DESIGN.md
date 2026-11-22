@@ -31,6 +31,11 @@ colors:
   dark-hairline: "#28302c"
   dark-hairline-strong: "#3a443f"
 typography:
+  wordmark:
+    fontFamily: "Lexend, system-ui, sans-serif"
+    fontSize: "18px"
+    fontWeight: 600
+    letterSpacing: "-0.01em"
   display:
     fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif"
     fontSize: "60px"
@@ -305,3 +310,6 @@ Bottle-green bars with 4px top corners, value above in 12px mute, month below; t
 - **Don't** add decorative "local" theming such as truck-art ornament or patterned grounds; the owner declined it.
 - **Don't** introduce webfonts or a display face.
 - **Don't** put shadows on resting cards or stagger view entrances in a cascade.
+
+## Logo and landing page (2.14.0)
+The safri app icon (`img/safri-icon-*.png`: a road-green S on the logo's deep teal-green tile, with a paper plane, fuel nozzle and service gear) replaces the drawn mark. The wordmark is lowercase "safri" in Lexend 600. The landing page (`index.html`, `css/landing.css`) takes its field from the icon tile (#123a35 to #0b2723) and its button and accent from the icon's road green (#1fa87a with dark #062a1f text); Lexend carries its headings, the system stack its body.
