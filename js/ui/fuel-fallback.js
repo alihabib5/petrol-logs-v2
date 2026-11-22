@@ -1,12 +1,13 @@
 /* Fill-up form helper: price x litres = total. Any two fields give the third.
    The two fields the user touched most recently are kept; the remaining one is calculated.
    Pass `touched` (most recent first) for values the form opens with. */
-function bindFillLinks({ price, total, liters, hint, onChange, touched = [] }) {
+function bindFillLinks({ price, total, liters, hint, onChange, touched = [], unit = UNITS.fuel }) {
   const F = { price, total, liters };
+  const a = unit.amount, al = unit === UNITS.ev ? "kWh" : "litres"; // wording follows the vehicle type
   const WHY = {
-    price: "Price per litre calculated as total ÷ litres.",
-    total: "Total calculated as litres × price (before subsidy).",
-    liters: "Litres calculated as total ÷ price (total before subsidy)."
+    price: "Price per " + unit.per + " calculated as total ÷ " + al + ".",
+    total: "Total calculated as " + al + " × price (before subsidy).",
+    liters: a + " calculated as total ÷ price (total before subsidy)."
   };
   const num = el => {
     const n = parseFloat(String(el.value).trim().replace(",", ".")); // accepts "36,5"

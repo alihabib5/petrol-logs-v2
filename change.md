@@ -2,6 +2,24 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [2.9.0] - 2026-11-22
+### Changed
+- **The app is now called Sawari** (it was Petrol Log), ready for electric vehicles now and public transport and ride-hailing later. The new name is on the browser tab, the sign-in screen (new headline "Every ride, every kilometre."), the sidebar, Home, the PDF ("Sawari Report — November 2026"), export file names (`sawari-report-2026-11`), and the Privacy Policy and Terms (updated 22 November 2026, which also now mention EV charging and services).
+- **Google Sheet:** new users get a sheet called "Sawari". An existing "Petrol Log" sheet is found as before and **renamed to "Sawari" in place** the next time its owner uses the app; if Google refuses the rename, the app keeps using it under the old name. No data is copied and no empty sheet is created.
+- Saved sessions, offline data and preferences are untouched (their internal names stay the same), so nobody is signed out.
+- Per-vehicle PDF headers still say PETROL / DIESEL / EV CHARGING REPORT.
+
+## [2.8.0] - 2026-11-22
+### Added
+- **Electric vehicles.** Adding a vehicle now has a **Type** dropdown: Petrol, Diesel or Electric. For an electric vehicle the app logs **charges** instead of fill-ups: kWh charged, price per kWh and "Charged to full", and shows efficiency in **km per kWh** (the gauge runs to 12 instead of 30). Every screen follows the vehicle's type: Home ("average km / kWh", "Last charge km/kWh"), the **Charging Log** ("+ Charge", "Full charge", km/kWh column and filter), Reports, Excel/CSV (kWh and km/kWh headers, a Type column in the summary) and the PDF ("EV Charging Report", "Energy charged", "Price per kWh", charging insights). The subsidy switch is hidden for electric vehicles.
+- Reports for **All vehicles** with petrol/diesel and electric together keep litres and kWh apart ("45.0 L · 87.0 kWh") and show no combined average, since the two can't be added.
+- Google Sheet: a new vehicle's tab stores its type in row 1 (`Type | Electric`), and an electric vehicle's columns read kWh, Price per kWh and Full charge. Vehicles and tabs from before this version have no type and count as **Petrol**, so nothing changes for them.
+- The Vehicles list and the Users page show each vehicle's type.
+### Fixed
+- On the desktop dashboard the vehicle picker on Home and Log sat to the left of its label; it now lines up.
+### Notes
+- The type is chosen when a vehicle is added; there is no way to change it afterwards yet (remove and add the vehicle again).
+
 ## [2.7.0] - 2026-11-22
 ### Changed
 - **The app is now a dashboard on computers.** On screens 900px and wider (when signed in) the app opens with a sidebar: Home, Log, Service, Reports, Vehicles and Users, a collapse button at the top (remembered), and the signed-in name and email at the bottom. Content uses the wider space (the Service, Log and Users pages up to 1160px). Phones keep the bottom tab bar, which gains a **Service** tab.

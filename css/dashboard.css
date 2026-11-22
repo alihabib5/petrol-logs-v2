@@ -9,6 +9,7 @@
   body.dash .tabs{display:none!important}
   body.dash .app{max-width:none;margin:0 0 0 var(--sw);padding:28px 40px 56px;transition:margin-left .25s ease}
   body.dash .app>*{max-width:900px;margin-left:auto;margin-right:auto}
+  body.dash .app>select,body.dash .app>input{display:block}   /* inline by default, so auto margins would not centre them */
   body.dash .app[data-view=svc]>*,body.dash .app[data-view=log]>*,body.dash .app[data-view=srv]>*{max-width:1160px}
   body.dash .app h1{font-size:30px}
 }

@@ -1,11 +1,11 @@
-# Petrol Log (Google sign-in edition)
+# Sawari (formerly Petrol Log)
 
 Mobile-first fuel log: average km/L, government subsidy deducted from totals, monthly reports (Excel, PDF, CSV).
-Customers sign in with Google. Their data is saved in a sheet called "Petrol Log" in THEIR OWN Google Drive
+Customers sign in with Google. Their data is saved in a sheet called "Sawari" in THEIR OWN Google Drive
 (one tab per vehicle, tab name = plate number). You store no customer data.
 
 ## 1. Google Cloud setup (one time, about 10 minutes)
-1. Go to https://console.cloud.google.com and create a project (e.g. "Petrol Log").
+1. Go to https://console.cloud.google.com and create a project (e.g. "Sawari").
 2. APIs & Services -> Library -> enable **Google Sheets API** and **Google Drive API**.
 3. Google Auth Platform (OAuth consent screen) -> Get started:
    - App name, support email; Audience: **External**; contact email.
@@ -38,7 +38,7 @@ Services      VehicleService | FuelLogService | AnalyticsService | ReportService
    |
 Google Sign-In + Sheets API   (OAuth, drive.file scope)
    |
-Customer's own Google Drive   Sheet "Petrol Log", one tab per plate number
+Customer's own Google Drive   Sheet "Sawari", one tab per plate number
 ```
 
 ## Project structure
@@ -62,6 +62,12 @@ js/main.js            startup
 
 ## Odometer is optional
 Leave the odometer empty and the fill-up still counts for litres, cost and the reports; add it when you want distance and km/L. Fill-ups without an odometer give no distance of their own.
+
+## Name change (2.9.0)
+The app was called **Petrol Log**. Users' existing sheet named "Petrol Log" is still found (by its saved id, or by searching for the old name) and renamed to "Sawari" in place, so no data moves and no empty sheet is created. Saved browser data keeps its internal `petrol-*` keys and `PETROL_CONFIG` keeps its name, so nobody is signed out. Outside the code: change the app name on the Google Cloud consent screen, and optionally add a new Vercel domain (add it to the OAuth client's Authorised JavaScript origins too).
+
+## Vehicle types: petrol, diesel, electric
+Choose the type when adding a vehicle. Electric vehicles log charges in kWh (price per kWh, charged to full) and show km per kWh; petrol and diesel log litres and km per litre. All screens, exports and the PDF use the vehicle's own units, and "All vehicles" reports keep litres and kWh apart. The type is stored in row 1 of the vehicle's sheet tab (`Type | Electric`); older tabs without it count as Petrol. Labels: `UNITS` / `UL(vehicle)` in `js/services/vehicle.service.js`.
 
 ## Service log and dashboard layout
 Record each workshop visit: date, odometer, work done, the workshop's service charge, and the products you bought outside the workshop (name, qty, unit price). The total (service charge + products) is added up as you type and saved with the visit. An optional reminder stores the next service date and/or km.

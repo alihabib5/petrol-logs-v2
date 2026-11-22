@@ -4,7 +4,7 @@
    can draw are used as text; arrows, the minus sign and the approx sign are drawn as shapes. */
 function exportPdf(R,fn){
   const {jsPDF}=window.jspdf,PW=595,REFH=PW*1560/960,MAXH=1500;
-  const title="Petrol Report — "+fmtMonth(R.month);          /* file name and document title */
+  const title=(R.items.filter(it=>it.rows.length).every(it=>isEV(it.v))?"EV Charging Report — ":"Sawari Report — ")+fmtMonth(R.month);          /* file name and document title */
   const items=R.items.filter(it=>it.rows.length);
   /* dry run on a very tall page to learn how tall each vehicle's report needs to be */
   const plan=items.map(it=>{const end=pdfDraw(new jsPDF({unit:"pt",format:[PW,6000]}),it,R.month,6000,PW);return end<=MAXH?Math.max(REFH,end):REFH});
@@ -38,17 +38,18 @@ function pdfDraw(d,it,month,PH,PW){
   const approx=(x,top,size,col)=>{T("~",x,top-u(size)*.2,{s:size,c:col});T("~",x,top+u(size)*.2,{s:size,c:col});return x+tw("~",size)+u(5)};
 
   const rows=it.rows,s=it.s,v=it.v,avg=s.avg,ap=s.approx;
+  const L=UL(v),ev=isEV(v),nf=n=>n+" "+(ev?(n>1?"charges":"charge"):(n>1?"fills":"fill")),fw=ev?"charge":"fill",fws=fw+"s"; /* wording follows the vehicle type */
   const odoRows=rows.filter(r=>r.odometer!=null),hasOdo=odoRows.length>0;                       /* the odometer is optional */
   const km=s.dist>0?s.dist:0,start=hasOdo?odoRows[0].odometer-odoRows[0].dk:0,end=hasOdo?odoRows[odoRows.length-1].odometer:0;
   const small=x=>x.liters<=2,unrel=x=>{const k=kv(x);return small(x)&&k!=null&&avg&&Math.abs(k-avg)/avg>.5};
   bg();
 
   /* header */
-  T("PETROL REPORT",M,y+u(5),{s:13,b:1,c:C.acc});
+  T(ev?"EV CHARGING REPORT":vType(v)==="diesel"?"DIESEL REPORT":"PETROL REPORT",M,y+u(5),{s:13,b:1,c:C.acc});
   T(fmtMonth(month),M,y+u(29),{s:44,b:1});
   const chip=v.plate+" · "+v.name,cw=tw(chip,13,1)+u(28);
   fill(C.acc);d.roundedRect(M+W-cw,y+u(25),cw,u(32),u(16),u(16),"F");T(chip,M+W-cw/2,y+u(34),{s:13,b:1,c:C.white,a:"center"});
-  T(s.fills+" fill"+(s.fills>1?"s":"")+" · "+sd(rows[0].date)+" – "+sd(rows[rows.length-1].date),M+W,y+u(64),{s:13,c:C.mut,a:"right"});
+  T(nf(s.fills)+" · "+sd(rows[0].date)+" – "+sd(rows[rows.length-1].date),M+W,y+u(64),{s:13,c:C.mut,a:"right"});
   y+=u(103);
 
   /* hero card + four stat cards */
@@ -57,12 +58,12 @@ function pdfDraw(d,it,month,PH,PW){
   T("Net spend this month",hx+u(32),y+u(34),{s:14,c:C.white});
   T(rs(s.net),hx+u(32),y+u(56),{s:64,b:1,c:C.white});
   if(km){const x1=approx(hx+u(32),y+u(138),15,C.white);T("Rs "+n1(s.net/km)+" per km over "+k0(km)+" km tracked",x1,y+u(138),{s:15,c:C.white})}
-  else T(s.fills+" fill-up"+(s.fills>1?"s":"")+", "+n1(s.litres)+" L",hx+u(32),y+u(138),{s:15,c:C.white});
+  else T(nf(s.fills)+", "+n1(s.litres)+" "+L.u,hx+u(32),y+u(138),{s:15,c:C.white});
   const bx=hx+u(32),bw=hw-u(64),by=y+u(221),share=s.gross>0?Math.max(0,Math.min(1,s.net/s.gross)):1;
   fill(C.track);d.roundedRect(bx,by,bw,u(14),u(7),u(7),"F");
   fill(C.white);if(share>0)d.roundedRect(bx,by,Math.max(u(14),bw*share),u(14),u(7),u(7),"F");
   T("You paid · "+rs(s.net),bx,by+u(26),{s:13,c:C.white});T("Subsidy · "+rs(s.subsidy),bx+bw,by+u(26),{s:13,c:C.white,a:"right"});
-  T("Gross fuel cost "+rs(s.gross),bx,by+u(49),{s:13,c:C.white});
+  T("Gross "+L.cost+" "+rs(s.gross),bx,by+u(49),{s:13,c:C.white});
   const sx=hx+u(488),cwid=u(180),stat=(cx,cy,chh,lab,val,unit,sub,col)=>{
     card(cx,cy,cwid,chh,C.white,C.line);T(lab,cx+u(24),cy+u(28),{s:13,c:C.mut});
     T(val,cx+u(24),cy+u(54),{s:36,b:1,c:col||C.ink});T(unit,cx+u(24)+tw(val,36,1)+u(4),cy+u(72),{s:16,b:1,c:col||C.ink});
@@ -72,16 +73,16 @@ function pdfDraw(d,it,month,PH,PW){
       else{seq([sub[0],">"],cx+u(24),cy+u(101),13,C.mut);T(sub[1],cx+u(24),cy+u(118),{s:13,c:C.mut})}
     }else{d.setFont("helvetica","normal");d.setFontSize(u(13));ink(C.mut);d.text(d.splitTextToSize(sub,cwid-u(48)).slice(0,2),cx+u(24),cy+u(101)+u(13)*.8,{lineHeightFactor:1.4})}};
   const subN=rows.filter(r=>r.subsidy>0).length;
-  stat(sx,y,u(140),"Fuel bought",n1(s.litres),"L","across "+s.fills+" fill"+(s.fills>1?"s":""));
-  stat(sx+u(196),y,u(140),"Avg efficiency",avg?n1(avg):DASH,"km/L",avg?(ap?"estimated from odometer":"month average"):"needs two fills",C.acc);
+  stat(sx,y,u(140),L.bought,n1(s.litres),L.u,"across "+nf(s.fills));
+  stat(sx+u(196),y,u(140),"Avg efficiency",avg?n1(avg):DASH,L.eff,avg?(ap?"estimated from odometer":"month average"):"needs two "+fws,C.acc);
   stat(sx,y+u(156),u(160),"Distance",hasOdo?k0(km):DASH,hasOdo?"km":"",hasOdo?["odometer "+k0(start),k0(end)]:"");
-  stat(sx+u(196),y+u(156),u(160),"Subsidy saved",s.gross>0?n1(100*s.subsidy/s.gross):"0","%",subN?rs(s.subsidy)+" on "+subN+" fill"+(subN>1?"s":""):"no subsidy used");
+  stat(sx+u(196),y+u(156),u(160),"Subsidy saved",s.gross>0?n1(100*s.subsidy/s.gross):"0","%",subN?rs(s.subsidy)+" on "+nf(subN):"no subsidy used");
   y+=hh+u(24);
 
   /* efficiency chart + price trend */
   const ch=u(304),ew=u(528),px=M+ew+u(24),pw=W-ew-u(24);
-  card(M,y,ew,ch,C.white,C.line);T("Efficiency per fill",M+u(24),y+u(26),{s:18,b:1});
-  T("km/L"+(avg?" · dashed line is the "+n1(avg)+" average":""),M+u(24),y+u(55),{s:13,c:C.mut});
+  card(M,y,ew,ch,C.white,C.line);T("Efficiency per "+fw,M+u(24),y+u(26),{s:18,b:1});
+  T(L.eff+(avg?" · dashed line is the "+n1(avg)+" average":""),M+u(24),y+u(55),{s:13,c:C.mut});
   const bars=rows.filter(r=>kv(r)!=null&&kv(r)>0).slice(-12);
   const areaX=M+u(24),areaW=ew-u(48),base=y+u(226),ah=u(110);
   line(C.line);d.setLineWidth(.8);d.line(areaX,base,areaX+areaW,base);
@@ -92,14 +93,14 @@ function pdfDraw(d,it,month,PH,PW){
       else{fill(C.org);d.roundedRect(bx2,base-h,bw2,h,u(6),u(6),"F");d.rect(bx2,base-Math.min(h,u(6)),bw2,Math.min(h,u(6)),"F")}
       T(kfmt(k),bx2+bw2/2,base-h-u(19),{s:12,b:1,a:"center"});T(sd(r.date),bx2+bw2/2,base+u(9),{s:bars.length>9?10:12,c:C.mut,a:"center"})});
     if(avg){const ya=base-avg/mx*ah;line(C.acc);d.setLineWidth(1.2);dash(5,4);d.line(areaX,ya,areaX+areaW,ya);dash(0)}
-  }else T("Log two fills to see efficiency per fill.",M+ew/2,y+u(150),{s:14,c:C.mut,a:"center"});
-  T(bars.some(unrel)?"Dashed bars are tiny top-ups, so their km/L is unreliable.":"Each bar is one fill-up.",M+u(24),y+u(264),{s:13,c:C.mut});
+  }else T("Log two "+fws+" to see efficiency per "+fw+".",M+ew/2,y+u(150),{s:14,c:C.mut,a:"center"});
+  T(bars.some(unrel)?"Dashed bars are tiny top-ups, so their "+L.eff+" is unreliable.":"Each bar is one "+L.fill+".",M+u(24),y+u(264),{s:13,c:C.mut});
 
-  card(px,y,pw,ch,C.white,C.line);T("Price per litre",px+u(24),y+u(26),{s:18,b:1});
+  card(px,y,pw,ch,C.white,C.line);T("Price per "+L.per,px+u(24),y+u(26),{s:18,b:1});
   const pr=rows.map(r=>r.price);
   if(pr.length>1){
     const p0=pr[0],p1=pr[pr.length-1],pc=(p1-p0)/p0*100;
-    seq(["Rs/L, "+sd(rows[0].date),">",sd(rows[rows.length-1].date)],px+u(24),y+u(55),13,C.mut);
+    seq(["Rs/"+L.u+", "+sd(rows[0].date),">",sd(rows[rows.length-1].date)],px+u(24),y+u(55),13,C.mut);
     let tx=px+u(24);const pt=y+u(89);
     if(pc<0)tx=minus(tx,pt,32,C.ink);else if(pc>0){T("+",tx,pt,{s:32,b:1});tx+=tw("+",32,1)}
     T(n1(Math.abs(pc))+"%",tx,pt,{s:32,b:1});
@@ -108,22 +109,22 @@ function pdfDraw(d,it,month,PH,PW){
     const pts=pr.map((p,i)=>[gx+gw*i/(pr.length-1),gy+gh-(p-lo)/sp*gh]);
     line(C.org);d.setLineWidth(u(3.4));d.setLineCap("round");d.setLineJoin("round");for(let i=1;i<pts.length;i++)d.line(pts[i-1][0],pts[i-1][1],pts[i][0],pts[i][1]);
     fill(C.org);d.circle(pts[0][0],pts[0][1],u(5.5),"F");fill(C.acc);d.circle(pts[pts.length-1][0],pts[pts.length-1][1],u(5.5),"F");d.setLineCap("butt");
-  }else{T("Rs/L",px+u(24),y+u(55),{s:13,c:C.mut});T(pr.length?n2(pr[0]):DASH,px+u(24),y+u(89),{s:32,b:1});T("Log two fills to see the trend.",px+u(24),y+u(129),{s:13,c:C.mut})}
+  }else{T("Rs/"+L.u,px+u(24),y+u(55),{s:13,c:C.mut});T(pr.length?n2(pr[0]):DASH,px+u(24),y+u(89),{s:32,b:1});T("Log two "+fws+" to see the trend.",px+u(24),y+u(129),{s:13,c:C.mut})}
   y+=ch+u(24);
 
   /* three insight cards, written from this month's fills */
   const ins=[],lo=rows.reduce((a,r)=>r.price<a.price?r:a,rows[0]);
   if(rows.length>1){const df=rows[rows.length-1].price-rows[0].price;
-    ins.push(df<-0.005?["Fuel is getting cheaper","Price per litre fell Rs "+n2(-df)+" across the month, with the lowest on "+sd(lo.date)+" at Rs "+n2(lo.price)+"."]
-      :df>0.005?["Fuel got pricier","Price per litre rose Rs "+n2(df)+" across the month; the lowest was "+sd(lo.date)+" at Rs "+n2(lo.price)+"."]
-      :["Price held steady","Price per litre stayed near Rs "+n2(rows[0].price)+" all month."])}
+    ins.push(df<-0.005?[(ev?"Charging":"Fuel")+" is getting cheaper","Price per "+L.per+" fell Rs "+n2(-df)+" across the month, with the lowest on "+sd(lo.date)+" at Rs "+n2(lo.price)+"."]
+      :df>0.005?[(ev?"Charging":"Fuel")+" got pricier","Price per "+L.per+" rose Rs "+n2(df)+" across the month; the lowest was "+sd(lo.date)+" at Rs "+n2(lo.price)+"."]
+      :["Price held steady","Price per "+L.per+" stayed near Rs "+n2(rows[0].price)+" all month."])}
   if(s.subsidy>0){const dts=rows.filter(r=>r.subsidy>0).map(r=>sd(r.date));
     const list=dts.length<=3?dts.join(", ").replace(/, ([^,]*)$/,dts.length>1?" and $1":"$1"):dts.slice(0,3).join(", ")+" and more";
-    ins.push(["Subsidy covers 1 in "+Math.max(1,Math.round(s.gross/s.subsidy))+" rupees",rs(s.subsidy)+" off the "+rs(s.gross)+" gross, from the "+list+" fill"+(dts.length>1?"s":"")+"."])}
+    ins.push(["Subsidy covers 1 in "+Math.max(1,Math.round(s.gross/s.subsidy))+" rupees",rs(s.subsidy)+" off the "+rs(s.gross)+" gross, from the "+list+" "+(dts.length>1?fws:fw)+"."])}
   const sm=rows.filter(small);
-  if(sm.length>=2)ins.push(["Top-ups skew the data",sm.length+" of "+rows.length+" fills were "+n2(Math.max(...sm.map(r=>r.liters))).replace(/\.?0+$/,"")+" L or less. Trust the "+(avg?n1(avg)+" km/L":"month")+" average over single fills."]);
+  if(sm.length>=2)ins.push(["Top-ups skew the data",sm.length+" of "+rows.length+" "+fws+" were "+n2(Math.max(...sm.map(r=>r.liters))).replace(/\.?0+$/,"")+" "+L.u+" or less. Trust the "+(avg?n1(avg)+" "+L.eff:"month")+" average over single "+fws+"."]);
   const ks=rows.filter(r=>kv(r)!=null&&!unrel(r));
-  if(ks.length>1){const b=ks.reduce((a,r)=>kv(r)>kv(a)?r:a,ks[0]);ins.push(["Best fill: "+kfmt(kv(b))+" km/L","On "+sd(b.date)+", the most efficient fill this month that was not a tiny top-up."])}
+  if(ks.length>1){const b=ks.reduce((a,r)=>kv(r)>kv(a)?r:a,ks[0]);ins.push(["Best "+fw+": "+kfmt(kv(b))+" "+L.eff,"On "+sd(b.date)+", the most efficient "+fw+" this month that was not a tiny top-up."])}
   if(km)ins.push(["Cost per km: Rs "+n1(s.net/km),"You spent "+rs(s.net)+" to cover "+k0(km)+" km this month."]);
   const cards=ins.slice(0,3);
   if(cards.length){
@@ -145,8 +146,8 @@ function pdfDraw(d,it,month,PH,PW){
     const nfit=Math.max(1,Math.floor((avail-HEAD-FOOT)/RHt+1e-6)),take=Math.min(nfit,rows.length-i),last=i+take>=rows.length;
     const th=HEAD+take*RHt+(last?FOOT:u(14));
     card(M,y,W,th,C.white,C.line);
-    const cx0=M+u(24),ax=c=>cx0+u(c);T("All fills",cx0,y+u(31),{s:18,b:1});
-    [["Date",0,"l"],["Odometer",190,"r"],["Trip km",300,"r"],["Litres",402,"r"],["Price/L",510,"r"],["Subsidy",614,"r"],["Net total",740,"r"],["km/L",816,"r"]].forEach(([t,c,al])=>T(t,ax(c),y+u(64),{s:12,b:1,c:C.mut,a:al==="r"?"right":undefined}));
+    const cx0=M+u(24),ax=c=>cx0+u(c);T("All "+fws,cx0,y+u(31),{s:18,b:1});
+    [["Date",0,"l"],["Odometer",190,"r"],["Trip km",300,"r"],[L.amount,402,"r"],["Price/"+L.u,510,"r"],["Subsidy",614,"r"],["Net total",740,"r"],[L.eff,816,"r"]].forEach(([t,c,al])=>T(t,ax(c),y+u(64),{s:12,b:1,c:C.mut,a:al==="r"?"right":undefined}));
     line(C.line);d.setLineWidth(1.4);d.line(cx0,y+HEAD,M+W-u(24),y+HEAD);
     for(let k=0;k<take;k++,i++){const r=rows[i],ry=y+HEAD+k*RHt,kk=kv(r),rt=ry+RHt/2-u(7);
       if(k>0){line(C.row);d.setLineWidth(.8);d.line(cx0,ry,M+W-u(24),ry)}
@@ -159,7 +160,7 @@ function pdfDraw(d,it,month,PH,PW){
       else T(DASH,ax(816),rt,{s:14,a:"right"});
     }
     if(last){const fy=y+HEAD+take*RHt;line(C.row);d.setLineWidth(.8);d.line(cx0,fy,M+W-u(24),fy);
-      const notes=[rows.some(unrel)?"† Small fill, treat with caution.":"",avg?"Orange chips beat the "+n1(avg)+" km/L average.":"",ap?"km/L is estimated from odometer readings.":""].filter(Boolean).join("  ");
+      const notes=[rows.some(unrel)?"† Small "+fw+", treat with caution.":"",avg?"Orange chips beat the "+n1(avg)+" "+L.eff+" average.":"",ap?L.eff+" is estimated from odometer readings.":""].filter(Boolean).join("  ");
       if(notes)T(notes,cx0,fy+u(14),{s:13,c:C.mut})}
     y+=th+u(14);
     if(!last)page();
