@@ -198,3 +198,7 @@ button.cal-cap:hover{background:var(--bg)}
 .auth-note.err{color:var(--err);min-height:20px}
 .logo-s{flex:none;width:32px;height:32px;border-radius:9px;background:var(--acc);color:var(--acc-ink);display:grid;place-items:center}
 .logo-s svg{width:20px;height:20px}
+/* EV home charging (2.11.0): live summary in the charge form, bill helper in charging settings, hint card on Home */
+.ev-sum{margin-top:14px;display:grid;gap:4px;font-size:15px}.ev-sum span{color:var(--mute)}.ev-sum span b{color:var(--ink)}
+.bill{margin-top:14px;display:grid;gap:6px;background:var(--bg)}.bill label{margin-top:6px}
+.hint-card{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}.hint-card b{display:block}.hint-card small{display:block;color:var(--mute);font-size:14px;margin-top:2px}.hint-card button{flex:none}
