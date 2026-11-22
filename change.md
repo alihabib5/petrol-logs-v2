@@ -2,6 +2,12 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [2.9.1] - 2026-11-22
+### Added
+- **Sign-out button in the sidebar**, next to your name and email at the bottom (under your avatar when the sidebar is collapsed). In offline mode it reads "Back to sign-in". The Users page keeps its own Sign out button.
+### Fixed
+- **"Back to sign-in" no longer deletes offline data.** Signing out used to clear the browser's saved data for every mode; in offline mode that is the only copy, so it was lost. Now only a Google account's cached copy is cleared (its data is safe in the Sheet), and offline data is there again when you choose "Continue without sign-in".
+
 ## [2.9.0] - 2026-11-22
 ### Changed
 - **The app is now called Sawari** (it was Petrol Log), ready for electric vehicles now and public transport and ride-hailing later. The new name is on the browser tab, the sign-in screen (new headline "Every ride, every kilometre."), the sidebar, Home, the PDF ("Sawari Report — November 2026"), export file names (`sawari-report-2026-11`), and the Privacy Policy and Terms (updated 22 November 2026, which also now mention EV charging and services).

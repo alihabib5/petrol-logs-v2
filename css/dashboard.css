@@ -35,7 +35,11 @@ body.collapsed .pt-name,body.collapsed .pt-nav span,body.collapsed .pt-side .pt-
 body.collapsed .pt-brand{flex-direction:column;gap:6px}
 body.collapsed .pt-col svg{transform:scaleX(-1)}
 body.collapsed .pt-nav button{justify-content:center;padding:12px 0}
-body.collapsed .pt-user{justify-content:center;padding-left:0;padding-right:0}
+body.collapsed .pt-user{justify-content:center;padding-left:0;padding-right:0;flex-direction:column;gap:6px}
+/* Sign-out button next to the signed-in user */
+.pt-out{flex:none;margin-left:auto;min-height:40px;width:40px;padding:0;display:grid;place-items:center;background:transparent;color:var(--mute);border-radius:10px}
+.pt-out:hover{background:var(--bg);color:var(--err)}
+body.collapsed .pt-out{margin-left:0}
 
 /* Page header with tools (vehicle picker, New service) */
 .pt-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
