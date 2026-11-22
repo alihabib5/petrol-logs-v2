@@ -6,11 +6,11 @@
   else if(m==="google"&&Auth.configured()){
     if(Auth.restore()){
       DB.load();await refresh();                                   /* show saved data immediately */
-      try{if(Auth.needsReconnect)await Auth.request(true);await SyncService.pull()}  /* quiet renewal; a failure just leaves the Reconnect banner */
+      try{if(Auth.needsReconnect)await Auth.request(true);Track.ping();await SyncService.pull()}  /* quiet renewal; a failure just leaves the Reconnect banner. Track: daily sign-in record */
       catch(e){if(!Auth.token)Auth.needsReconnect=true}
     }else{                                                          /* sessions saved before this version: show sign-in, try the old silent path */
       await refresh();
-      try{await Auth.signIn(true);DB.load();await SyncService.pull()}catch(e){Auth.mode=null;S.sync=""}
+      try{await Auth.signIn(true);Track.ping();DB.load();await SyncService.pull()}catch(e){Auth.mode=null;S.sync=""}
     }
   }
   refresh();

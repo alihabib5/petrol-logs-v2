@@ -2,6 +2,13 @@
 
 All notable changes to Petrol Log. Newest first.
 
+## [2.12.0] - 2026-11-22
+### Added
+- **Sign-in records with Supabase.** After a Google sign-in (and at most once a day while signed in), the app tells a Supabase Edge Function (`track-signin`) which account signed in. The function checks the token with Google and that it was issued to Sawari's own client before recording anything, then keeps one row per account in `public.app_users`: Google id, name, email, picture, first and last sign-in, and sign-in count. The table is locked (row level security, no policies); only the function's secret key can write and only the owner can read it in the dashboard. Vehicle, fuel and service records are never sent. Offline mode sends nothing, and the record never slows or blocks sign-in.
+- Setup files: `supabase/migrations/…_app_users.sql`, `supabase/functions/track-signin/index.ts`, `supabase/config.toml`. Steps in the README ("Sign-in records").
+### Changed
+- **Privacy Policy:** new "Sign-in records" section describing what is kept, where (Supabase), that records are never sent, and how to ask for deletion.
+
 ## [2.11.0] - 2026-11-22
 ### Added
 - **Home charging for electric vehicles.** Most owners charge at home, with no receipt and no idea of their battery size. Each charge now has **Home** or **Public charger**, plus the **battery % at plug-in** and **at unplug** and the odometer.
