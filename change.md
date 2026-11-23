@@ -2,6 +2,10 @@
 
 All notable changes to Safri (formerly Sawari and Petrol Log). Newest first.
 
+## [2.15.0] - 2026-11-23
+### Changed
+- **PDF report in the app's colours.** The monthly PDF used an orange palette from before the 2.10 redesign; it now uses Safri's bottle green: the header label, vehicle chip and hero "Net spend" card in #173E2F, efficiency bars and the price line in a mid green, pale-green insight cards, and the app's neutral greys for text and lines. Text contrast meets WCAG AA throughout.
+
 ## [2.14.0] - 2026-11-22
 ### Added
 - **Landing page** at the front of the site (`index.html`): "Your travel costs, in your own Google Drive." It shows an example Safri sheet getting a new row from a fill-up, where records go (your Drive, never our servers), what Safri can open and keeps, how to leave, the sums Safri works out, and the 2028 plan. People who already use the app go straight to it.

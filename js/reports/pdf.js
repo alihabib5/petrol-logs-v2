@@ -17,7 +17,9 @@ function exportPdf(R,fn){
 /* Draws one vehicle's report on the current page of d. Returns the height the whole report needs (content bottom + margin). */
 function pdfDraw(d,it,month,PH,PW){
   const M=PW*48/960,W=PW-2*M,U=W/864,u=n=>n*U;
-  const C={bg:[255,247,240],ink:[43,26,16],mut:[122,74,43],acc:[194,65,12],org:[249,115,22],line:[246,220,198],row:[251,235,221],soft:[255,237,213],softB:[253,186,116],track:[255,210,174],white:[255,255,255],gry:[245,245,244],gryT:[68,64,60],orgS:[255,228,204],orgT:[154,52,18]};
+  /* The app's bottle-green theme (DESIGN.md, 2.15.0): acc = brand #173E2F; org = a mid green #3F9671 for bars and the price line;
+     soft/softB = the brand's pale tint for the insight cards; track = the subsidy bar's track on the green hero card. */
+  const C={bg:[244,245,244],ink:[23,25,27],mut:[90,97,92],acc:[23,62,47],org:[63,150,113],line:[225,228,226],row:[236,239,237],soft:[225,235,230],softB:[173,204,188],track:[69,104,90],white:[255,255,255],gry:[240,242,241],gryT:[68,74,70],orgS:[214,232,223],orgT:[23,62,47]};
   const m2=n=>n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}),rs=n=>"Rs "+Math.round(n).toLocaleString("en-US"),n1=n=>(Math.round(n*10)/10).toFixed(1),n2=n=>n.toFixed(2),k0=n=>Math.round(n).toLocaleString("en-US");
   const sd=iso=>{const[,mo,da]=iso.split("-");return MONTHS[+mo-1].slice(0,3)+" "+(+da)};
   const kv=x=>x.eff!==null?x.eff:x.est;                            /* km/L for a fill: exact, else the odometer estimate */
