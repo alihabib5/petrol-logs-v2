@@ -67,7 +67,7 @@ js/main.js            startup
 Leave the odometer empty and the fill-up still counts for litres, cost and the reports; add it when you want distance and km/L. Fill-ups without an odometer give no distance of their own.
 
 ## Landing page and logo (2.14.0)
-The front page (`index.html`) is now a landing page about where your data lives; the app moved to `app.html` (served at `/app`). Anyone who has used the app in that browser (`petrol-mode` in localStorage) is sent straight on to the app, keeping any `?tab=`. The new safri icon is in `img/` and replaces the drawn logo on the sign-in screen and sidebar; the wordmark is lowercase "safri" in Lexend (Google Fonts). Google OAuth: the home page URL stays `https://petrol-logs.vercel.app`, which now describes the app as Google expects; no new origin is needed.
+The front page (`index.html`) is now a landing page about where your data lives; the app moved to `app.html` (served at `/app`). Anyone who has used the app in that browser (`petrol-mode` in localStorage) is sent straight on to the app, keeping any `?tab=`. The new safri icon is in `img/` and replaces the drawn logo on the sign-in screen and sidebar; the wordmark is lowercase "safri" in Lexend (Google Fonts). Since 22 Nov 2026 the site is at `https://safri.vercel.app` (the old `petrol-logs.vercel.app` redirects there). Google OAuth needs `https://safri.vercel.app` as an Authorised JavaScript origin, `safri.vercel.app` as an authorised domain, and the new home, privacy and terms URLs on the Branding page.
 
 ## Sign-in records (Supabase, 2.12.0)
 Records which Google accounts sign in, in a Supabase table only you can read. Vehicle, fuel and service records are never sent.
@@ -76,7 +76,7 @@ How it works: after a Google sign-in, the app sends its Google access token to t
 One-time setup in the Supabase dashboard (project `ffzaaamamplyiiywuwiq`):
 1. **SQL Editor:** paste and run `supabase/migrations/20261122000000_app_users.sql`.
 2. **Edge Functions → Deploy a new function → Via editor:** name it `track-signin`, paste `supabase/functions/track-signin/index.ts`, deploy. Then in the function's settings turn **Enforce JWT verification off** (or with the CLI: `supabase functions deploy track-signin --no-verify-jwt`).
-3. If the app runs on another address, add it to the function's `ALLOWED_ORIGINS` secret (comma-separated; default `https://petrol-logs.vercel.app,http://localhost:8000`).
+3. If the app runs on another address, add it to the function's `ALLOWED_ORIGINS` secret (comma-separated; default `https://safri.vercel.app,https://petrol-logs.vercel.app,http://localhost:8000`).
 4. See who signed in: **Table Editor → app_users**.
 Never put the secret key (`sb_secret_…`) in this repo or in `js/config.js`.
 

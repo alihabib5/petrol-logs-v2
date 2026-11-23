@@ -8,7 +8,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 const GOOGLE_CLIENT_ID = Deno.env.get("GOOGLE_CLIENT_ID") ??
   "488491697813-03g8gh1it1bdp66rq0ek5934u8go112h.apps.googleusercontent.com";
 const ALLOWED_ORIGINS = (Deno.env.get("ALLOWED_ORIGINS") ??
-  "https://petrol-logs.vercel.app,http://localhost:8000").split(",").map((s) => s.trim());
+  "https://safri.vercel.app,https://petrol-logs.vercel.app,http://localhost:8000").split(",").map((s) => s.trim());
 
 function cors(origin: string | null): Record<string, string> {
   return {
